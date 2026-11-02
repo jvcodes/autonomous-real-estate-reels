@@ -1,0 +1,21 @@
+# Local secrets & API keys
+config.local.js
+map_api_key.txt
+.env
+*.env.local
+
+# Large media files (raw videos and heavy screenshots)
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.png
+*.jpg
+*.jpeg
+
+# Dependencies & Build artifacts
+node_modules/
+dist/
+build/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,27 @@
+{
+  "name": "autonomous-real-estate-reels",
+  "version": "1.0.0",
+  "description": "Autonomous AI Agent & Broadcast Motion Graphics Pipeline for Real Estate Instagram Reels & YouTube Shorts",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "export": "node scripts/headless_reel_capture.js"
+  },
+  "keywords": [
+    "real-estate",
+    "instagram-reels",
+    "youtube-shorts",
+    "google-maps",
+    "motion-graphics",
+    "autonomous-agent",
+    "antigravity",
+    "mcp",
+    "tumkur"
+  ],
+  "author": "jvcodes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jvcodes/autonomous-real-estate-reels.git"
+  }
+}
