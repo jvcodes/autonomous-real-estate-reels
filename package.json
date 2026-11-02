@@ -5,6 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "voiceover": "node scripts/generate_voiceovers.js",
+    "render": "node scripts/build_reels.js",
+    "render:all": "node scripts/build_reels.js --all",
     "export": "node scripts/headless_reel_capture.js"
   },
   "keywords": [
@@ -23,5 +26,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jvcodes/autonomous-real-estate-reels.git"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "msedge-tts": "^2.1.1",
+    "puppeteer-core": "^24.43.1"
   }
 }

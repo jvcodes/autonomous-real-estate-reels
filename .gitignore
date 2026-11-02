@@ -15,6 +15,7 @@ map_api_key.txt
 
 # Dependencies & Build artifacts
 node_modules/
+output/
 dist/
 build/
 .DS_Store
