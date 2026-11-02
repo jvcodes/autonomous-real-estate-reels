@@ -1,114 +1,136 @@
-# 🎬 Autonomous Real Estate Reels Engine
+# 🎬 Autonomous Real Estate Reels Engine (Hollywood 3D CGI + 2D Broadcast)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Format: 9:16 Vertical Reel](https://img.shields.io/badge/Format-9%3A16%20Reels-gradient)](https://instagram.com)
-[![Engine: Google Maps + Node](https://img.shields.io/badge/Engine-Google%20Maps%20%2B%20Node.js-orange)](https://github.com/jvcodes/autonomous-real-estate-reels)
+[![Engine: Blender 5.2 + FFmpeg + Edge-TTS](https://img.shields.io/badge/Engine-Blender%205.2%20%2B%20FFmpeg%20%2B%20Edge--TTS-orange)](https://github.com/jvcodes/autonomous-real-estate-reels)
+[![Tokens: ZERO Recurring Cost](https://img.shields.io/badge/LLM%20Tokens-0%20Recurring%20Cost-brightgreen)](https://github.com/jvcodes/autonomous-real-estate-reels)
 
-An **autonomous AI agent and broadcast motion graphics pipeline** designed to produce high-converting **9:16 vertical video reels** (for Instagram Reels and YouTube Shorts) showcasing real estate properties, plots, and layouts.
+An **industry-leading autonomous AI pipeline** designed to produce viral, Hollywood-grade **9:16 vertical video reels** (for Instagram Reels, YouTube Shorts, and TikTok) showcasing residential and commercial real estate layouts.
 
-Blending **dynamic aerial Google Maps flights**, **60 FPS animated road curves**, **distance telemetry badges**, and **full-bleed walkthrough footage** with broadcast-grade lower-third motion graphics.
-
----
-
-## 🌟 Highlights
-
-* 🎯 **100% Autonomous Pipeline:** Self-running broadcast timeline — no manual button clicking or video editing required.
-* 📱 **Native 9:16 Vertical Canvas (1080×1920 Target):** Built specifically for mobile phone screens and social video formats.
-* 🌌 **Zero-Clutter Obsidian Cartography:** Suppresses all default commercial POI icons, business pins, and traffic noise.
-* ⏱️ **5-Second City Orientation Pause:** Pulls back to city altitude with a live countdown so buyers understand the exact geographical location.
-* 📏 **Road-to-Site Distance Curve:** Traces an animated glowing neon arrow along the access road from highway to property entrance with a 3.5s metric hold.
-* 🎥 **HTTP 206 Partial Content Streaming:** Node.js backend streaming walkthrough MP4 clips smoothly with sub-second seeks.
-* 🤖 **Antigravity / Agent Skill Included:** Ready for autonomous coding agents with `.agents/skills/autonomous-real-estate-reels/SKILL.md`.
+Combines **Blender 5.2 3D CGI drone flyovers**, **glowing neon road trajectory splines**, **holographic plot boundary extrusions**, **3D bouncing location pins**, **regional neural voiceovers (English & Kannada)**, and **full-bleed ground walkthrough videos** with broadcast motion graphics.
 
 ---
 
-## 📐 Deterministic Timeline Choreography
+## 🌟 Why This Pipeline Leads The Field
 
-Each layout receives approximately **17.7 seconds** of broadcast airtime in the master reel:
-
-| Stage | Duration | Visual Choreography |
-| :--- | :--- | :--- |
-| **1. City Overview** | `5.0s` | Pulls back to city altitude (`zoom: 12.8`), lights up target polygon (55% wash) & adjacent neighborhoods (30% wash) with live countdown badge. |
-| **2. Camera Dive** | `0.7s` | Smooth pan & dive from city altitude down to layout gate (`zoom: 17.0`). |
-| **3. Road Access Curve** | `3.5s` | Traces animated neon polyline from highway to gate with `📏 [Distance] ([DriveTime]) from [RoadName]` badge. Pulses at 60 FPS. |
-| **4. Walkthrough Video** | `8.5s` | Seamless full-bleed video slide-up playing site footage with broadcast lower-third (rate/sqft, starting price, landmarks). |
-| **5. Auto-Advance Loop** | Instant | Retracts video, glides back to wide city map, and cycles to the next layout in an infinite broadcast loop. |
+| Feature | Ordinary Video Tools | Paid Cloud AI Reel Apps | This Autonomous Engine |
+| :--- | :--- | :--- | :--- |
+| **Recurring Cost** | Manual editor ($50-$200/reel) | $30-$100/mo + token credits | **$0.00 / 0 Tokens (100% Free & Local)** |
+| **3D CGI Aerials** | Not included or slow CGI | Flat 2D satellite screenshots | **Blender 5.2 Eevee 3D (RTX GPU accelerated)** |
+| **Access Route** | Static arrows | 2D lines | **3D Glowing Neon Splines with speed-ramp dive** |
+| **Plot Boundaries** | Flat 2D outline | Flat colored shapes | **3D Holographic Volumetric Extrusions** |
+| **Pin Drop** | Static graphic | 2D sticker | **3D Conical Pin with impact shockwave ripple** |
+| **Voiceover** | Paid ElevenLabs ($$$) | Generic robotic voice | **Edge-TTS Neural (English & Kannada, 0 cost)** |
+| **Production Speed** | 2-4 hours per video | 5-15 mins in queue | **~1.5 mins per reel on RTX 3050 Ti** |
 
 ---
 
-## 🚀 Quick Start
+## 📐 Hybrid 3D Pipeline Architecture
 
-### 1. Clone the Repository
+```
+[ Layout Metadata: data/featured_reels_master.json ]
+                         │
+      ┌──────────────────┴──────────────────┐
+      ▼                                     ▼
+[ Blender 5.2 Eevee 3D Engine ]   [ Microsoft Edge Neural TTS ]
+  - 3D Neon Road Spline             - English (en-IN-NeerjaNeural)
+  - Holographic Plot Extrusion      - Kannada (kn-IN-GaganNeural)
+  - 3D Bouncing Location Pin Drop   - Zero token consumption
+  - Terminal Speed-Ramp Dive        
+      │                                     │
+      ▼                                     ▼
+[ 1080x1920 3D Flyover MP4 ]       [ Crystal Clear Regional MP3 ]
+      │                                     │
+      └──────────────────┬──────────────────┘
+                         │
+                         ▼
+        [ Puppeteer Headless Broadcast Overlays ]
+          - Top 5-Segment Story Progress Tracker
+          - Live Telemetry (● REC TUMKUR REEL)
+          - Glassmorphism Price & Landmark Card
+                         │
+                         ▼
+             [ Standalone FFmpeg Muxer ]
+          - Concatenates 3D Intro + Walkthrough
+          - Whip-zoom speed-ramp transition
+          - Muxes regional voiceover + audio bed
+                         │
+                         ▼
+     [ Finished 1080x1920 Master Reel (~14.0s) ]
+```
+
+---
+
+## 🚀 Quick Start & CLI Runbook
+
+### 1. Prerequisites
+- **Node.js** (v18+)
+- **Blender 5.2 LTS** (installed on default path or set in PATH)
+- **NVIDIA GPU** recommended (tested on RTX 3050 Ti with OptiX/CUDA)
+
+### 2. Install Dependencies
 ```bash
-git clone https://github.com/jvcodes/autonomous-real-estate-reels.git
-cd autonomous-real-estate-reels
+npm install
 ```
 
-### 2. Configure Google Maps API Key
-Copy `config.sample.js` to `config.local.js` (gitignored for security) and add your API key:
-```javascript
-const LOCAL_CONFIG = {
-  GOOGLE_MAPS_API_KEY: "YOUR_GOOGLE_MAPS_API_KEY_HERE"
-};
-```
-
-### 3. Launch the Streaming Server
+### 3. Generate Regional Voiceovers (Zero Tokens)
+Synthesizes English and Kannada voiceovers for all layouts:
 ```bash
-node server.js
+npm run voiceover
 ```
-Open **`http://localhost:3000`** in any browser. The autonomous reel pipeline will start immediately on its own.
 
-### 4. Headless 9:16 Video Capture
-To launch the dedicated 9:16 vertical preview window:
+### 4. Render 3D CGI Drone Flyovers (Blender Eevee)
+Single site:
 ```bash
-npm run export
+npm run render:3d -- --site 01_PNK_Township
 ```
-Record the window directly via OBS Studio or Windows Game Bar (`Win + Alt + R`).
+Batch render all 5 featured layouts:
+```bash
+npm run render:3d:all
+```
+
+### 5. Compile Hollywood 3D Hybrid Master Reels
+Composite 3D CGI flyover + on-site phone walkthrough + broadcast HUD + audio:
+```bash
+# Single site (English + Kannada)
+npm run composite:3d -- --site 01_PNK_Township --lang both
+
+# Batch compile all layouts
+npm run composite:3d:all
+```
+
+### 6. Full End-to-End Autonomous Pipeline
+Runs voiceovers $\rightarrow$ 3D CGI rendering $\rightarrow$ Walkthrough stitching for all properties in one click:
+```bash
+npm run pipeline:all
+```
 
 ---
 
-## 📂 Repository Structure
+## 📁 Repository Structure
 
 ```
 autonomous-real-estate-reels/
-├── .agents/
-│   └── skills/
-│       └── autonomous-real-estate-reels/
-│           └── SKILL.md            # Antigravity agent skill definition
-├── ADR/
-│   ├── 0001-real-estate-map-reels.md # Architecture Decision Record
-│   └── README.md
 ├── data/
-│   └── layouts_master_catalog.json # Structured metadata & pricing for 10 layouts
+│   ├── featured_reels_master.json   # Single source of truth (coordinates, prices, 3D splines)
+│   └── layouts_master_catalog.json  # Full 10-layout Tumkur catalog
 ├── scripts/
-│   └── headless_reel_capture.js    # Automated 1080x1920 capture launcher
-├── skills/
-│   └── autonomous-real-estate-reels/
-│       └── SKILL.md                # Mirrored skill definition
-├── app.js                          # Autonomous playback & timeline engine
-├── config.js                       # Google Maps config with local secret fallback
-├── config.sample.js                # Sanitized config template
-├── index.html                      # Native 9:16 broadcast motion graphics canvas
-├── package.json                    # Metadata & scripts
-├── properties.js                   # Tumkur layout boundaries & access road paths
-├── server.js                       # Zero-dependency HTTP 206 video streaming server
-├── style.css                       # Broadcast 9:16 CSS styling
-├── ARCHITECTURE.md                 # Deep architectural dive
-├── LICENSE                         # MIT License
-└── README.md
+│   ├── blender_3d_flyover.py        # Parametric Blender 3D Eevee generator
+│   ├── generate_voiceovers.js       # MsEdgeTTS dual-language synthesizer (EN + KN)
+│   ├── render_hybrid_3d_reel.js     # Hollywood 3D + Walkthrough hybrid compositor
+│   ├── build_reels.js               # 2D Map/Overlay compositor
+│   └── server.js                    # HTTP 206 Partial Content MP4 streaming server
+├── output/
+│   ├── audio/                       # Generated .mp3 voiceovers (en & kn)
+│   ├── overlays/                    # Transparent 1080x1920 broadcast PNG graphics
+│   ├── blender/                     # 3D CGI .mp4 flyover clips
+│   └── reels/                       # Finished 1080x1920 master video reels
+├── .agents/skills/                  # Custom Antigravity agent skill definition
+├── ADR/                             # Architecture Decision Records
+└── package.json                     # NPM lifecycle commands
 ```
 
 ---
 
-## ⌨️ Silent Creator Shortcuts
-
-During recording, use these invisible hotkeys:
-* `Space`: Pause / Resume autonomous pipeline.
-* `M`: Toggle walkthrough audio mute.
-* `T`: Toggle map theme (Cinema Dark / Satellite Hybrid).
-
----
-
-## 📜 License
-
-MIT License © 2026 [jvcodes](https://github.com/jvcodes)
+## 📄 License
+MIT © 2026 [jvcodes](https://github.com/jvcodes)

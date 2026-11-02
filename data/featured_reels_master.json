@@ -1,0 +1,157 @@
+[
+  {
+    "id": "01_PNK_Township",
+    "num": "1",
+    "total": "5",
+    "name": "P.N.K TOWNSHIP",
+    "fullName": "Sri Balaji Anugraha (P.N.K Zone)",
+    "locality": "Ashok Nagar & Vijayanagar Main Rd",
+    "rate": "₹1,950 / SQ.FT",
+    "startPrice": "From ₹23.40 Lakhs (30x40)",
+    "dist": "500m to Vijayanagar Main Rd",
+    "roadDistance": "📏 500m (1 Min Drive) from Vijayanagar Main Rd",
+    "landmark": "500m from Vijayanagar Main Rd, Behind Prasanna Dental Clinic, Ashok Nagar",
+    "adjacent": "S.S. Puram • Maruthi Nagar • Sadashivanagar",
+    "colorHex": "#F59E0B",
+    "colorRgba": [1.0, 0.65, 0.08, 1.0],
+    "tags": ["BDA Approved", "Underground Drainage", "Direct Highway Link"],
+    "rawVideo": "C:\\sites\\agent_project\\04_Sri_Balaji_Anugraha_Township\\reel_walkthrough.mp4",
+    "boundary": [
+      [-2.4, -1.6, 0.0],
+      [2.2, -1.8, 0.0],
+      [2.5, 1.7, 0.0],
+      [-0.4, 2.3, 0.0],
+      [-2.5, 0.9, 0.0]
+    ],
+    "roadPoints": [
+      [0.0, -14.0, 0.1],
+      [-1.5, -9.0, 0.2],
+      [-0.8, -4.5, 0.3],
+      [0.0, -1.8, 0.35]
+    ]
+  },
+  {
+    "id": "02_Batawadi_Junction",
+    "num": "2",
+    "total": "5",
+    "name": "GREEN MEADOWS SMART TOWNSHIP",
+    "fullName": "Green Meadows Smart Township",
+    "locality": "Batawadi & East Ring Road",
+    "rate": "₹1,850 / SQ.FT",
+    "startPrice": "From ₹22.20 Lakhs (30x40)",
+    "dist": "300m to NH-48 Ring Road",
+    "roadDistance": "📏 300m (45s Drive) from NH-48 Ring Road",
+    "landmark": "2 mins from Batawadi Toll Plaza, Opp. Siddhartha Medical College, near D-Mart",
+    "adjacent": "Batawadi • Ring Road • NH-48 Expressway",
+    "colorHex": "#0284C7",
+    "colorRgba": [0.08, 0.55, 0.95, 1.0],
+    "tags": ["Ready Registration", "A-Katha", "Park Facing"],
+    "rawVideo": "C:\\sites\\agent_project\\01_Green_Meadows_Smart_Township\\reel_walkthrough.mp4",
+    "boundary": [
+      [-2.2, -2.0, 0.0],
+      [2.0, -2.1, 0.0],
+      [2.4, 1.5, 0.0],
+      [0.2, 2.2, 0.0],
+      [-2.3, 1.2, 0.0]
+    ],
+    "roadPoints": [
+      [4.0, -14.0, 0.1],
+      [2.2, -9.5, 0.2],
+      [0.5, -5.0, 0.3],
+      [0.0, -1.8, 0.35]
+    ]
+  },
+  {
+    "id": "03_Kuvempunagara",
+    "num": "3",
+    "total": "5",
+    "name": "ROYAL PALMS LUXURY ENCLAVE",
+    "fullName": "Royal Palms Luxury Enclave",
+    "locality": "Kuvempunagara & SIT Frontage",
+    "rate": "₹2,450 / SQ.FT",
+    "startPrice": "From ₹36.75 Lakhs (30x50)",
+    "dist": "400m to SIT & B.H. Road",
+    "roadDistance": "📏 400m (1 Min Drive) from SIT College & B.H. Road",
+    "landmark": "3 mins from SIT College, Adjacent to Kuvempu Park & B.H. Road",
+    "adjacent": "S.I.T Extension • Kuvempunagara • B.H. Road",
+    "colorHex": "#7C3AED",
+    "colorRgba": [0.65, 0.25, 0.95, 1.0],
+    "tags": ["Elite Gentry", "Cauvery Waterline", "Grand Entrance Arch"],
+    "rawVideo": "C:\\sites\\agent_project\\02_Royal_Palms_Luxury_Enclave\\reel_walkthrough.mp4",
+    "boundary": [
+      [-2.6, -1.5, 0.0],
+      [2.1, -1.7, 0.0],
+      [2.3, 1.8, 0.0],
+      [-0.8, 2.4, 0.0],
+      [-2.5, 0.5, 0.0]
+    ],
+    "roadPoints": [
+      [-5.0, -14.0, 0.1],
+      [-3.0, -9.0, 0.2],
+      [-1.2, -4.5, 0.3],
+      [0.0, -1.8, 0.35]
+    ]
+  },
+  {
+    "id": "04_Amani_Lakeview",
+    "num": "4",
+    "total": "5",
+    "name": "AMANI LAKEVIEW COUNTY",
+    "fullName": "Amani Lakeview County",
+    "locality": "Shanti Nagar (Opp. Amani Kere Lake)",
+    "rate": "₹2,100 / SQ.FT",
+    "startPrice": "From ₹25.20 Lakhs (30x40)",
+    "dist": "600m to Railway Station Link",
+    "roadDistance": "📏 600m (2 Mins Drive) from Railway Station Link",
+    "landmark": "Direct Lake Promenade View, 4 mins from Tumkur Railway Station & Bus Stand",
+    "adjacent": "Amani Kere • Railway Station Link • Shanti Nagar",
+    "colorHex": "#0891B2",
+    "colorRgba": [0.1, 0.8, 0.85, 1.0],
+    "tags": ["Lakefront Promenade", "Zero Noise Pollution", "Clear Marketable Title"],
+    "rawVideo": "C:\\sites\\agent_project\\03_Amani_Lakeview_County\\reel_walkthrough.mp4",
+    "boundary": [
+      [-2.3, -1.8, 0.0],
+      [2.2, -1.9, 0.0],
+      [2.5, 1.4, 0.0],
+      [0.0, 2.1, 0.0],
+      [-2.2, 1.0, 0.0]
+    ],
+    "roadPoints": [
+      [-2.0, -14.0, 0.1],
+      [-0.5, -9.0, 0.2],
+      [1.0, -5.0, 0.3],
+      [0.0, -1.8, 0.35]
+    ]
+  },
+  {
+    "id": "05_Kyatsandra_Gateway",
+    "num": "5",
+    "total": "5",
+    "name": "HIGHWAY GATEWAY SMART CITY",
+    "fullName": "Highway Gateway Smart City",
+    "locality": "Bangalore-Tumkur Expressway Entry",
+    "rate": "₹2,600 / SQ.FT",
+    "startPrice": "From ₹31.20 Lakhs (30x40)",
+    "dist": "100m to NH-48 Expressway",
+    "roadDistance": "📏 100m (30s Drive) Direct NH-48 Expressway Access",
+    "landmark": "1 km from Kyatsandra Toll Gate, 3 mins from Siddaganga Math, 45 mins to Peenya",
+    "adjacent": "Kyatsandra • Bangalore Highway • Toll Corridor",
+    "colorHex": "#DC2626",
+    "colorRgba": [0.95, 0.18, 0.18, 1.0],
+    "tags": ["Expressway Touch", "High ROI Corridor", "45 Mins to Bangalore"],
+    "rawVideo": "C:\\sites\\agent_project\\05_Highway_Gateway_Smart_City\\reel_walkthrough.mp4",
+    "boundary": [
+      [-2.1, -1.7, 0.0],
+      [2.4, -1.8, 0.0],
+      [2.6, 1.6, 0.0],
+      [-0.3, 2.0, 0.0],
+      [-2.3, 0.8, 0.0]
+    ],
+    "roadPoints": [
+      [3.0, -14.0, 0.1],
+      [1.5, -8.5, 0.2],
+      [-0.5, -4.5, 0.3],
+      [0.0, -1.8, 0.35]
+    ]
+  }
+]

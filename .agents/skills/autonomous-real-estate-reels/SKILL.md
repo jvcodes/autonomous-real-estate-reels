@@ -2,81 +2,122 @@
 name: autonomous-real-estate-reels
 description: >-
   Autonomous pipeline to generate, composite, and render 9:16 vertical real estate video reels
-  (Instagram Reels & YouTube Shorts). Combines Google Maps aerial flyovers, animated road access curves,
-  distance telemetry badges, and full-bleed property walkthrough videos with motion graphic lower-thirds.
+  (Instagram Reels & YouTube Shorts). Combines Blender 3D CGI aerial flyovers with glowing neon road
+  splines, extruded holographic plot boundaries, bouncing 3D location pins, regional Edge-TTS voiceovers,
+  and full-bleed ground walkthrough videos with motion graphic lower-thirds. Zero LLM token cost.
 ---
 
-# Autonomous Real Estate Reels Generator
+# Autonomous Real Estate Reels Generator (Hollywood-Grade 3D & 2D)
 
-This skill teaches the agent how to autonomously orchestrate, compose, and produce broadcast-grade **9:16 vertical video reels** for real estate layouts by blending Google Maps dynamic aerial flights with on-site walkthrough videos.
+This skill equips the agent to autonomously produce broadcast-grade **1080x1920 9:16 vertical video reels** for real estate layouts by blending **Blender 5.2 3D CGI drone flyovers**, dynamic access road curves, bouncing location pins, regional neural voiceovers, and high-definition ground walkthrough footage.
 
 ---
 
-## 1. Pipeline Overview
+## 1. Zero-Token Architecture Overview
 
-The pipeline operates in 5 deterministic, automated phases:
+The system is engineered to consume **0 recurring LLM tokens** after code setup:
 
 ```
-[ Layout Metadata & GPS ]
-           │
-           ▼
-[ Phase 1: 5.0s Wide City Overview ] ──> Zoom 12.8, adjacent zones illuminated, live countdown
-           │
-           ▼
-[ Phase 2: 0.7s Camera Glide Dive ]  ──> Zoom 17.0, centering layout entrance
-           │
-           ▼
-[ Phase 3: 3.5s Road Curve & Hold ]  ──> Tracing neon arrow from highway to gate, distance metric hold
-           │
-           ▼
-[ Phase 4: 8.5s Walkthrough Video ]  ──> Full-bleed 9:16 video + broadcast lower-third price/landmarks
-           │
-           ▼
-[ Phase 5: Autonomous Transition ]   ──> Cycles to next layout in continuous loop
+[ Layout Catalog: featured_reels_master.json ]
+                    │
+      ┌─────────────┴─────────────┐
+      ▼                           ▼
+[ Blender 5.2 Eevee 3D ]   [ Edge Neural TTS ]
+  - 3D Neon Road Spline      - English (en-IN-Neerja)
+  - Holographic Extrusion     - Kannada (kn-IN-Gagan)
+  - 3D Bouncing Pin Drop      - 100% Free / Zero Token
+  - Speed-Ramp Camera Dive   
+      │                           │
+      ▼                           ▼
+[ 3D Drone Flyover MP4 ]   [ Regional MP3 Audio ]
+      │                           │
+      └─────────────┬─────────────┘
+                    │
+                    ▼
+  [ Node.js + Headless Puppeteer + Edge ]
+    - 1080x1920 Transparent HUD Overlay
+    - Story Progress Tracker (5-Segment)
+    - Price, Landmark & Surrounding Badges
+                    │
+                    ▼
+     [ Hardware-Accelerated FFmpeg ]
+    - Stitches 3D Flyover (Part 1, 3.0s)
+    - Cut/Whip into Ground Walkthrough (Part 2, 11.0s)
+    - Muxes Neural Audio & Ambient Audio Bed
+                    │
+                    ▼
+ [ Finished 1080x1920 Reel (14.0s, ~15 MB) ]
 ```
 
 ---
 
-## 2. Core Visual & Timing Standards
+## 2. Visual & Motion Standards (Hollywood 9:16)
 
-| Stage | Duration | Viewport | Visual Elements |
-| :--- | :--- | :--- | :--- |
-| **City Overview** | `5000 ms` | `zoom: 12.8` | Deep Obsidian canvas (`#080C14`), target polygon (55% opacity), adjacent areas (30% opacity), top Story tracker segment filling, live countdown caption. |
-| **Camera Dive** | `700 ms` | `zoom: 17.0` | Smooth pan & dive from city altitude to property gate. |
-| **Road Curve Trajectory** | `3500 ms` | `zoom: 17.0` | Animated polyline tracing from main highway to site gate, closed arrowhead icon, floating badge `📏 [Distance] ([DriveTime]) from [RoadName]`, 60 FPS neon pulse. |
-| **Walkthrough Video** | `8500 ms` | Full 9:16 | Seamless slide-up overlay, streaming MP4 with HTTP 206 Partial Content, lower-third rate badge (`₹/sq.ft`), starting cost, landmark, and surrounding areas. |
-
----
-
-## 3. Cartography & Design Rules
-
-1. **Zero Clutter**:
-   * All Google default business icons, stores, restaurants, and transit pins MUST be suppressed (`styles: CINEMA_DARK_STYLE`).
-   * Disable all default Google Maps UI controls (`disableDefaultUI: true`, `gestureHandling: "none"`).
-2. **Dedicated 9:16 Aspect Ratio**:
-   * The container must strictly follow `aspect-ratio: 9 / 16` (`1080x1920` video canvas).
-3. **No Interactive Web Chrome**:
-   * Do not display website navigation headers, close buttons (`✕`), navigation arrows, or clickable buttons in the video frame. All elements must appear as motion graphics broadcast graphics.
-4. **Broadcast Overlays**:
-   * **Top Story Progress Tracker**: 5-segment bar (like Instagram/TikTok Stories) indicating progress across the reel.
-   * **Telemetry Badge**: `● REC • TUMKUR REEL` + `PROPERTY X OF Y`.
-   * **Lower Thirds**: High-contrast typography (`text-rendering: optimizeLegibility`), vibrant neon accent colors (`#34D399` rate green, `#F59E0B` amber).
+| Layer | Specifications | Production Value |
+| :--- | :--- | :--- |
+| **Blender 3D CGI** | `1080x1920`, 30 FPS, Eevee engine on RTX GPU (~1.2s/frame). | Cinematic high-orbit drone dive tracking along a glowing neon access route directly into the site entrance. |
+| **Holographic Boundary** | Volumetric 3D curve extrusion with emission shader (`#F59E0B`, `#0284C7`, etc.). | Gives buyers an unmistakable volumetric view of the plot footprint. |
+| **3D Location Pin** | 3D conical pin with spherical cap, falling from sky with squash-and-bounce physics + ground shockwave ripple. | Dramatic visual impact at the property entrance. |
+| **Speed-Ramp Dive** | Final frames (78-90) surge forward into the gate with motion blur. | Seamless visual bridge into the physical ground walkthrough video. |
+| **Walkthrough Footage** | 1080x1920 portrait video shot on site, stabilized, cropped to 9:16. | Shows actual asphalt roads, streetlights, and plot boundaries. |
+| **Broadcast Overlays** | Top 5-segment Story tracker + Live `● REC TUMKUR REEL` badge + Bottom glassmorphism card. | High-converting social media format for Instagram Reels & YouTube Shorts. |
 
 ---
 
-## 4. Autonomous Execution Runbook
+## 3. Project File Structure
 
-When instructed to create or extend real estate reels:
+```
+C:\sites\map/
+├── data/
+│   ├── featured_reels_master.json   # Single source of truth (GPS, boundaries, roads, prices)
+│   └── layouts_master_catalog.json  # Complete 10-layout dataset
+├── scripts/
+│   ├── blender_3d_flyover.py        # Parametric Blender 3D Eevee generator
+│   ├── generate_voiceovers.js       # MsEdgeTTS dual-language synthesizer (EN + KN)
+│   ├── render_hybrid_3d_reel.js     # Hollywood 3D + Walkthrough hybrid compositor
+│   ├── build_reels.js               # 2D Map/Overlay compositor
+│   └── server.js                    # Streaming server supporting HTTP 206 Partial Content
+├── output/
+│   ├── audio/                       # Generated .mp3 voiceovers (en & kn)
+│   ├── overlays/                    # Transparent 1080x1920 .png broadcast cards
+│   ├── blender/                     # 3D CGI .mp4 flyover clips
+│   └── reels/                       # Finished 1080x1920 master video reels
+└── package.json                     # Automated npm execution scripts
+```
 
-1. **Inspect / Ingest Metadata**:
-   * Read layout GPS boundaries, road access path, distance, drive time, and pricing from `data/layouts_master_catalog.json` or `properties.js`.
-2. **Verify Video Assets**:
-   * Ensure walkthrough videos are available in `agent_project/[layout_folder]/reel_walkthrough.mp4`.
-3. **Run the Streaming Server**:
-   * Launch `server.js` (Node.js HTTP server supporting HTTP 206 Range requests for MP4 streaming):
-     ```bash
-     node server.js
-     ```
-4. **Autonomous Video Capture**:
-   * Open `http://localhost:3000` to preview the infinite autonomous loop.
-   * Run headless capture script (`scripts/headless_reel_capture.js`) to render directly into MP4 format.
+---
+
+## 4. Master Runbook Commands
+
+All tasks can be executed autonomously via standard CLI commands:
+
+### A. Generate Neural Regional Voiceovers (Zero Tokens)
+```bash
+npm run voiceover
+```
+
+### B. Render 3D CGI Drone Flyover in Blender
+Single site:
+```bash
+npm run render:3d -- --site 01_PNK_Township
+```
+Batch render all sites:
+```bash
+npm run render:3d:all
+```
+
+### C. Compile Hollywood Hybrid 3D Master Reels
+Single site:
+```bash
+npm run composite:3d -- --site 01_PNK_Township --lang both
+```
+Batch compile all layouts in English & Kannada:
+```bash
+npm run composite:3d:all
+```
+
+### D. Full End-to-End Autonomous Pipeline
+Runs voiceovers $\rightarrow$ 3D CGI rendering $\rightarrow$ Walkthrough stitching for all properties:
+```bash
+npm run pipeline:all
+```

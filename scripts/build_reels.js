@@ -18,89 +18,14 @@ const OVERLAYS_DIR = path.join(__dirname, '..', 'output', 'overlays');
 fs.mkdirSync(REELS_OUTPUT_DIR, { recursive: true });
 fs.mkdirSync(OVERLAYS_DIR, { recursive: true });
 
-// 5 Featured Layouts Metadata
-const LAYOUTS = [
-  {
-    id: "01_PNK_Township",
-    name: "P.N.K TOWNSHIP",
-    num: "1",
-    total: "5",
-    rate: "₹1,950 / SQ.FT",
-    startPrice: "From ₹23.40 Lakhs (30x40)",
-    color: "#f59e0b",
-    roadDistance: "📏 500m (1 Min Drive) from Vijayanagar Main Rd",
-    landmark: "Behind Prasanna Dental Clinic, Ashok Nagar",
-    adjacent: "S.S. Puram • Maruthi Nagar • Sadashivanagar",
-    tags: ["BDA Approved", "Underground Drainage", "Direct Highway Link"],
-    rawVideo: "C:\\sites\\agent_project\\01_Green_Meadows_Smart_Township\\reel_walkthrough.mp4",
-    audioEn: path.join(__dirname, '..', 'output', 'audio', '01_PNK_Township_en.mp3'),
-    audioKn: path.join(__dirname, '..', 'output', 'audio', '01_PNK_Township_kn.mp3')
-  },
-  {
-    id: "02_Batawadi_Junction",
-    name: "GREEN MEADOWS SMART TOWNSHIP",
-    num: "2",
-    total: "5",
-    rate: "₹1,850 / SQ.FT",
-    startPrice: "From ₹22.20 Lakhs (30x40)",
-    color: "#34d399",
-    roadDistance: "📏 300m (45s Drive) from NH-48 Ring Road",
-    landmark: "Behind Batawadi Toll Plaza, Ring Road",
-    adjacent: "Batawadi • Ring Road • NH-48 Expressway",
-    tags: ["Ready Registration", "A-Katha", "Park Facing"],
-    rawVideo: "C:\\sites\\agent_project\\02_Blue_Bell_Residency\\reel_walkthrough.mp4",
-    audioEn: path.join(__dirname, '..', 'output', 'audio', '02_Batawadi_Junction_en.mp3'),
-    audioKn: path.join(__dirname, '..', 'output', 'audio', '02_Batawadi_Junction_kn.mp3')
-  },
-  {
-    id: "03_Kuvempunagara",
-    name: "ROYAL PALMS ELITE ENCLAVE",
-    num: "3",
-    total: "5",
-    rate: "₹2,450 / SQ.FT",
-    startPrice: "From ₹29.40 Lakhs (30x40)",
-    color: "#a855f7",
-    roadDistance: "📏 400m (1 Min Drive) from B.H. Road",
-    landmark: "Opposite SIT Engineering College, Kuvempunagara",
-    adjacent: "S.I.T Extension • Kuvempunagara • B.H. Road",
-    tags: ["Elite Neighborhood", "SIT Frontage", "30x40 & 40x60"],
-    rawVideo: "C:\\sites\\agent_project\\03_Royal_Palms_Elite_Enclave\\reel_walkthrough.mp4",
-    audioEn: path.join(__dirname, '..', 'output', 'audio', '03_Kuvempunagara_en.mp3'),
-    audioKn: path.join(__dirname, '..', 'output', 'audio', '03_Kuvempunagara_kn.mp3')
-  },
-  {
-    id: "04_Amani_Lakeview",
-    name: "SRI BALAJI ANUGRAHA",
-    num: "4",
-    total: "5",
-    rate: "₹2,100 / SQ.FT",
-    startPrice: "From ₹25.20 Lakhs (30x40)",
-    color: "#38bdf8",
-    roadDistance: "📏 600m (1.5 Min Drive) from Railway Link Rd",
-    landmark: "Beside Tumkur Railway Station Link Road, Amani Kere",
-    adjacent: "Amani Kere • Railway Station Link • Shanti Nagar",
-    tags: ["Lake Breeze", "Clubhouse Facility", "Fast Growing"],
-    rawVideo: "C:\\sites\\agent_project\\04_Sri_Balaji_Anugraha_Mega_Township\\reel_walkthrough.mp4",
-    audioEn: path.join(__dirname, '..', 'output', 'audio', '04_Amani_Lakeview_en.mp3'),
-    audioKn: path.join(__dirname, '..', 'output', 'audio', '04_Amani_Lakeview_kn.mp3')
-  },
-  {
-    id: "05_Kyatsandra_Gateway",
-    name: "HIGHWAY CITY PHASE 2",
-    num: "5",
-    total: "5",
-    rate: "₹2,600 / SQ.FT",
-    startPrice: "From ₹31.20 Lakhs (30x40)",
-    color: "#ef4444",
-    roadDistance: "📏 100m (15s Drive) from Bangalore-Tumkur Expressway",
-    landmark: "Next to Kyatsandra Toll Gate, Express Corridor",
-    adjacent: "Kyatsandra • Bangalore Highway • Toll Corridor",
-    tags: ["Expressway Frontage", "High ROI", "Commercial Potential"],
-    rawVideo: "C:\\sites\\agent_project\\05_Siddhaganga_Golden_Acre\\reel_walkthrough.mp4",
-    audioEn: path.join(__dirname, '..', 'output', 'audio', '05_Kyatsandra_Gateway_en.mp3'),
-    audioKn: path.join(__dirname, '..', 'output', 'audio', '05_Kyatsandra_Gateway_kn.mp3')
-  }
-];
+const MASTER_CATALOG = path.join(__dirname, '..', 'data', 'featured_reels_master.json');
+const rawCatalog = JSON.parse(fs.readFileSync(MASTER_CATALOG, 'utf-8'));
+const LAYOUTS = rawCatalog.map(l => ({
+  ...l,
+  color: l.colorHex,
+  audioEn: path.join(__dirname, '..', 'output', 'audio', `${l.id}_en.mp3`),
+  audioKn: path.join(__dirname, '..', 'output', 'audio', `${l.id}_kn.mp3`)
+}));
 
 // Helper to generate a 1080x1920 Transparent Broadcast Motion Graphics Overlay
 async function generateOverlayImage(browser, layout, outputPath) {
