@@ -73,6 +73,7 @@ window.initTumkurMap = function() {
   const mapOptions = {
     center: tumkurCenter,
     zoom: 12.8,
+    isFractionalZoomEnabled: true,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     disableDefaultUI: true, // Suppress all Google zoom/pegman/map-type buttons
     gestureHandling: "none", // Page is a non-interactive video reel canvas
@@ -81,6 +82,7 @@ window.initTumkurMap = function() {
   };
 
   map = new google.maps.Map(document.getElementById("map"), mapOptions);
+  window.map = map;
 
   renderSites();
   setupKeyboardShortcuts();
@@ -332,6 +334,65 @@ function clearBlinkingRoad() {
   }
 }
 
+// Cinematic Hollywood Drone Flight Controller (60 FPS Smooth Camera Glides)
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+let activeCameraFlightCancel = null;
+
+function cinematicCameraFlight(fromCenter, toCenter, fromZoom, toZoom, durationMs, onComplete) {
+  if (activeCameraFlightCancel) {
+    activeCameraFlightCancel();
+    activeCameraFlightCancel = null;
+  }
+
+  const startLat = typeof fromCenter.lat === "function" ? fromCenter.lat() : fromCenter.lat;
+  const startLng = typeof fromCenter.lng === "function" ? fromCenter.lng() : fromCenter.lng;
+  const endLat = typeof toCenter.lat === "function" ? toCenter.lat() : toCenter.lat;
+  const endLng = typeof toCenter.lng === "function" ? toCenter.lng() : toCenter.lng;
+
+  const startTime = performance.now();
+  let animId = null;
+  let isCancelled = false;
+
+  function step(now) {
+    if (isCancelled) return;
+    const elapsed = now - startTime;
+    const progress = Math.min(1.0, elapsed / durationMs);
+    const ease = easeInOutCubic(progress);
+
+    const curLat = startLat + (endLat - startLat) * ease;
+    const curLng = startLng + (endLng - startLng) * ease;
+    const curZoom = fromZoom + (toZoom - fromZoom) * ease;
+
+    if (map && map.moveCamera) {
+      map.moveCamera({
+        center: { lat: curLat, lng: curLng },
+        zoom: curZoom
+      });
+    } else if (map) {
+      map.setCenter({ lat: curLat, lng: curLng });
+      map.setZoom(curZoom);
+    }
+
+    if (progress < 1.0) {
+      animId = requestAnimationFrame(step);
+    } else {
+      activeCameraFlightCancel = null;
+      if (onComplete) onComplete();
+    }
+  }
+
+  animId = requestAnimationFrame(step);
+  activeCameraFlightCancel = () => {
+    isCancelled = true;
+    if (animId) cancelAnimationFrame(animId);
+  };
+
+  return activeCameraFlightCancel;
+}
+
 // 6. Autonomous Broadcast Reel Pipeline (Infinite Continuous Loop or Targeted Recording)
 function startAutonomousReelPipeline() {
   if (!isPipelineRunning) return;
@@ -345,7 +406,10 @@ function startAutonomousReelPipeline() {
   window.__REEL_READY = true;
   window.__REEL_CYCLE_COMPLETE = false;
 
-  function runSitePipeline(index) {
+  const cityOverviewCenter = CONFIG.DEFAULT_CENTER || { lat: 13.3409, lng: 77.1010 };
+  const cityOverviewZoom = 12.6;
+
+  function runSitePipeline(index, isFirstRun = false) {
     if (!isPipelineRunning) return;
 
     window.__CURRENT_SITE_INDEX = index;
@@ -370,15 +434,15 @@ function startAutonomousReelPipeline() {
       const areaItem = ALL_TUMKUR_SITES[idx];
       if (idx === index) {
         poly.setOptions({
-          fillOpacity: 0.55,
-          strokeWeight: 3.8,
+          fillOpacity: 0.60,
+          strokeWeight: 4.0,
           strokeOpacity: 1.0,
           zIndex: 50
         });
       } else if (adjacentNames.some(name => areaItem.name.includes(name) || name.includes(areaItem.name))) {
         poly.setOptions({
-          fillOpacity: 0.30,
-          strokeWeight: 2.2,
+          fillOpacity: 0.32,
+          strokeWeight: 2.4,
           strokeOpacity: 0.9,
           zIndex: 20
         });
@@ -397,92 +461,117 @@ function startAutonomousReelPipeline() {
     const activeMarker = document.getElementById(`site-marker-${index}`);
     if (activeMarker) activeMarker.classList.add("active");
 
-    // 4. STEP 1: Zoom OUT to City Overview (Zoom 12.8)
-    map.panTo(CONFIG.DEFAULT_CENTER || { lat: 13.3409, lng: 77.1010 });
-    map.setZoom(12.8);
+    // Director's Sequence Execution:
+    function beginSiteSequence() {
+      // 3-SECOND WIDE ORIENTATION WITH LIVING CINEMATIC DRIFT
+      let remainingSeconds = 3;
+      const adjText = adjacentNames.length > 0 ? ` • Near: ${adjacentNames.join(", ")}` : "";
 
-    // STEP 2: 5-SECOND MAP ORIENTATION COUNTDOWN
-    let remainingSeconds = 5;
-    const adjText = adjacentNames.length > 0 ? ` • Near: ${adjacentNames.join(", ")}` : "";
+      function updateCountdownCaption() {
+        updateTourBanner(
+          `📍 TUMKUR CITY OVERVIEW: ${targetSite.name} (${targetSite.pricePerSqFt})${adjText}`,
+          targetSite.color
+        );
+      }
 
-    function updateCountdownCaption() {
-      updateTourBanner(
-        `📍 [${remainingSeconds}s] TUMKUR OVERVIEW: ${targetSite.name} (${targetSite.pricePerSqFt})${adjText}`,
-        targetSite.color
-      );
+      updateCountdownCaption();
+      startStoryProgressTicker(index);
+
+      siteStageTimer = setTimeout(() => {
+        updateTourBanner(`🚀 HOLLYWOOD DIVE: Swooping into ${targetSite.name}...`, targetSite.color);
+        window.__REEL_PHASE = "camera_dive";
+
+        // STEP 1: HOLLYWOOD CRANE DIVE (Smooth 60 FPS Zoom-In: Zoom 12.6 -> 16.8 over 2400ms)
+        const currentCenter = map.getCenter();
+        const currentZoom = map.getZoom();
+
+        cinematicCameraFlight(
+          currentCenter,
+          targetSite.center,
+          currentZoom,
+          targetSite.zoom || 16.8,
+          2400,
+          () => {
+            // STEP 2: NEON ROUTE TRACING & DISTANCE PILL REVEAL
+            window.__REEL_PHASE = "road_trace";
+            updateTourBanner(`🛣️ ACCESS ROUTE: Tracing direct access to ${targetSite.name}...`, targetSite.color);
+
+            animateRoadToSiteArrow(targetSite, () => {
+              // 2.0s CINEMATIC BREATHE / LOCATION HOLD
+              if (isMapsOnly) {
+                window.__REEL_PHASE = "map_complete";
+                window.__SITE_MAP_COMPLETE = true;
+                if (singleSiteOnly) {
+                  window.__ALL_REELS_COMPLETE = true;
+                  return;
+                }
+                setTimeout(() => {
+                  clearBlinkingRoad();
+                  const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
+                  if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
+                  
+                  // STEP 3: HOLLYWOOD CRANE PULL-BACK (Smooth Zoom-Out: 16.8 -> 12.6)
+                  updateTourBanner(`🌐 PULLING BACK: Transitioning across Tumkur...`, "#38bdf8");
+                  cinematicCameraFlight(
+                    targetSite.center,
+                    cityOverviewCenter,
+                    map.getZoom(),
+                    cityOverviewZoom,
+                    2000,
+                    () => {
+                      runSitePipeline(nextIndex);
+                    }
+                  );
+                }, 1800);
+                return;
+              }
+
+              // STEP 4: FULL-BLEED WALKTHROUGH TOUR (11.5s)
+              window.__REEL_PHASE = "walkthrough_video";
+              openSiteVideoReel(targetSite);
+
+              siteStageTimer = setTimeout(() => {
+                closeSiteVideoReel();
+                window.__REEL_PHASE = "transition";
+
+                if (singleSiteOnly) {
+                  window.__ALL_REELS_COMPLETE = true;
+                  return;
+                }
+
+                const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
+                if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
+
+                // Smooth Crane Pull-Back Zoom-Out into Wide City Sky
+                updateTourBanner(`🌐 PULLING BACK: Advancing to Site ${nextIndex + 1}...`, "#38bdf8");
+                cinematicCameraFlight(
+                  targetSite.center,
+                  cityOverviewCenter,
+                  map.getZoom(),
+                  cityOverviewZoom,
+                  2200,
+                  () => {
+                    runSitePipeline(nextIndex);
+                  }
+                );
+              }, 11500);
+            });
+          }
+        );
+      }, 3000);
     }
 
-    updateCountdownCaption();
-    const countdownInterval = setInterval(() => {
-      remainingSeconds--;
-      if (remainingSeconds > 0) {
-        updateCountdownCaption();
-      } else {
-        clearInterval(countdownInterval);
-      }
-    }, 1000);
-
-    // Track smooth story progress fill for current segment
-    startStoryProgressTicker(index);
-
-    // After 5.0 seconds wide map pause:
-    siteStageTimer = setTimeout(() => {
-      clearInterval(countdownInterval);
-      updateTourBanner(`🚀 APPROACHING: ${targetSite.name} • Tracing Access Route...`, targetSite.color);
-      window.__REEL_PHASE = "camera_dive";
-
-      // STEP 3: Smooth Camera Glide Pan
-      map.panTo(targetSite.center);
-
-      // STEP 4: Camera Dive to Zoom 17.0
-      setTimeout(() => {
-        map.setZoom(targetSite.zoom || 17.0);
-        window.__REEL_PHASE = "road_trace";
-
-        // STEP 5: Animate Road-to-Site Curved Arrow (3.5s hold)
-        animateRoadToSiteArrow(targetSite, () => {
-          if (isMapsOnly) {
-            // Maps-only mode: mark complete after road hold
-            window.__REEL_PHASE = "map_complete";
-            window.__SITE_MAP_COMPLETE = true;
-            if (singleSiteOnly) {
-              window.__ALL_REELS_COMPLETE = true;
-              return;
-            }
-            setTimeout(() => {
-              clearBlinkingRoad();
-              const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
-              if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
-              runSitePipeline(nextIndex);
-            }, 1000);
-            return;
-          }
-
-          // STEP 6: Full-Bleed Walkthrough Video (8.5s)
-          window.__REEL_PHASE = "walkthrough_video";
-          openSiteVideoReel(targetSite);
-
-          siteStageTimer = setTimeout(() => {
-            closeSiteVideoReel();
-            window.__REEL_PHASE = "transition";
-
-            if (singleSiteOnly) {
-              window.__ALL_REELS_COMPLETE = true;
-              return;
-            }
-
-            // STEP 7: Loop to Next Site Seamlessly!
-            const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
-            if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
-            runSitePipeline(nextIndex);
-          }, REEL_VIDEO_PLAY_MS);
-        });
-      }, CAMERA_DIVE_MS);
-    }, MAP_ORIENTATION_PAUSE_MS);
+    // On initial launch, set initial center and zoom smoothly
+    if (isFirstRun) {
+      map.moveCamera({ center: cityOverviewCenter, zoom: cityOverviewZoom });
+      setTimeout(beginSiteSequence, 800);
+    } else {
+      beginSiteSequence();
+    }
   }
 
   // Start with targetInitialIndex
-  runSitePipeline(targetInitialIndex);
+  runSitePipeline(targetInitialIndex, true);
 }
 
 // 7. Story Segments Progress Tracker

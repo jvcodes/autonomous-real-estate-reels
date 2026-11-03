@@ -82,10 +82,12 @@ def build_combined_vse_timeline(lang="en"):
         st.remove(strip)
 
     current_frame = 1
-    intro_length_frames = 105  # 3.5s of Google Maps cartography
-    crossfade_frames = 15      # 0.5s transition
-    site_walkthrough_frames = 330 # 11.0s of walkthrough tour
-    site_total_frames = 420    # 14.0s total per site section
+    # Hollywood Film Director Pacing:
+    # 6.0s (180 frames) Map Cartography Flight + 1.2s (36 frames) Melt Dissolve + 12.0s (360 frames) Walkthrough Tour
+    intro_length_frames = 180      # 6.0s of Google Maps cartography (Establishing + 60fps Drone Dive + Route Hold)
+    crossfade_frames = 36          # 1.2s luxurious Gamma Crossfade transition
+    site_walkthrough_frames = 360  # 12.0s of rich ground walkthrough footage
+    site_total_frames = 504        # 16.8s total per site section (5 sites = 84.0s master reel)
 
     previous_walkthrough_strip = None
 
@@ -99,19 +101,19 @@ def build_combined_vse_timeline(lang="en"):
         audio_file = os.path.join(AUDIO_DIR, f"{site_id}_{lang}.mp3")
 
         site_start_frame = current_frame
-        print(f"\n📌 Adding Site {site_num}: {site_name} at Frame {site_start_frame}")
+        print(f"\n🎬 Scene {site_num}: {site_name} (Frame {site_start_frame} to {site_start_frame + site_total_frames - 1})")
 
         # Add Timeline Scene Marker
         marker = scene.timeline_markers.new(name=f"Site {site_num}: {site_name[:18]}", frame=site_start_frame)
 
-        # 1. Channel 1: Google Maps Cartography Intro Video Strip
+        # 1. Channel 1: Google Maps Cartography Intro Video Strip (Smooth Drone Dive)
         map_strip = None
         if os.path.exists(map_video):
             map_strip = st.new_movie(name=f"{site_num}_Map_{site_id}", filepath=map_video, channel=1, frame_start=site_start_frame)
-            # Skip initial 1s load buffer, keep 3.5s of animated overview & road
-            map_strip.animation_offset_start = 30
+            # Skip initial 0.5s tile cache, keep full 6.0s of smooth 60fps crane dive
+            map_strip.animation_offset_start = 15
             map_strip.frame_final_duration = intro_length_frames
-            print(f"  -> Channel 1: Google Maps Video added ({intro_length_frames} frames)")
+            print(f"  -> Channel 1: Google Maps Flight added ({intro_length_frames} frames / 6.0s)")
         else:
             print(f"  ⚠️ Warning: Map video not found at {map_video}, using placeholder color strip")
             map_strip = st.new_effect(name=f"{site_num}_Map_{site_id}", type='COLOR', channel=1,
@@ -121,7 +123,7 @@ def build_combined_vse_timeline(lang="en"):
         if os.path.exists(audio_file):
             audio_strip = st.new_sound(name=f"{site_num}_Voice_{lang.upper()}", filepath=audio_file, channel=5, frame_start=site_start_frame)
             actual_audio_dur = audio_strip.frame_final_duration
-            print(f"  -> Channel 5: Voiceover loaded ({actual_audio_dur/30:.1f}s)")
+            print(f"  -> Channel 5: Neural Voiceover loaded ({actual_audio_dur/30:.1f}s)")
 
         # 3. Channel 2: Ground Walkthrough Video Strip
         cut_frame = site_start_frame + intro_length_frames - crossfade_frames
@@ -130,15 +132,15 @@ def build_combined_vse_timeline(lang="en"):
             movie_strip = st.new_movie(name=f"{site_num}_Walkthrough_{site_id}", filepath=raw_video, channel=2, frame_start=cut_frame)
             movie_strip.animation_offset_start = 60 # Skip camera stabilization jitter
             movie_strip.frame_final_duration = site_walkthrough_frames
-            print(f"  -> Channel 2: Ground Walkthrough Tour added at frame {cut_frame} ({site_walkthrough_frames} frames)")
+            print(f"  -> Channel 2: Ground Walkthrough Tour added at frame {cut_frame} ({site_walkthrough_frames} frames / 12.0s)")
 
-            # 4. Channel 3: Crossfade Transition from Map Intro to Walkthrough
+            # 4. Channel 3: Hollywood 1.2s Dissolve Transition from Map Intro to Walkthrough
             if map_strip:
                 trans = st.new_effect(name=f"{site_num}_MapToWalk_Cross", type='GAMMA_CROSS', channel=3,
                                       frame_start=cut_frame, input1=map_strip, input2=movie_strip)
-                print(f"  -> Channel 3: Gamma Crossfade transition created (Map -> Walkthrough)")
+                print(f"  -> Channel 3: 1.2s Cinematic Dissolve transition (Map -> Walkthrough)")
 
-            # Optional: Crossfade from previous site's walkthrough to this site's map intro
+            # Inter-Site Dissolve transition from previous site's tour to this site's map flight
             if previous_walkthrough_strip and map_strip:
                 site_trans = st.new_effect(name=f"Trans_Site{idx}_to_Site{idx+1}", type='GAMMA_CROSS', channel=3,
                                            frame_start=site_start_frame, input1=previous_walkthrough_strip, input2=map_strip)

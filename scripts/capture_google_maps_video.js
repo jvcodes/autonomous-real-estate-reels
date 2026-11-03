@@ -76,15 +76,15 @@ async function captureMapVideo(site, browser) {
     everyNthFrame: 1
   });
 
-  console.log(`Recording animation sequence (Overview + Camera Dive + Road Curve)...`);
+  console.log(`Recording Hollywood cinematic flight (Wide Overview + Smooth Drone Dive + Road Curve)...`);
 
-  // Wait for animation to finish or maximum 11 seconds
+  // Wait for animation to finish or maximum 14 seconds
   const startTime = Date.now();
-  while (Date.now() - startTime < 11000) {
+  while (Date.now() - startTime < 14000) {
     const isDone = await page.evaluate(() => window.__ALL_REELS_COMPLETE || window.__SITE_MAP_COMPLETE);
     if (isDone) {
-      // Allow 0.8s hold on the pulsing neon road badge
-      await new Promise(r => setTimeout(r, 800));
+      // Allow 1.2s hold on the pulsing neon road badge
+      await new Promise(r => setTimeout(r, 1200));
       break;
     }
     await new Promise(r => setTimeout(r, 200));
