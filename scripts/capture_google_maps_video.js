@@ -86,11 +86,11 @@ async function captureMapVideo(site, browser) {
     }
   });
 
-  console.log(`Recording Slow Cinematic Flight (1.5s Wide Overview + 6.0s Slow Majestic Dive + 2.5s Ground Hold)...`);
+  console.log(`Recording Slow Cinematic Flight (1.5s Wide Overview + 6.0s Slow Majestic Dive + 5.0s Ground Pause)...`);
 
-  // Wait for animation to finish or maximum 16 seconds
+  // Wait for animation to finish or maximum 20 seconds (accounts for 5.0s location pause)
   const startTime = Date.now();
-  while (Date.now() - startTime < 16000) {
+  while (Date.now() - startTime < 20000) {
     const isDone = await page.evaluate(() => window.__ALL_REELS_COMPLETE || window.__SITE_MAP_COMPLETE);
     if (isDone) {
       // Allow 500ms tail buffer

@@ -12,11 +12,11 @@ let stageStartTime = 0;
 let isVideoMuted = true;
 let currentMapMode = "cinema-dark";
 
-// Broadcast Timings (Total 18.0s per layout reel = 90.0s / 1:30 min master reel for 5 sites)
+// Broadcast Timings (Total 20.0s per layout reel = 100.0s / 1:40 min master reel for 5 sites)
 const MAP_ORIENTATION_PAUSE_MS = 1500; // 1.5s on city map overview
 const CAMERA_DIVE_MS = 6000;            // 6.0s slow majestic panoramic drone descent
-const ROAD_DISTANCE_HOLD_MS = 2500;    // 2.5s hold on road distance arrow & neighborhood
-const REEL_VIDEO_PLAY_MS = 9200;       // 9.2s full-bleed walkthrough video
+const ROAD_DISTANCE_HOLD_MS = 5000;    // 5.0s cinematic pause on location & road distance arrow
+const REEL_VIDEO_PLAY_MS = 8700;       // 8.7s full-bleed walkthrough video
 const TOTAL_SITE_DURATION_MS = MAP_ORIENTATION_PAUSE_MS + CAMERA_DIVE_MS + ROAD_DISTANCE_HOLD_MS + REEL_VIDEO_PLAY_MS;
 
 // Blinking Road & Arrow Objects
@@ -550,7 +550,7 @@ function startAutonomousReelPipeline() {
             );
 
             animateRoadToSiteArrow(targetSite, () => {
-              // 2.5s CINEMATIC LOCATION HOLD & SURROUNDINGS ABSORPTION
+              // 5.0s CINEMATIC LOCATION HOLD & SURROUNDINGS ABSORPTION
               if (isMapsOnly) {
                 window.__REEL_PHASE = "map_complete";
                 window.__SITE_MAP_COMPLETE = true;
@@ -579,7 +579,7 @@ function startAutonomousReelPipeline() {
                 return;
               }
 
-              // 5. FULL-BLEED WALKTHROUGH TOUR (9.2s)
+              // 5. FULL-BLEED WALKTHROUGH TOUR (8.7s)
               window.__REEL_PHASE = "walkthrough_video";
               openSiteVideoReel(targetSite);
 
@@ -607,7 +607,7 @@ function startAutonomousReelPipeline() {
                     runSitePipeline(nextIndex);
                   }
                 );
-              }, 9200);
+              }, 8700);
             });
           }
         );

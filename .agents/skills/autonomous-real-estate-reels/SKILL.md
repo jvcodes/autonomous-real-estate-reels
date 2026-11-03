@@ -55,10 +55,12 @@ The system is engineered to consume **0 recurring LLM tokens** after code setup:
 
 | Layer | Specifications | Production Value |
 | :--- | :--- | :--- |
+| **Platinum Cartography** | Architectural ivory base (`#f8fafc`), sky-blue water (`#7dd3fc`), mint green parks (`#dcfce7`), enabled neighborhood typography. | Maximum legibility for residential buyers to identify surrounding landmarks and schools. |
+| **Cinematic Slow Flight** | 6.0s continuous drone descent (`easeInOutSine`, Zoom 12.3 $\rightarrow$ 16.3). | Gentle, linear-biased glide eliminating mid-flight speed spikes; viewers easily orient themselves. |
+| **5.0s Location Pause** | 5.0-second settled hold at Zoom 16.3 with pulsing neon road & distance badge. | Provides buyers 5 uninterrupted seconds to inspect layout footprint, approach corridor, and neighborhood streets. |
 | **Blender 3D CGI** | `1080x1920`, 30 FPS, Eevee engine on RTX GPU (~1.2s/frame). | Cinematic high-orbit drone dive tracking along a glowing neon access route directly into the site entrance. |
 | **Holographic Boundary** | Volumetric 3D curve extrusion with emission shader (`#F59E0B`, `#0284C7`, etc.). | Gives buyers an unmistakable volumetric view of the plot footprint. |
 | **3D Location Pin** | 3D conical pin with spherical cap, falling from sky with squash-and-bounce physics + ground shockwave ripple. | Dramatic visual impact at the property entrance. |
-| **Speed-Ramp Dive** | Final frames (78-90) surge forward into the gate with motion blur. | Seamless visual bridge into the physical ground walkthrough video. |
 | **Walkthrough Footage** | 1080x1920 portrait video shot on site, stabilized, cropped to 9:16. | Shows actual asphalt roads, streetlights, and plot boundaries. |
 | **Broadcast Overlays** | Top 5-segment Story tracker + Live `● REC TUMKUR REEL` badge + Bottom glassmorphism card. | High-converting social media format for Instagram Reels & YouTube Shorts. |
 
@@ -136,13 +138,13 @@ npm run capture:maps
 npm run capture:maps:full
 ```
 
-### F. Master 5-Reel Combined Video Sequence Editor Project (1:30 Master Reel)
-Combines all 5 properties into a single long-form master vertical reel (90.0s @ 30 FPS, 2,700 frames = Exactly 1:30 mins) with 6.0s slow sinusoidal drone dives (`easeInOutSine`), settled ground holds, multi-track channels, chapter markers, and transitions:
+### F. Master 5-Reel Combined Video Sequence Editor Project (5-Second Location Pause Standard)
+Combines all 5 properties into a single long-form master vertical reel (100.0s @ 30 FPS, 3,000 frames = Exactly 1:40 mins) with 6.0s slow sinusoidal drone dives (`easeInOutSine`), **5.0-second settled ground location pauses**, multi-track channels, chapter markers, and transitions:
 ```bash
 # Assemble and save editable master .blend project file (00_Master_5_Reels_Combined_VSE.blend)
 npm run vse:combined
 
-# Assemble, save project, AND render master 126 MB combined MP4 reel
+# Assemble, save project, AND render master combined MP4 reel
 npm run render:vse:combined
 ```
 
