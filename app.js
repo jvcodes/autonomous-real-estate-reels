@@ -12,11 +12,11 @@ let stageStartTime = 0;
 let isVideoMuted = true;
 let currentMapMode = "cinema-dark";
 
-// Broadcast Timings (Total ~17.7s per layout reel)
-const MAP_ORIENTATION_PAUSE_MS = 5000; // 5.0s on city map overview
-const CAMERA_DIVE_MS = 700;            // 0.7s smooth glide
-const ROAD_DISTANCE_HOLD_MS = 3500;    // 3.5s hold on road distance arrow
-const REEL_VIDEO_PLAY_MS = 8500;       // 8.5s full-bleed walkthrough video
+// Broadcast Timings (Total 18.0s per layout reel = 90.0s / 1:30 min master reel for 5 sites)
+const MAP_ORIENTATION_PAUSE_MS = 1500; // 1.5s on city map overview
+const CAMERA_DIVE_MS = 6000;            // 6.0s slow majestic panoramic drone descent
+const ROAD_DISTANCE_HOLD_MS = 2500;    // 2.5s hold on road distance arrow & neighborhood
+const REEL_VIDEO_PLAY_MS = 9200;       // 9.2s full-bleed walkthrough video
 const TOTAL_SITE_DURATION_MS = MAP_ORIENTATION_PAUSE_MS + CAMERA_DIVE_MS + ROAD_DISTANCE_HOLD_MS + REEL_VIDEO_PLAY_MS;
 
 // Blinking Road & Arrow Objects
@@ -113,10 +113,15 @@ window.initTumkurMap = function() {
   renderSites();
   setupKeyboardShortcuts();
 
-  // Autonomous Self-Running Reel Pipeline Starts Automatically
-  setTimeout(() => {
-    startAutonomousReelPipeline();
-  }, 1000);
+  window.startAutonomousReelPipeline = startAutonomousReelPipeline;
+
+  // Autonomous Self-Running Reel Pipeline Starts Automatically (unless autostart=false)
+  const shouldAutoStart = urlParams.get("autostart") !== "false";
+  if (shouldAutoStart) {
+    setTimeout(() => {
+      startAutonomousReelPipeline();
+    }, 600);
+  }
 };
 
 // 4. Render 5 Featured Sites with Organic Multi-Vertex Polygons & High-DPI Badges
@@ -361,8 +366,9 @@ function clearBlinkingRoad() {
 }
 
 // Cinematic Hollywood Drone Flight Controller (60 FPS Smooth Camera Glides)
-function easeInOutCubic(t) {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+// Gentle, linear-biased sinusoidal easing: avoids sudden acceleration spikes and keeps zoom steady & readable
+function easeInOutSine(t) {
+  return -(Math.cos(Math.PI * t) - 1) / 2;
 }
 
 let activeCameraFlightCancel = null;
@@ -386,7 +392,7 @@ function cinematicCameraFlight(fromCenter, toCenter, fromZoom, toZoom, durationM
     if (isCancelled) return;
     const elapsed = now - startTime;
     const progress = Math.min(1.0, elapsed / durationMs);
-    const ease = easeInOutCubic(progress);
+    const ease = easeInOutSine(progress);
 
     const curLat = startLat + (endLat - startLat) * ease;
     const curLng = startLng + (endLng - startLng) * ease;
@@ -489,7 +495,7 @@ function startAutonomousReelPipeline() {
 
     // Director's Sequence Execution:
     function beginSiteSequence() {
-      // 1. 3.5-SECOND WIDE ORIENTATION (Altitude 12.3)
+      // 1. 1.5-SECOND WIDE ORIENTATION (Altitude 12.3)
       const adjText = adjacentNames.length > 0 ? ` • Near: ${adjacentNames.join(", ")}` : "";
 
       updateTourBanner(
@@ -497,12 +503,13 @@ function startAutonomousReelPipeline() {
         targetSite.color
       );
       startStoryProgressTicker(index);
+      window.__REEL_PHASE = "map_overview";
 
       siteStageTimer = setTimeout(() => {
-        // 2. 4.8-SECOND SLOW MAJESTIC CRANE DIVE (Zoom 12.3 -> 16.4)
-        // Gives viewer plenty of time to identify surrounding neighborhoods and landmarks
+        // 2. 6.0-SECOND SLOW MAJESTIC CRANE DIVE (Zoom 12.3 -> 16.3)
+        // Gives viewer plenty of time to identify surrounding neighborhoods, water bodies, and landmarks
         updateTourBanner(
-          `🦅 AERIAL DIVE: Approaching ${targetSite.locality || targetSite.name} • Near ${adjacentNames.join(", ")}`,
+          `🦅 AERIAL DESCENT: Approaching ${targetSite.locality || targetSite.name} • Near ${adjacentNames.join(", ")}`,
           targetSite.color
         );
         window.__REEL_PHASE = "camera_dive";
@@ -510,22 +517,30 @@ function startAutonomousReelPipeline() {
         const currentCenter = map.getCenter();
         const currentZoom = map.getZoom();
 
-        // Dynamically update banner halfway through dive to orient viewer
-        const midDiveTimer = setTimeout(() => {
+        // Dynamically update banner during the 6.0s descent to orient viewer
+        const midDiveTimer1 = setTimeout(() => {
           updateTourBanner(
             `📍 DESCENT: Entering ${adjacentNames[0] || "Target Zone"} Corridor • Near ${targetSite.landmark ? targetSite.landmark.split(",")[0] : targetSite.name}`,
             targetSite.color
           );
         }, 2200);
 
+        const midDiveTimer2 = setTimeout(() => {
+          updateTourBanner(
+            `📍 NEIGHBORHOOD: ${targetSite.name} Gateway • Direct Highway Connectivity`,
+            targetSite.color
+          );
+        }, 4200);
+
         cinematicCameraFlight(
           currentCenter,
           targetSite.center,
           currentZoom,
-          targetSite.zoom || 16.4,
-          4800,
+          targetSite.zoom || 16.3,
+          6000,
           () => {
-            clearTimeout(midDiveTimer);
+            clearTimeout(midDiveTimer1);
+            clearTimeout(midDiveTimer2);
 
             // 3. NEON ROUTE TRACING & DISTANCE PILL REVEAL
             window.__REEL_PHASE = "road_trace";
@@ -535,7 +550,7 @@ function startAutonomousReelPipeline() {
             );
 
             animateRoadToSiteArrow(targetSite, () => {
-              // 3.2s CINEMATIC LOCATION HOLD & SURROUNDINGS ABSORPTION
+              // 2.5s CINEMATIC LOCATION HOLD & SURROUNDINGS ABSORPTION
               if (isMapsOnly) {
                 window.__REEL_PHASE = "map_complete";
                 window.__SITE_MAP_COMPLETE = true;
@@ -548,7 +563,7 @@ function startAutonomousReelPipeline() {
                   const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
                   if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
                   
-                  // 4. 3.2s SMOOTH CRANE PULL-BACK (Zoom-Out: 16.4 -> 12.3)
+                  // 4. 3.2s SMOOTH CRANE PULL-BACK (Zoom-Out: 16.3 -> 12.3)
                   updateTourBanner(`🌐 PULLING UP: Swooping across Tumkur toward Site ${nextIndex + 1}...`, "#0284c7");
                   cinematicCameraFlight(
                     targetSite.center,
@@ -564,7 +579,7 @@ function startAutonomousReelPipeline() {
                 return;
               }
 
-              // 5. FULL-BLEED WALKTHROUGH TOUR (12.0s)
+              // 5. FULL-BLEED WALKTHROUGH TOUR (9.2s)
               window.__REEL_PHASE = "walkthrough_video";
               openSiteVideoReel(targetSite);
 
@@ -592,17 +607,17 @@ function startAutonomousReelPipeline() {
                     runSitePipeline(nextIndex);
                   }
                 );
-              }, 12000);
+              }, 9200);
             });
           }
         );
-      }, 3500);
+      }, 1500);
     }
 
     // On initial launch, set initial center and zoom smoothly
     if (isFirstRun) {
       map.moveCamera({ center: cityOverviewCenter, zoom: cityOverviewZoom });
-      setTimeout(beginSiteSequence, 800);
+      setTimeout(beginSiteSequence, 300);
     } else {
       beginSiteSequence();
     }

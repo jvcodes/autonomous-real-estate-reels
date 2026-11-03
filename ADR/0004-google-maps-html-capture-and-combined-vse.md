@@ -31,50 +31,58 @@ Following the successful implementation of Blender's Video Sequence Editor (VSE)
   * `output/maps/05_Kyatsandra_Gateway_Map.mp4`
   * `output/maps/00_Google_Maps_5_Sites_Presentation.mp4`
 
-### B. Master 5-Reel Combined Timeline Hierarchy (Hollywood Director's Cut)
+### B. Master 5-Reel Combined Timeline Hierarchy (Hollywood Director's Cut - 1:30 Standard)
 Built via `scripts/blender_vse_combined_reels.py`:
 * **App Template**: Initialized via `bpy.ops.wm.read_homefile(app_template='Video_Editing')`.
-* **Master Scene**: `Scene_Master_5_Reels` (2,820 frames = 94.0s @ 30 FPS).
+* **Master Scene**: `Scene_Master_5_Reels` (2,700 frames = Exactly 90.0s / 1:30 mins @ 30 FPS).
 * **Architectural Platinum Light Cartography**:
-  * Switched from dark theme to high-contrast Platinum Architectural Light Theme (`PLATINUM_LIGHT_STYLE`).
-  * Crisp sky-blue lakes (`#7dd3fc`), fresh mint greenery (`#dcfce7`), golden highway arteries (`#fed7aa`), and bold charcoal locality typography with protective `#ffffff` text strokes (`administrative.neighborhood`, `administrative.locality`, `poi.school`, `transit.station` enabled).
-* **Cinematic Camera Easing (60 FPS WebGL Flights)**:
-  * Google Maps `isFractionalZoomEnabled: true` and `map.moveCamera()` at 60 FPS.
-  * **3.5s Wide Overview**: High-altitude (Zoom 12.3) establishing Tumkur city geography, lake perimeters, and arterial highway corridors.
-  * **4.8s Leisurely Drone Dive**: Smooth continuous zoom glide (Zoom 12.3 $\rightarrow$ 16.4) using `easeInOutCubic`, allowing viewers to easily read nearby localities (S.S. Puram, Ashok Nagar, Batawadi, Kuvempunagara, Kyatsandra).
-  * **Dynamic Mid-Dive Landmark Banner**: Pops up halfway through the descent to orient buyers with key nearby landmarks and institutions.
-  * **3.2s Access Road & Distance Hold**: Pulsing neon corridor badge (*"📏 500m (1 Min Drive) from Highway"*).
-  * **3.2s Smooth Crane Pull-Back**: When transitioning across properties, smoothly swoops up from Zoom 16.4 to Zoom 12.3, banking across the Tumkur city sky.
-* **Pacing & Timing Standards**:
-  * **Channel 1 (Google Maps Flight)**: 240 frames (8.0s) per property (Establishing wide shot + continuous drone dive + neon road trace).
-  * **Channel 2 (Walkthrough Tours)**: 360 frames (12.0s) per property streaming real phone footage from `C:\sites\agent_project\`.
-  * **Channel 3 (Transitions)**: 36 frames (1.2s) luxurious `GAMMA_CROSS` melt dissolve between Map Flight and Walkthrough Tour, plus inter-site dissolves.
+  * Platinum/ivory base (`#f8fafc`) with high-contrast road corridors.
+  * Crystal sky-blue lakes (`#7dd3fc`, prominently showing **Amani Kere Lake**), fresh mint greenery (`#dcfce7`), and warm golden highways (`#fed7aa`).
+  * High-contrast neighborhood and landmark labels enabled (`administrative.neighborhood`, `administrative.locality`, `poi.school`, `transit.station`) with deep slate typography and `#ffffff` text strokes.
+* **Cinematic Slow Sinusoidal Drone Flight (60 FPS WebGL Flights)**:
+  * Google Maps `isFractionalZoomEnabled: true` + `map.moveCamera()` running at 60 FPS.
+  * **Sinusoidal Easing (`easeInOutSine`)**: Replaced cubic easing with sinusoidal easing to eliminate mid-flight velocity spikes, ensuring a gentle, linear-biased glide where all text remains crisp and readable.
+  * **1.5s Wide Overview**: High-altitude (Zoom 12.3) establishing Tumkur city geography, lake perimeters, and layout pin.
+  * **6.0s Slow Majestic Drone Dive**: Long, continuous zoom glide (Zoom 12.3 $\rightarrow$ 16.3) allowing viewers ample time to identify surrounding localities (S.S. Puram, Ashok Nagar, Batawadi, Kuvempunagara, Kyatsandra, SIT Campus).
+  * **Progressive In-Flight Landmark Banners**: Banners update at 2.2s and 4.2s during the descent to orient buyers.
+  * **2.5s Ground-Level Hold & Neon Route Trace**: Arrives at Zoom 16.3; glowing neon access road traces with distance badge (*"📏 500m (1 Min Drive) from Highway"*).
+  * **1.2s Luxurious Melt Dissolve (`GAMMA_CROSS`)**: Seamless transition into the ground walkthrough tour.
+* **Pacing & Timing Standards (18.0s / 540 Frames per Property)**:
+  * **Channel 1 (Google Maps Slow Flight)**: 285 frames (9.5s) per property (1.5s wide overview + 6.0s slow dive + 2.0s settled ground view).
+  * **Channel 2 (Walkthrough Tours)**: 291 frames (9.7s) per property streaming real phone footage from `C:\sites\agent_project\`.
+  * **Channel 3 (Transitions)**: 36 frames (1.2s) luxurious `GAMMA_CROSS` melt dissolve between Map Flight and Walkthrough Tour.
   * **Channel 4 (HUD Overlays)**: Transparent 1080×1920 broadcast graphics with `blend_type = 'ALPHA_OVER'`.
   * **Channel 5 (Voiceovers)**: Neural bilingual narration (English `en-IN-NeerjaNeural` / Kannada `kn-IN-GaganNeural`).
 * **Timeline Scene Markers**:
   * Frame 1: `Site 1: P.N.K TOWNSHIP`
-  * Frame 565: `Site 2: GREEN MEADOWS SMART`
-  * Frame 1129: `Site 3: ROYAL PALMS LUXURY`
-  * Frame 1693: `Site 4: AMANI LAKEVIEW COU`
-  * Frame 2257: `Site 5: HIGHWAY GATEWAY SM`
+  * Frame 541: `Site 2: GREEN MEADOWS SMART`
+  * Frame 1081: `Site 3: ROYAL PALMS LUXURY`
+  * Frame 1621: `Site 4: AMANI LAKEVIEW COU`
+  * Frame 2161: `Site 5: HIGHWAY GATEWAY SM`
 
 ### C. Zero-Token Hardware-Accelerated Local Rendering
 * No third-party rendering APIs, cloud subscriptions, or LLM token fees.
 * Rendered directly by Blender 5.2's internal FFmpeg encoder into:
-  - `00_Master_5_Reels_Combined_EN.mp4` (120.96 MB, 94.0s)
-  - `00_Master_5_Reels_Combined_KN.mp4` (120.24 MB, 94.0s)
+  - `00_Master_5_Reels_Combined_EN.mp4` (126.59 MB, 90.0s / 1:30 min)
+  - `00_Master_5_Reels_Combined_KN.mp4` (~120 MB, 90.0s / 1:30 min)
 
 ---
 
 ## 3. Results & Benchmarks
 
-| Metric | Initial Test Reels | Master 5-Reel Director's Cut |
+| Metric | Initial Test Reels | Master 5-Reel Director's Cut (1:30) |
 | :--- | :--- | :--- |
-| **Duration** | 14.0s - 15.0s | **94.0s (2,820 frames)** |
+| **Duration** | 14.0s - 15.0s | **90.0s / 1:30 min (2,700 frames)** |
 | **Map Theme** | Dark/Low Contrast | **Architectural Platinum Light (`PLATINUM_LIGHT_STYLE`)** |
 | **Locality Visibility** | Hidden | **High-contrast Neighborhood & Landmark Labels Enabled** |
-| **Pacing & Rhythm** | Rushed (3.5s map / 0.5s cut) | **Hollywood Paced (8.0s map / 1.2s dissolve / 12.0s tour)** |
-| **Camera Movement** | Instant Zoom Snap | **60 FPS Continuous Crane Dive (4.8s) & Pull-Back (`easeInOutCubic`)** |
+| **Zoom Duration** | 2.3s rushed | **6.0s Slow, Steady, Panoramic Drone Descent** |
+| **Camera Easing** | Cubic (300% mid-flight rush) | **Sinusoidal (`easeInOutSine` - Silky & Legible)** |
+| **Settled Map Hold** | 0s (cut off before bottom) | **2.5s Settled View with Route & Distance Badge** |
+| **Resolution** | 1080×1920 (9:16 Vertical) | **1080×1920 (9:16 Vertical Broadcast)** |
+| **Properties Included** | 1 | **All 5 Featured Townships Sequenced** |
+| **GUI Editability** | Standalone .blend | **Full 5-scene timeline .blend with chapter markers** |
+| **Render Engine** | Blender 5.2 VSE (Direct) | **Blender 5.2 VSE (Direct, ~126 MB MP4)** |
+| **LLM Token Cost** | 0 tokens | **0 tokens** |
 | **Resolution** | 1080×1920 (9:16 Vertical) | **1080×1920 (9:16 Vertical Broadcast)** |
 | **Properties Included** | 1 | **All 5 Featured Townships Sequenced** |
 | **GUI Editability** | Standalone .blend | **Full 5-scene timeline .blend with chapter markers** |

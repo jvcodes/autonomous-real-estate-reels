@@ -60,11 +60,11 @@ async function captureMapVideo(site, browser) {
     } catch (e) {}
   });
 
-  const url = `http://localhost:3000/?site=${site.num}&mapsOnly=true&single=true`;
+  const url = `http://localhost:3000/?site=${site.num}&mapsOnly=true&single=true&autostart=false`;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-  // Wait 1.5s for Google Maps tiles to begin rendering
-  await new Promise(r => setTimeout(r, 1500));
+  // Wait 1.0s for Google Maps tiles and platinum styling to settle
+  await new Promise(r => setTimeout(r, 1000));
 
   // Start Screencast
   isCapturing = true;
@@ -76,18 +76,28 @@ async function captureMapVideo(site, browser) {
     everyNthFrame: 1
   });
 
-  console.log(`Recording Hollywood Platinum flight (3.5s Wide Overview + 4.8s Leisurely Drone Dive + Route Hold)...`);
+  // Allow 300ms for CDP screencast pipeline to warm up
+  await new Promise(r => setTimeout(r, 300));
 
-  // Wait for animation to finish or maximum 17 seconds
+  // Trigger the slow cinematic flight precisely from frame 0
+  await page.evaluate(() => {
+    if (window.startAutonomousReelPipeline) {
+      window.startAutonomousReelPipeline();
+    }
+  });
+
+  console.log(`Recording Slow Cinematic Flight (1.5s Wide Overview + 6.0s Slow Majestic Dive + 2.5s Ground Hold)...`);
+
+  // Wait for animation to finish or maximum 16 seconds
   const startTime = Date.now();
-  while (Date.now() - startTime < 17000) {
+  while (Date.now() - startTime < 16000) {
     const isDone = await page.evaluate(() => window.__ALL_REELS_COMPLETE || window.__SITE_MAP_COMPLETE);
     if (isDone) {
-      // Allow 1.5s hold on the pulsing neon road badge
-      await new Promise(r => setTimeout(r, 1500));
+      // Allow 500ms tail buffer
+      await new Promise(r => setTimeout(r, 500));
       break;
     }
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => setTimeout(r, 150));
   }
 
   isCapturing = false;

@@ -82,12 +82,12 @@ def build_combined_vse_timeline(lang="en"):
         st.remove(strip)
 
     current_frame = 1
-    # Hollywood Film Director Pacing (High Context & Leisurely Drone Flights):
-    # 8.0s (240 frames) Map Flight + 1.2s (36 frames) Melt Dissolve + 12.0s (360 frames) Walkthrough Tour
-    intro_length_frames = 240      # 8.0s of Google Maps cartography (Wide Tumkur Overview + 4.8s Leisurely Dive + Route Hold)
+    # Hollywood Director's Cut Pacing (Target: Exactly 1:30 min = 90.0s = 2700 frames @ 30 FPS across 5 sites)
+    # 9.5s (285 frames) Slow Majestic Map Flight + 1.2s (36 frames) Melt Dissolve + 9.7s (291 frames) Walkthrough Tour
+    intro_length_frames = 285      # 9.5s of Google Maps cartography (1.5s Wide Overview + 6.0s Slow Majestic Dive + 2.0s Ground Hold)
     crossfade_frames = 36          # 1.2s luxurious Gamma Crossfade transition
-    site_walkthrough_frames = 360  # 12.0s of rich ground walkthrough footage
-    site_total_frames = 564        # 18.8s total per site section (5 sites = 94.0s / 1.56 mins master reel)
+    site_walkthrough_frames = 291  # 9.7s of rich ground walkthrough footage
+    site_total_frames = 540        # 18.0s total per site section (5 sites = 90.0s / 1:30 mins master reel)
 
     previous_walkthrough_strip = None
 
@@ -110,10 +110,10 @@ def build_combined_vse_timeline(lang="en"):
         map_strip = None
         if os.path.exists(map_video):
             map_strip = st.new_movie(name=f"{site_num}_Map_{site_id}", filepath=map_video, channel=1, frame_start=site_start_frame)
-            # Skip initial 0.5s tile cache, keep full 8.0s of smooth 60fps crane dive
-            map_strip.animation_offset_start = 15
+            # Skip warm-up frames, keep full slow majestic 6.0s dive & settled view
+            map_strip.animation_offset_start = 5
             map_strip.frame_final_duration = intro_length_frames
-            print(f"  -> Channel 1: Google Maps Flight added ({intro_length_frames} frames / 8.0s)")
+            print(f"  -> Channel 1: Google Maps Slow Flight added ({intro_length_frames} frames / 9.5s)")
         else:
             print(f"  ⚠️ Warning: Map video not found at {map_video}, using placeholder color strip")
             map_strip = st.new_effect(name=f"{site_num}_Map_{site_id}", type='COLOR', channel=1,
@@ -130,9 +130,12 @@ def build_combined_vse_timeline(lang="en"):
         movie_strip = None
         if os.path.exists(raw_video):
             movie_strip = st.new_movie(name=f"{site_num}_Walkthrough_{site_id}", filepath=raw_video, channel=2, frame_start=cut_frame)
-            movie_strip.animation_offset_start = 60 # Skip camera stabilization jitter
+            if hasattr(movie_strip, "frame_duration") and movie_strip.frame_duration > 300:
+                movie_strip.animation_offset_start = 30
+            else:
+                movie_strip.animation_offset_start = 0
             movie_strip.frame_final_duration = site_walkthrough_frames
-            print(f"  -> Channel 2: Ground Walkthrough Tour added at frame {cut_frame} ({site_walkthrough_frames} frames / 12.0s)")
+            print(f"  -> Channel 2: Ground Walkthrough Tour added at frame {cut_frame} ({site_walkthrough_frames} frames / 9.7s)")
 
             # 4. Channel 3: Hollywood 1.2s Dissolve Transition from Map Intro to Walkthrough
             if map_strip:
