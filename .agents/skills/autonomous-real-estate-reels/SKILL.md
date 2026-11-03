@@ -137,12 +137,12 @@ npm run capture:maps:full
 ```
 
 ### F. Master 5-Reel Combined Video Sequence Editor Project
-Combines all 5 properties into a single long-form master vertical reel (70.0s @ 30 FPS, 2,100 frames) with multi-track channels, chapter markers, and transitions:
+Combines all 5 properties into a single long-form master vertical reel (94.0s @ 30 FPS, 2,820 frames) with multi-track channels, chapter markers, and transitions:
 ```bash
 # Assemble and save editable master .blend project file (00_Master_5_Reels_Combined_VSE.blend)
 npm run vse:combined
 
-# Assemble, save project, AND render master 80 MB combined MP4 reel
+# Assemble, save project, AND render master 120 MB combined MP4 reel
 npm run render:vse:combined
 ```
 

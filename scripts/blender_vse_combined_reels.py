@@ -82,12 +82,12 @@ def build_combined_vse_timeline(lang="en"):
         st.remove(strip)
 
     current_frame = 1
-    # Hollywood Film Director Pacing:
-    # 6.0s (180 frames) Map Cartography Flight + 1.2s (36 frames) Melt Dissolve + 12.0s (360 frames) Walkthrough Tour
-    intro_length_frames = 180      # 6.0s of Google Maps cartography (Establishing + 60fps Drone Dive + Route Hold)
+    # Hollywood Film Director Pacing (High Context & Leisurely Drone Flights):
+    # 8.0s (240 frames) Map Flight + 1.2s (36 frames) Melt Dissolve + 12.0s (360 frames) Walkthrough Tour
+    intro_length_frames = 240      # 8.0s of Google Maps cartography (Wide Tumkur Overview + 4.8s Leisurely Dive + Route Hold)
     crossfade_frames = 36          # 1.2s luxurious Gamma Crossfade transition
     site_walkthrough_frames = 360  # 12.0s of rich ground walkthrough footage
-    site_total_frames = 504        # 16.8s total per site section (5 sites = 84.0s master reel)
+    site_total_frames = 564        # 18.8s total per site section (5 sites = 94.0s / 1.56 mins master reel)
 
     previous_walkthrough_strip = None
 
@@ -110,10 +110,10 @@ def build_combined_vse_timeline(lang="en"):
         map_strip = None
         if os.path.exists(map_video):
             map_strip = st.new_movie(name=f"{site_num}_Map_{site_id}", filepath=map_video, channel=1, frame_start=site_start_frame)
-            # Skip initial 0.5s tile cache, keep full 6.0s of smooth 60fps crane dive
+            # Skip initial 0.5s tile cache, keep full 8.0s of smooth 60fps crane dive
             map_strip.animation_offset_start = 15
             map_strip.frame_final_duration = intro_length_frames
-            print(f"  -> Channel 1: Google Maps Flight added ({intro_length_frames} frames / 6.0s)")
+            print(f"  -> Channel 1: Google Maps Flight added ({intro_length_frames} frames / 8.0s)")
         else:
             print(f"  ⚠️ Warning: Map video not found at {map_video}, using placeholder color strip")
             map_strip = st.new_effect(name=f"{site_num}_Map_{site_id}", type='COLOR', channel=1,

@@ -27,13 +27,44 @@ let roadPulseAnimFrame = null;
 let roadPulseAngle = 0;
 let arrowAnimTimer = null;
 
-// 1. Cinema Dark Google Maps Base Style (Zero Default POI, Icons, Clutter)
+// 1. Luxury Architectural Platinum Light Style (High-Contrast, Visible Neighborhoods & Landmarks)
+const PLATINUM_LIGHT_STYLE = [
+  { elementType: "geometry", stylers: [{ color: "#f8fafc" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }, { weight: 3.5 }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#0f172a" }] },
+  { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#0f172a" }, { weight: 800 }] },
+  { featureType: "administrative.neighborhood", stylers: [{ visibility: "on" }] },
+  { featureType: "administrative.neighborhood", elementType: "labels.text.fill", stylers: [{ color: "#1e293b" }, { weight: 700 }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.school", stylers: [{ visibility: "on" }] },
+  { featureType: "poi.school", elementType: "labels.text.fill", stylers: [{ color: "#0284c7" }, { weight: 600 }] },
+  { featureType: "poi.place_of_worship", stylers: [{ visibility: "on" }] },
+  { featureType: "poi.place_of_worship", elementType: "labels.text.fill", stylers: [{ color: "#b45309" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#dcfce7" }] },
+  { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#15803d" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#cbd5e1" }, { weight: 1.2 }] },
+  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#475569" }] },
+  { featureType: "road", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#fed7aa" }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#f97316" }, { weight: 2.2 }] },
+  { featureType: "road.highway", elementType: "labels.text.fill", stylers: [{ color: "#9a3412" }, { weight: 800 }] },
+  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#e2e8f0" }] },
+  { featureType: "road.arterial", elementType: "geometry.stroke", stylers: [{ color: "#94a3b8" }] },
+  { featureType: "transit", stylers: [{ visibility: "on" }] },
+  { featureType: "transit.station", elementType: "labels.text.fill", stylers: [{ color: "#0369a1" }, { weight: 700 }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#7dd3fc" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#0284c7" }, { weight: 800 }] }
+];
+
+// Dark Mode fallback
 const CINEMA_DARK_STYLE = [
   { elementType: "geometry", stylers: [{ color: "#080c14" }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#06090e" }, { weight: 2.5 }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#cbd5e1" }] },
   { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#f8fafc" }, { weight: 2 }] },
-  { featureType: "administrative.neighborhood", stylers: [{ visibility: "off" }] },
+  { featureType: "administrative.neighborhood", stylers: [{ visibility: "on" }] },
+  { featureType: "administrative.neighborhood", elementType: "labels.text.fill", stylers: [{ color: "#94a3b8" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
   { featureType: "road", elementType: "geometry", stylers: [{ color: "#141b26" }] },
   { featureType: "road", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
@@ -41,15 +72,6 @@ const CINEMA_DARK_STYLE = [
   { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#334155" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
   { featureType: "water", elementType: "geometry", stylers: [{ color: "#0f172a" }] }
-];
-
-const MINIMAL_LIGHT_STYLE = [
-  { elementType: "geometry", stylers: [{ color: "#f8fafc" }] },
-  { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
-  { featureType: "road", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#bae6fd" }] }
 ];
 
 // 2. Google Maps Loader
@@ -70,15 +92,19 @@ function loadGoogleMaps() {
 window.initTumkurMap = function() {
   const tumkurCenter = CONFIG.DEFAULT_CENTER || { lat: 13.3409, lng: 77.1010 };
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const themeParam = urlParams.get("theme") || "platinum";
+  const activeStyle = themeParam === "dark" ? CINEMA_DARK_STYLE : PLATINUM_LIGHT_STYLE;
+
   const mapOptions = {
     center: tumkurCenter,
-    zoom: 12.8,
+    zoom: 12.3,
     isFractionalZoomEnabled: true,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     disableDefaultUI: true, // Suppress all Google zoom/pegman/map-type buttons
     gestureHandling: "none", // Page is a non-interactive video reel canvas
     keyboardShortcuts: false,
-    styles: CINEMA_DARK_STYLE
+    styles: activeStyle
   };
 
   map = new google.maps.Map(document.getElementById("map"), mapOptions);
@@ -463,41 +489,53 @@ function startAutonomousReelPipeline() {
 
     // Director's Sequence Execution:
     function beginSiteSequence() {
-      // 3-SECOND WIDE ORIENTATION WITH LIVING CINEMATIC DRIFT
-      let remainingSeconds = 3;
+      // 1. 3.5-SECOND WIDE ORIENTATION (Altitude 12.3)
       const adjText = adjacentNames.length > 0 ? ` • Near: ${adjacentNames.join(", ")}` : "";
 
-      function updateCountdownCaption() {
-        updateTourBanner(
-          `📍 TUMKUR CITY OVERVIEW: ${targetSite.name} (${targetSite.pricePerSqFt})${adjText}`,
-          targetSite.color
-        );
-      }
-
-      updateCountdownCaption();
+      updateTourBanner(
+        `📍 TUMKUR CITY: ${targetSite.name} (${targetSite.pricePerSqFt})${adjText}`,
+        targetSite.color
+      );
       startStoryProgressTicker(index);
 
       siteStageTimer = setTimeout(() => {
-        updateTourBanner(`🚀 HOLLYWOOD DIVE: Swooping into ${targetSite.name}...`, targetSite.color);
+        // 2. 4.8-SECOND SLOW MAJESTIC CRANE DIVE (Zoom 12.3 -> 16.4)
+        // Gives viewer plenty of time to identify surrounding neighborhoods and landmarks
+        updateTourBanner(
+          `🦅 AERIAL DIVE: Approaching ${targetSite.locality || targetSite.name} • Near ${adjacentNames.join(", ")}`,
+          targetSite.color
+        );
         window.__REEL_PHASE = "camera_dive";
 
-        // STEP 1: HOLLYWOOD CRANE DIVE (Smooth 60 FPS Zoom-In: Zoom 12.6 -> 16.8 over 2400ms)
         const currentCenter = map.getCenter();
         const currentZoom = map.getZoom();
+
+        // Dynamically update banner halfway through dive to orient viewer
+        const midDiveTimer = setTimeout(() => {
+          updateTourBanner(
+            `📍 DESCENT: Entering ${adjacentNames[0] || "Target Zone"} Corridor • Near ${targetSite.landmark ? targetSite.landmark.split(",")[0] : targetSite.name}`,
+            targetSite.color
+          );
+        }, 2200);
 
         cinematicCameraFlight(
           currentCenter,
           targetSite.center,
           currentZoom,
-          targetSite.zoom || 16.8,
-          2400,
+          targetSite.zoom || 16.4,
+          4800,
           () => {
-            // STEP 2: NEON ROUTE TRACING & DISTANCE PILL REVEAL
+            clearTimeout(midDiveTimer);
+
+            // 3. NEON ROUTE TRACING & DISTANCE PILL REVEAL
             window.__REEL_PHASE = "road_trace";
-            updateTourBanner(`🛣️ ACCESS ROUTE: Tracing direct access to ${targetSite.name}...`, targetSite.color);
+            updateTourBanner(
+              `🛣️ ACCESS ROUTE: ${targetSite.roadDistance || targetSite.dist} • Near ${adjacentNames.join(" • ")}`,
+              targetSite.color
+            );
 
             animateRoadToSiteArrow(targetSite, () => {
-              // 2.0s CINEMATIC BREATHE / LOCATION HOLD
+              // 3.2s CINEMATIC LOCATION HOLD & SURROUNDINGS ABSORPTION
               if (isMapsOnly) {
                 window.__REEL_PHASE = "map_complete";
                 window.__SITE_MAP_COMPLETE = true;
@@ -510,23 +548,23 @@ function startAutonomousReelPipeline() {
                   const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
                   if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
                   
-                  // STEP 3: HOLLYWOOD CRANE PULL-BACK (Smooth Zoom-Out: 16.8 -> 12.6)
-                  updateTourBanner(`🌐 PULLING BACK: Transitioning across Tumkur...`, "#38bdf8");
+                  // 4. 3.2s SMOOTH CRANE PULL-BACK (Zoom-Out: 16.4 -> 12.3)
+                  updateTourBanner(`🌐 PULLING UP: Swooping across Tumkur toward Site ${nextIndex + 1}...`, "#0284c7");
                   cinematicCameraFlight(
                     targetSite.center,
                     cityOverviewCenter,
                     map.getZoom(),
                     cityOverviewZoom,
-                    2000,
+                    3200,
                     () => {
                       runSitePipeline(nextIndex);
                     }
                   );
-                }, 1800);
+                }, 2200);
                 return;
               }
 
-              // STEP 4: FULL-BLEED WALKTHROUGH TOUR (11.5s)
+              // 5. FULL-BLEED WALKTHROUGH TOUR (12.0s)
               window.__REEL_PHASE = "walkthrough_video";
               openSiteVideoReel(targetSite);
 
@@ -543,22 +581,22 @@ function startAutonomousReelPipeline() {
                 if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
 
                 // Smooth Crane Pull-Back Zoom-Out into Wide City Sky
-                updateTourBanner(`🌐 PULLING BACK: Advancing to Site ${nextIndex + 1}...`, "#38bdf8");
+                updateTourBanner(`🌐 PULLING UP: Swooping across Tumkur toward Site ${nextIndex + 1}...`, "#0284c7");
                 cinematicCameraFlight(
                   targetSite.center,
                   cityOverviewCenter,
                   map.getZoom(),
                   cityOverviewZoom,
-                  2200,
+                  3200,
                   () => {
                     runSitePipeline(nextIndex);
                   }
                 );
-              }, 11500);
+              }, 12000);
             });
           }
         );
-      }, 3000);
+      }, 3500);
     }
 
     // On initial launch, set initial center and zoom smoothly

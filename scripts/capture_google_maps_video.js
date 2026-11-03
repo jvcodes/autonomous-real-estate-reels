@@ -76,15 +76,15 @@ async function captureMapVideo(site, browser) {
     everyNthFrame: 1
   });
 
-  console.log(`Recording Hollywood cinematic flight (Wide Overview + Smooth Drone Dive + Road Curve)...`);
+  console.log(`Recording Hollywood Platinum flight (3.5s Wide Overview + 4.8s Leisurely Drone Dive + Route Hold)...`);
 
-  // Wait for animation to finish or maximum 14 seconds
+  // Wait for animation to finish or maximum 17 seconds
   const startTime = Date.now();
-  while (Date.now() - startTime < 14000) {
+  while (Date.now() - startTime < 17000) {
     const isDone = await page.evaluate(() => window.__ALL_REELS_COMPLETE || window.__SITE_MAP_COMPLETE);
     if (isDone) {
-      // Allow 1.2s hold on the pulsing neon road badge
-      await new Promise(r => setTimeout(r, 1200));
+      // Allow 1.5s hold on the pulsing neon road badge
+      await new Promise(r => setTimeout(r, 1500));
       break;
     }
     await new Promise(r => setTimeout(r, 200));
