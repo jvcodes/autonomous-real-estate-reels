@@ -10,6 +10,8 @@
     "render:all": "node scripts/build_reels.js --all",
     "render:3d": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_3d_flyover.py --",
     "render:3d:all": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_3d_flyover.py -- --all",
+    "render:vse": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_vse_reel_editor.py --",
+    "render:vse:site1": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_vse_reel_editor.py -- --site 01_PNK_Township --lang en",
     "composite:3d": "node scripts/render_hybrid_3d_reel.js",
     "composite:3d:all": "node scripts/render_hybrid_3d_reel.js --all",
     "pipeline:all": "node scripts/generate_voiceovers.js && npm run render:3d:all && node scripts/render_hybrid_3d_reel.js --all",

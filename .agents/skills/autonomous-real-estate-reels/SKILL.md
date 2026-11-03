@@ -116,7 +116,17 @@ Batch compile all layouts in English & Kannada:
 npm run composite:3d:all
 ```
 
-### D. Full End-to-End Autonomous Pipeline
+### D. Unified Blender Video Sequence Editor (VSE) Pipeline
+Renders 3D CGI flyover, phone walkthrough footage, HUD overlays, and voiceovers in a single pass directly inside Blender VSE, saving an editable `.blend` project file:
+```bash
+# Render Layout 1 (P.N.K Township)
+npm run render:vse:site1
+
+# Render any layout with custom language
+npm run render:vse -- --site 02_Batawadi_Junction --lang kn
+```
+
+### E. Full End-to-End Autonomous Pipeline
 Runs voiceovers $\rightarrow$ 3D CGI rendering $\rightarrow$ Walkthrough stitching for all properties:
 ```bash
 npm run pipeline:all
