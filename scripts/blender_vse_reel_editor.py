@@ -1,26 +1,7 @@
 """
 Autonomous Real Estate Reel Editor using Blender's Built-in Video Sequence Editor (VSE)
-
-Architecture:
-1. Scene 1 ('Scene_3D'): 
-   - 3D FPV Drone flyover (1080x1920 @ 30 FPS, Eevee GPU engine)
-   - Glowing neon road spline with animated trajectory
-   - Holographic extruded plot boundary
-   - 3D location pin with drop, physics bounce & ground shockwave
-   - 3D floating typography (Name, Rate, Highway Distance)
-   - Speed-ramp camera swoop (Frames 1 - 90 = 3.0s)
-
-2. Scene 2 ('Scene_VSE'):
-   - Master NLE Timeline inside Blender Sequence Editor
-   - Channel 1: 3D Scene Strip (3D CGI intro)
-   - Channel 2: Walkthrough Video Movie Strip
-   - Channel 3: Seamless Gamma Crossfade Transition (3D -> Walkthrough)
-   - Channel 4: Broadcast Lower-Third Overlay Image Strip (Alpha Over)
-   - Channel 5: Neural Voiceover Audio Strip (Edge-TTS)
-
-Outputs:
-- Finished 1080x1920 MP4 rendered natively by Blender VSE (No external FFmpeg needed!)
-- Saved editable .blend project file that the user can open visually in Blender GUI!
+Opens DIRECTLY into the pure 'Video Editing' application template with full timeline,
+preview monitor, video tracks, audio waveforms, and transitions (Zero 3D viewport clutter).
 """
 
 import sys
@@ -47,14 +28,8 @@ def load_site_data(site_id="01_PNK_Township"):
             return catalog[0]
     return None
 
-def build_3d_stage(site_data):
+def build_3d_stage(site_data, scene_3d):
     """Sets up the 3D CGI animation in Scene_3D."""
-    # Start fresh
-    bpy.ops.wm.read_factory_settings(use_empty=True)
-    scene_3d = bpy.context.scene
-    scene_3d.name = "Scene_3D"
-
-    # Resolution & Frame Rate
     scene_3d.render.resolution_x = 1080
     scene_3d.render.resolution_y = 1920
     scene_3d.render.resolution_percentage = 100
@@ -94,6 +69,8 @@ def build_3d_stage(site_data):
     bpy.ops.mesh.primitive_plane_add(size=90, location=(0, 0, -0.05))
     ground = bpy.context.active_object
     ground.name = "GroundTerrain"
+    scene_3d.collection.objects.link(ground) if ground.name not in scene_3d.collection.objects else None
+
     mat_ground = bpy.data.materials.new("GroundMat")
     mat_ground.use_nodes = True
     bsdf_ground = mat_ground.node_tree.nodes.get("Principled BSDF")
@@ -107,6 +84,8 @@ def build_3d_stage(site_data):
     bpy.ops.mesh.primitive_cylinder_add(radius=0.1, depth=0.02, location=(0, -0.5, 0.01))
     shockwave = bpy.context.active_object
     shockwave.name = "ImpactShockwave"
+    scene_3d.collection.objects.link(shockwave) if shockwave.name not in scene_3d.collection.objects else None
+
     mat_sw = bpy.data.materials.new("ShockwaveMat")
     mat_sw.use_nodes = True
     sw_nodes = mat_sw.node_tree.nodes
@@ -193,10 +172,12 @@ def build_3d_stage(site_data):
     pin = bpy.context.active_object
     pin.name = "LocationPin"
     pin.rotation_euler = Euler((math.radians(180), 0, 0), 'XYZ')
+    scene_3d.collection.objects.link(pin) if pin.name not in scene_3d.collection.objects else None
 
     bpy.ops.mesh.primitive_uv_sphere_add(radius=0.45, location=(0, -0.5, 1.8 + 0.45))
     pin_cap = bpy.context.active_object
     pin_cap.parent = pin
+    scene_3d.collection.objects.link(pin_cap) if pin_cap.name not in scene_3d.collection.objects else None
 
     mat_pin = bpy.data.materials.new("PinMat")
     mat_pin.use_nodes = True
@@ -231,6 +212,8 @@ def build_3d_stage(site_data):
     bpy.ops.object.text_add(location=(-2.0, 0.2, 2.3))
     text_obj = bpy.context.active_object
     text_obj.name = "FloatingText"
+    scene_3d.collection.objects.link(text_obj) if text_obj.name not in scene_3d.collection.objects else None
+
     title_text = site_data.get("name", "PREMIUM TOWNSHIP")
     rate_text = site_data.get("rate", "₹1,950 / SQ.FT")
     dist_text = site_data.get("dist", "500m to Highway")
@@ -290,24 +273,15 @@ def build_3d_stage(site_data):
     cam_obj.keyframe_insert(data_path="rotation_euler", frame=90)
 
     print(f"✅ Scene_3D constructed successfully.")
-    return scene_3d
 
-def build_vse_timeline(site_data, scene_3d, lang="en"):
-    """Creates the Master Video Sequence Editor scene and populates all channels."""
+def build_vse_timeline(site_data, scene_vse, scene_3d, lang="en"):
+    """Populates the Video Sequence Editor timeline with tracks and strips."""
     site_id = site_data.get("id")
     raw_video = site_data.get("rawVideo")
     overlay_png = f"C:\\sites\\map\\output\\overlays\\{site_id}_Overlay.png"
     audio_file = f"C:\\sites\\map\\output\\audio\\{site_id}_{lang}.mp3"
 
     print(f"\n🎬 Assembling Blender VSE Timeline for: {site_data.get('name')} ({lang.upper()})")
-    print(f"Walkthrough Video: {raw_video}")
-    print(f"Overlay Graphic:   {overlay_png}")
-    print(f"Narration Audio:   {audio_file}")
-
-    # Create dedicated VSE Scene
-    scene_vse = bpy.data.scenes.new("Scene_VSE")
-    scene_vse.sequence_editor_create()
-    st = scene_vse.sequence_editor.strips
 
     # Match Resolution & Framerate
     scene_vse.render.resolution_x = 1080
@@ -316,44 +290,48 @@ def build_vse_timeline(site_data, scene_3d, lang="en"):
     scene_vse.render.fps = 30
     scene_vse.frame_start = 1
 
+    if not scene_vse.sequence_editor:
+        scene_vse.sequence_editor_create()
+    st = scene_vse.sequence_editor.strips
+
+    # Clear any preexisting strips
+    for strip in list(st):
+        st.remove(strip)
+
     # 1. Channel 1: 3D CGI Flyover Scene Strip (Frames 1 to 90)
     intro_strip = st.new_scene(name="3D_CGI_Intro", scene=scene_3d, channel=1, frame_start=1)
 
-    # 2. Channel 5: Neural Voiceover Audio Strip (Determines overall duration)
-    audio_strip = None
-    total_reel_frames = 420  # Default ~14.0s @ 30 FPS
+    # 2. Channel 5: Neural Voiceover Audio Strip
+    total_reel_frames = 450  # 15.0s @ 30 FPS
     if os.path.exists(audio_file):
         audio_strip = st.new_sound(name="Voiceover_Audio", filepath=audio_file, channel=5, frame_start=1)
         total_reel_frames = min(audio_strip.frame_final_duration, 450)
-        print(f"  -> Voiceover loaded. Duration: {total_reel_frames} frames ({total_reel_frames/30:.1f}s)")
+        print(f"  -> Channel 5: Voiceover loaded ({total_reel_frames/30:.1f}s)")
 
     # 3. Channel 2: Physical Walkthrough Tour Movie Strip
-    # Starts at frame 82 with 8 frames overlap for the whip/speed transition
     cut_frame = 82
     walkthrough_duration = total_reel_frames - cut_frame + 5
     if os.path.exists(raw_video):
         movie_strip = st.new_movie(name="Walkthrough_Tour", filepath=raw_video, channel=2, frame_start=cut_frame)
-        # Skip initial 2 seconds of camera stabilization
         movie_strip.animation_offset_start = 45
         movie_strip.frame_final_duration = walkthrough_duration
-        print(f"  -> Walkthrough added at frame {cut_frame}. Duration: {walkthrough_duration} frames")
+        print(f"  -> Channel 2: Walkthrough video added at frame {cut_frame}")
 
-        # 4. Channel 3: Smooth Crossfade Transition (3D Scene -> Walkthrough)
+        # 4. Channel 3: Crossfade Transition (3D Scene -> Walkthrough)
         trans = st.new_effect(name="SpeedRamp_Crossfade", type='GAMMA_CROSS', channel=3, 
                               frame_start=cut_frame, input1=intro_strip, input2=movie_strip)
-        print(f"  -> SpeedRamp Crossfade transition created.")
+        print(f"  -> Channel 3: SpeedRamp Crossfade transition added")
 
     # 5. Channel 4: Broadcast Lower-Third Overlay Graphic Strip
     if os.path.exists(overlay_png):
         overlay_strip = st.new_image(name="HUD_Overlay", filepath=overlay_png, channel=4, frame_start=cut_frame)
         overlay_strip.frame_final_duration = walkthrough_duration
         overlay_strip.blend_type = 'ALPHA_OVER'
-        print(f"  -> Broadcast HUD Overlay added with ALPHA_OVER.")
+        print(f"  -> Channel 4: Broadcast HUD Overlay added with ALPHA_OVER")
 
-    # Set master timeline end frame
     scene_vse.frame_end = total_reel_frames
 
-    # Output Video Configuration: MPEG-4 / H.264 / AAC High Quality
+    # Direct Video Encoding Settings
     scene_vse.render.image_settings.media_type = 'VIDEO'
     scene_vse.render.image_settings.file_format = 'FFMPEG'
     scene_vse.render.ffmpeg.format = 'MPEG4'
@@ -365,39 +343,48 @@ def build_vse_timeline(site_data, scene_3d, lang="en"):
     out_mp4 = f"C:\\sites\\map\\output\\reels\\{site_id}_VSE_REEL_{lang.upper()}.mp4"
     scene_vse.render.filepath = out_mp4
 
-    # Save permanent .blend project file for inspection in Blender GUI
-    blend_path = f"C:\\sites\\map\\output\\blender\\{site_id}_VSE_Project.blend"
-    bpy.ops.wm.save_as_mainfile(filepath=blend_path)
-    print(f"💾 Editable Blender Project Saved: {blend_path}")
+    return out_mp4
 
-    return scene_vse, out_mp4
-
-def render_vse_reel(site_id="01_PNK_Township", lang="en"):
+def setup_vse_project(site_id="01_PNK_Township", lang="en"):
     site_data = load_site_data(site_id)
     if not site_data:
         print(f"❌ Failed to load metadata for site: {site_id}")
         return False
 
-    # 1. Build 3D Stage
-    scene_3d = build_3d_stage(site_data)
+    # 1. Load Blender's Native Video_Editing Application Template
+    # This guarantees Blender opens DIRECTLY into the pure Video Editing interface
+    bpy.ops.wm.read_homefile(app_template='Video_Editing')
+    
+    # Primary scene in Video_Editing template is our master VSE scene
+    scene_vse = bpy.context.scene
+    scene_vse.name = "Scene_VSE"
 
-    # 2. Build VSE Timeline
-    scene_vse, out_mp4 = build_vse_timeline(site_data, scene_3d, lang=lang)
+    # 2. Create the secondary 3D CGI stage scene
+    scene_3d = bpy.data.scenes.new("Scene_3D")
+    build_3d_stage(site_data, scene_3d)
 
-    # 3. Set Active Window Scene to Scene_VSE
+    # 3. Assemble the VSE Tracks in Scene_VSE
+    out_mp4 = build_vse_timeline(site_data, scene_vse, scene_3d, lang=lang)
+
+    # 4. Guarantee Scene_VSE is active and Video Editing workspace is front and center
     bpy.context.window.scene = scene_vse
+    if 'Video Editing' in bpy.data.workspaces:
+        bpy.context.window.workspace = bpy.data.workspaces['Video Editing']
 
-    # 4. Render Master Reel
-    print(f"\n🚀 Rendering complete reel directly via Blender VSE (Frames 1 to {scene_vse.frame_end})...")
+    # 5. Save the complete .blend project file
+    blend_path = f"C:\\sites\\map\\output\\blender\\{site_id}_VSE_Project.blend"
+    bpy.ops.wm.save_as_mainfile(filepath=blend_path)
+    print(f"\n💾 Editable Blender VSE Project Saved: {blend_path}")
+
+    # 6. Render the master video
+    print(f"🚀 Rendering master video through Blender VSE (Frames 1 to {scene_vse.frame_end})...")
     bpy.ops.render.render(animation=True, scene='Scene_VSE')
 
     if os.path.exists(out_mp4):
         size_mb = os.path.getsize(out_mp4) / (1024 * 1024)
         print(f"\n🎉 SUCCESS! Master Reel Rendered from Blender VSE: {out_mp4} ({size_mb:.2f} MB)")
         return out_mp4
-    else:
-        print(f"❌ Render did not produce expected file: {out_mp4}")
-        return False
+    return False
 
 if __name__ == "__main__":
     site_arg = "01_PNK_Township"
@@ -411,4 +398,4 @@ if __name__ == "__main__":
             elif a == "--lang" and i + 1 < len(args):
                 lang_arg = args[i + 1]
 
-    render_vse_reel(site_arg, lang_arg)
+    setup_vse_project(site_arg, lang_arg)
