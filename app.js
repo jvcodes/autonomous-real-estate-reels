@@ -332,13 +332,24 @@ function clearBlinkingRoad() {
   }
 }
 
-// 6. Autonomous Broadcast Reel Pipeline (Infinite Continuous Loop)
+// 6. Autonomous Broadcast Reel Pipeline (Infinite Continuous Loop or Targeted Recording)
 function startAutonomousReelPipeline() {
   if (!isPipelineRunning) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const siteParam = urlParams.get("site"); // 1 to 5
+  const isMapsOnly = urlParams.get("mapsOnly") === "true";
+  const singleSiteOnly = urlParams.get("single") === "true" || (siteParam !== null && urlParams.get("loop") !== "true");
+  const targetInitialIndex = siteParam ? Math.max(0, Math.min(4, parseInt(siteParam) - 1)) : 0;
+
+  window.__REEL_READY = true;
+  window.__REEL_CYCLE_COMPLETE = false;
 
   function runSitePipeline(index) {
     if (!isPipelineRunning) return;
 
+    window.__CURRENT_SITE_INDEX = index;
+    window.__REEL_PHASE = "map_overview";
     currentSiteIndex = index;
     const targetSite = FEATURED_REEL_SITES[index];
     stageStartTime = Date.now();
@@ -418,6 +429,7 @@ function startAutonomousReelPipeline() {
     siteStageTimer = setTimeout(() => {
       clearInterval(countdownInterval);
       updateTourBanner(`🚀 APPROACHING: ${targetSite.name} • Tracing Access Route...`, targetSite.color);
+      window.__REEL_PHASE = "camera_dive";
 
       // STEP 3: Smooth Camera Glide Pan
       map.panTo(targetSite.center);
@@ -425,17 +437,43 @@ function startAutonomousReelPipeline() {
       // STEP 4: Camera Dive to Zoom 17.0
       setTimeout(() => {
         map.setZoom(targetSite.zoom || 17.0);
+        window.__REEL_PHASE = "road_trace";
 
         // STEP 5: Animate Road-to-Site Curved Arrow (3.5s hold)
         animateRoadToSiteArrow(targetSite, () => {
+          if (isMapsOnly) {
+            // Maps-only mode: mark complete after road hold
+            window.__REEL_PHASE = "map_complete";
+            window.__SITE_MAP_COMPLETE = true;
+            if (singleSiteOnly) {
+              window.__ALL_REELS_COMPLETE = true;
+              return;
+            }
+            setTimeout(() => {
+              clearBlinkingRoad();
+              const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
+              if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
+              runSitePipeline(nextIndex);
+            }, 1000);
+            return;
+          }
+
           // STEP 6: Full-Bleed Walkthrough Video (8.5s)
+          window.__REEL_PHASE = "walkthrough_video";
           openSiteVideoReel(targetSite);
 
           siteStageTimer = setTimeout(() => {
             closeSiteVideoReel();
+            window.__REEL_PHASE = "transition";
+
+            if (singleSiteOnly) {
+              window.__ALL_REELS_COMPLETE = true;
+              return;
+            }
 
             // STEP 7: Loop to Next Site Seamlessly!
             const nextIndex = (index + 1) % FEATURED_REEL_SITES.length;
+            if (nextIndex === 0) window.__REEL_CYCLE_COMPLETE = true;
             runSitePipeline(nextIndex);
           }, REEL_VIDEO_PLAY_MS);
         });
@@ -443,8 +481,8 @@ function startAutonomousReelPipeline() {
     }, MAP_ORIENTATION_PAUSE_MS);
   }
 
-  // Start with Site 0
-  runSitePipeline(0);
+  // Start with targetInitialIndex
+  runSitePipeline(targetInitialIndex);
 }
 
 // 7. Story Segments Progress Tracker

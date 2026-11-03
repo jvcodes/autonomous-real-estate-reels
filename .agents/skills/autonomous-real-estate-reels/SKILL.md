@@ -126,7 +126,27 @@ npm run render:vse:site1
 npm run render:vse -- --site 02_Batawadi_Junction --lang kn
 ```
 
-### E. Full End-to-End Autonomous Pipeline
+### E. Google Maps HTML Stage Video Capture (Zero Tokens)
+Captures the live Google Maps HTML stage (city overview, camera dive, pulsing neon road trajectory, distance badge) directly into 1080×1920 MP4 clips:
+```bash
+# Capture individual map video clips for all 5 sites
+npm run capture:maps
+
+# Capture the full 5-site continuous Google Maps presentation loop (~90s)
+npm run capture:maps:full
+```
+
+### F. Master 5-Reel Combined Video Sequence Editor Project
+Combines all 5 properties into a single long-form master vertical reel (70.0s @ 30 FPS, 2,100 frames) with multi-track channels, chapter markers, and transitions:
+```bash
+# Assemble and save editable master .blend project file (00_Master_5_Reels_Combined_VSE.blend)
+npm run vse:combined
+
+# Assemble, save project, AND render master 80 MB combined MP4 reel
+npm run render:vse:combined
+```
+
+### G. Full End-to-End Autonomous Pipeline
 Runs voiceovers $\rightarrow$ 3D CGI rendering $\rightarrow$ Walkthrough stitching for all properties:
 ```bash
 npm run pipeline:all
