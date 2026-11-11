@@ -73,6 +73,7 @@ function renderBeatWidget({ beat, bIdx, sceneIndex, dur, acc, acc2, brandMeta })
 
   if (wType === 'route_tracker') {
     const targetVal = Number(beat.count_to || 500);
+    const dec = Number(beat.count_decimals || 0);
     const suffix = beat.count_suffix || 'M';
     return {
       html: `
@@ -117,7 +118,7 @@ function renderBeatWidget({ beat, bIdx, sceneIndex, dur, acc, acc2, brandMeta })
           }, ${(bStart + 0.12).toFixed(3)});
           tl.to(obj, {
             v: ${targetVal}, duration: ${(Math.min(1.3, bDur * 0.42)).toFixed(3)}, ease: "power3.out",
-            onUpdate: () => { if (numEl) numEl.textContent = Math.round(obj.v).toLocaleString(); }
+            onUpdate: () => { if (numEl) numEl.textContent = ${dec > 0 ? `obj.v.toFixed(${dec})` : 'Math.round(obj.v).toLocaleString()'}; }
           }, ${(bStart + 0.10).toFixed(3)});
           ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: ${isTop ? -20 : 20}, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
         })();`

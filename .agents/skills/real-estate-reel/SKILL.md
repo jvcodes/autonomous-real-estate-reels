@@ -21,7 +21,7 @@ Builds vertical **Instagram Reels & YouTube Shorts** at **$0 recurring API cost*
 Because geometry, format rules, and widget specs live in focused documents, consult the exact reference for your task:
 
 * **Exact Overlay Sizes, Safe Zones & Fonts:** [`references/layout_and_sizes.md`](references/layout_and_sizes.md) -> Defines pixel/percentage budgets (`110×110` top-right logo, `440–1190px` clear center showcase, `840×175–298px` timed cards, `>= 28px` copy floor, `1525px` caption rail). Enforced in code by [`core/layout_spec.js`](../../../core/layout_spec.js).
-* **Generic 5-Stage Sequence & Timing Rules:** [`references/timing_and_format.md`](references/timing_and_format.md) -> Standard scene flow (`Road & Area -> Approvals -> Dimensions & Vastu -> Pricing -> Follow Page CTA`), `5.2s` pop-in dwell + B-roll breathers, WordBoundary syncing, and `script.txt -> site.json` compilation guidelines.
+* **Generic Stage Sequence, Kanglish Voice & Clip Slicing Rules:** [`references/timing_and_format.md`](references/timing_and_format.md) -> Standard property flow (`Location -> Approvals -> Features -> Dimensions -> Price -> Follow CTA`), **mandatory daily spoken Tumakuru Kanglish `voice_text` style + TTS pronunciation rules**, `5.2s` / `8.5s` dwell caps, and multi-scene slicing (`clip_start`, `clip_end`, `clip_speed`, `clip_reverse`) when `< 5` raw clips are provided.
 * **Engine Modules & 12 HyperFrames Widgets:** [`references/widgets_and_modules.md`](references/widgets_and_modules.md) -> Complete `core/*.js` module map, all 12 pre-built GSAP/SVG widgets, and how to extend [`core/widgets.js`](../../../core/widgets.js). *(Also read `node_modules/hyperframes/dist/skills/hyperframes/SKILL.md` before writing custom HTML/GSAP scenes.)*
 
 ---
@@ -32,7 +32,10 @@ Because geometry, format rules, and widget specs live in focused documents, cons
    ```powershell
    npm run new -- <site_slug>
    ```
-2. **Read `script.txt` + probe `clips/`:** Verify speech duration stays cleanly inside each clip length (leaving natural B-roll breathing room) and compile `site.json` using the 5 stages & size rules from the references above.
+2. **Inspect `clips/` visually + Read `script.txt`:**
+   - Probe clip durations, orientation/rotation (`ffprobe`), and key visual frames so overlays and voice match what is actually on screen.
+   - If the folder has fewer than 5–6 clips (e.g., 1 long road video + 1 site pan), segment them across scenes via `clip_start` / `clip_end` / `clip_speed` / `clip_reverse` so voice duration always fits inside video duration with B-roll breathing room.
+   - Write natural **daily spoken Kanglish** `voice_text` per [`references/timing_and_format.md`](references/timing_and_format.md) (avoid stiff textbook Kannada or mispronounced acronyms) and compile `site.json` using [`references/layout_and_sizes.md`](references/layout_and_sizes.md).
 3. **Prepare, audit, preview & render:**
    ```powershell
    npm run prep   -- sites/<folder>   # TTS + WordBoundary + chord synth + -15 LUFS mix + HF HTML + XML

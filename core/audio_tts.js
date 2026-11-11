@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { MsEdgeTTS, OUTPUT_FORMAT } = require('msedge-tts');
 
 function inferVoiceLocale(voice, lang) {
   if (typeof voice === 'string' && /^[a-z]{2}-[A-Z]{2}/.test(voice)) return voice.slice(0, 5);
@@ -274,9 +275,46 @@ function buildSfxSchedule(timelineData) {
   return cues;
 }
 
+async function synthesizeSpeechFile({ text, outPath, voice, locale, rate = '+2%', pitch = '+0Hz', maxRetries = 3, timeoutMs = 25000 }) {
+  const ttsFormat = OUTPUT_FORMAT.AUDIO_24KHZ_96KBITRATE_MONO_MP3 || OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3;
+  let lastErr = null;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const tts = new MsEdgeTTS();
+    try {
+      await tts.setMetadata(voice, ttsFormat, { voiceLocale: locale, wordBoundaryEnabled: true, sentenceBoundaryEnabled: true });
+      const metaChunks = [];
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error(`TTS timed out after ${timeoutMs}ms`)), timeoutMs);
+        const fileStream = fs.createWriteStream(outPath);
+        const { audioStream, metadataStream } = tts.toStream(text.trim(), { rate, pitch });
+        if (metadataStream) {
+          metadataStream.on('data', (chunk) => metaChunks.push(chunk.toString('utf8')));
+          metadataStream.on('error', () => {});
+        }
+        audioStream.on('error', (e) => { clearTimeout(timer); reject(e); });
+        fileStream.on('error', (e) => { clearTimeout(timer); reject(e); });
+        fileStream.on('finish', () => { clearTimeout(timer); resolve(); });
+        audioStream.pipe(fileStream);
+      });
+      if (fs.existsSync(outPath) && fs.statSync(outPath).size > 800) {
+        return parseBoundaryObjects(metaChunks);
+      }
+      throw new Error('Empty TTS audio stream produced');
+    } catch (err) {
+      lastErr = err;
+      try { if (fs.existsSync(outPath)) fs.unlinkSync(outPath); } catch {}
+      if (attempt < maxRetries) await new Promise((r) => setTimeout(r, 600 * attempt));
+    } finally {
+      try { tts.close(); } catch {}
+    }
+  }
+  throw lastErr || new Error('Failed to synthesize TTS speech');
+}
+
 module.exports = {
   inferVoiceLocale,
   parseBoundaryObjects,
+  synthesizeSpeechFile,
   findAnchorTime,
   inferKeywordsForBeat,
   synthesizeAmbientBedWav,

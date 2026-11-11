@@ -1,50 +1,57 @@
-# Generic 5-Stage Property Format & Card Pacing Rules
+# Generic 5-Stage Property Format, Kanglish Voice Style & Clip Slicing
 
-Unless the user's `script.txt` or prompt specifies a custom sequence, **always** structure every site reel in this exact 5-stage order.
+Unless the user's `script.txt` or prompt specifies a custom sequence, organize every site reel cleanly around this proven narrative flow.
 
 ---
 
-## 1. Standard 5-Stage Sequence ("What Comes After What")
+## 1. Standard Reel Flow ("What Comes After What")
 
-| Stage | Scene ID | Narrative Role | Primary Widgets (`beats[]`) | Default Slot (`glide_to`) |
+| Stage | Scene Role | Narrative Focus | Primary Widgets (`beats[]`) | Default Slot (`glide_to`) |
 | --- | --- | --- | --- | --- |
-| **1** | `scene_01_road_and_area` | Hook + Locality + Nearest Main Road / Highway distance | `hero_title` -> `route_tracker` | `bottom` -> `top` (or `bottom`) |
-| **2** | `scene_02_site_approvals` | Legal approvals (**TUDA / RERA / A-Khata / DC**) + ready utilities | `verified_shield` -> `checklist_live` | `bottom` |
-| **3** | `scene_03_dimensions_vastu` | Plot sizes (`30×40`), sq.ft counter, Facing / Vastu direction | `blueprint_draw` -> `vastu_compass` | `bottom` |
-| **4** | `scene_04_pricing` | Launch price per sq.ft + total plot budget breakdown | `price_odometer` -> `price_calc` | `bottom` |
-| **5** | `scene_05_follow_page` | Brand badge from `common/logo/` + `@handle` + animated Follow CTA | `follow_cta` | `bottom` |
+| **1** | **Location & Road Hook** | Project name + area + Nearest Highway / Landmark distance | `hero_title` -> `route_tracker` | `bottom` -> `top` (or `bottom`) |
+| **2** | **Approvals & Trust** | Legal approvals (**TUDA / BMRDA / RERA / A-Khata / DC**) + Loan / Zero Brokerage | `verified_shield` -> `dual_metric` | `bottom` |
+| **3** | **Site Features & Utilities** | Internal 30/40-ft asphalt roads, borewell water, power poles, UGD drainage | `checklist_live` | `bottom` |
+| **4** | **Dimensions & Vastu** | Plot sizes (`30×40`, `30×50`, `40×60`), Facing (`East/North`), Corner sites | `blueprint_draw` -> `vastu_compass` | `bottom` |
+| **5** | **Pricing** | Rate per sq.ft + total plot breakdown + loan/registration note | `price_odometer` -> `price_calc` | `bottom` |
+| **6** | **Follow Page CTA** | Brand badge from `common/logo/` + `@handle` + Phone + Cursor Follow tap | `follow_cta` | `bottom` |
 
-* **Persistent Header Elements:**
-  * **Top-Right Logo (`common/logo/`):** Pinned across every scene at `right: 40px; top: 74px` (`110×110px` circular coin).
-  * **Top-Left Counter + Pill:** Shows live `[01/05]` scene counter + `[AREA • MAIN ROAD]` location tag.
-
----
-
-## 2. Timed Pop-In Pacing & B-Roll Breathers
-
-Visualizing the actual road width, drainage, corner stones, and surroundings matters more than keeping a static box on screen for 30 seconds:
-
-1. **Default Card Dwell (`card_max_display_sec: 5.2s`):**
-   - Set globally in `common/brand.json` and `LAYOUT.timing.cardDefaultDwellSec` (`core/layout_spec.js`).
-   - Each info card animates in (`0.38–0.42s`), stays sharp for up to **`5.2s`**, then smoothly slides/fades out (`0.22s`).
-   - On a 25-second road or layout clip with 2 beats, viewers get ~10 seconds of cards and ~15 seconds of **pure clean full-screen footage** between/after cards.
-2. **Stage 5 Follow CTA Dwell (`8.5s`):**
-   - `follow_cta` stays visible up to **`8.5s`** (or holds cleanly to clip end when near the finale) so the user's logo, cursor tap animation, and `@handle` register clearly.
-3. **Per-Beat Timing Overrides in `site.json`:**
-   - `"display_sec": 4.2` — shorten a quick punch-in card.
-   - `"display_sec": 7.0` — extend a complex calculation card.
-   - `"hold": true` — pin the beat until the end of that scene clip (only when justified).
-4. **WordBoundary Beat Syncing:**
-   - Beat 0 opens at `t = 0.0s` (Stage 1) or `t = 0.28s` (Stages 2–5).
-   - Beat `1+` automatically searches the Edge TTS `WordBoundary` transcript (`core/audio_tts.js`) for Kannada/English keywords (`ಹೆದ್ದಾರಿ`, `ಟುಡಾ`, `ವಾಸ್ತು`, `ರೂಪಾಯಿ`, numbers, or custom `"anchor_words": [...]`) so the card pops in at the **exact word spoken by the narrator**.
-   - Sequential beats enforce `>= 0.20s` exit gap (`LAYOUT.timing.beatGapSec`) so two cards NEVER overlap on screen.
+*(If shooting strictly 5 clips, Stages 2 & 3 merge cleanly into `scene_02_site_approvals` via `verified_shield` -> `checklist_live`.)*
 
 ---
 
-## 3. Compiling `script.txt` -> `site.json`
+## 2. Natural Daily Kanglish Voiceover Rules (REQUIRED)
 
-When preparing a site folder (`sites/<YYYY-MM-DD>_<site_slug>/`):
-1. Read `script.txt` (or user prompt) + `common/brand.json`.
-2. Inspect clip lengths inside `clips/` (`ffprobe`). Aim for **~10–20 words of Kannada (`kn-IN-GaganNeural`) per 8–12s of video** (typically 22–45 spoken words for a 20–30s clip, leaving short breathers). Never pack more TTS seconds than the video clip length!
-3. Write concise **English/Kannada KPI strings** onto cards (`<= 4` words for headlines, `<= 1` line for subtitles) so card heights stay strictly inside `LAYOUT.budgets`.
-4. Keep `"video": "auto"` when clip filenames sort sequentially (`01_...`, `02_...`), or map exact filenames when order differs.
+Always write `voice_text` like a **real Tumakuru / Karnataka reel host speaking casually face-to-face** — a natural daily mix of conversational Kannada + everyday English words (never stiff formal textbook Kannada):
+
+1. **Tone & Connectors:**
+   - Open warmly: *"ಹಾಯ್ ಫ್ರೆಂಡ್ಸ್! ಇವತ್ತು ನಾವು..."* instead of formal *"ನಮಸ್ಕಾರ! ಇಂದು ನಾವು..."*
+   - Use natural daily Kannada-English phrases: *"ಹತ್ರ ಇರೋ"*, *"ನೋಡೋಣ ಬನ್ನಿ"*, *"ಜಸ್ಟ್ ... ಕಿಲೋಮೀಟರ್ ಅಷ್ಟೇ"*, *"ಫುಲ್ ರೆಡಿ ಇದೆ"*, *"ಆರಾಮಾಗಿ ಲೋನ್ ಸಿಗುತ್ತೆ"*, *"ಬ್ರೋಕರೇಜ್ ಏನೂ ಇರಲ್ಲ"*, *"ಬೆಲೆ ಬಂದ್ಬಿಟ್ಟು"*, *"ಈಗಲೇ ಫಾಲೋ ಮಾಡಿ"*, *"ಕಾಲ್ ಮಾಡಿ"*.
+   - Keep everyday English nouns spoken naturally: `ವೈಡ್ ರೋಡ್`, `ಬೋರ್‌ವೆಲ್ ವಾಟರ್`, `ಕರೆಂಟ್`, `ಅಂಡರ್‌ಗ್ರೌಂಡ್ ಡ್ರೈನೇಜ್`, `ಸೈಟ್ ಡೈಮೆನ್ಷನ್ಸ್`, `ಕಾರ್ನರ್ ಸೈಟ್ಸ್`, `ಅವೈಲಬಲ್ ಇದೆ`, `ಸ್ಕ್ವೇರ್ ಫೀಟ್`, `ರಿಜಿಸ್ಟ್ರೇಷನ್ ಎಕ್ಸ್ಟ್ರಾ`, `ಅಪ್‌ಡೇಟ್ಸ್`, `ಪೇಜ್`.
+2. **TTS Pronunciation Guards (`kn-IN-GaganNeural`):**
+   - Write uppercase initials phonetically with spaces in Kannada script so TTS speaks them cleanly instead of guessing:
+     - `NH 48` -> **`ಎನ್ ಎಚ್ 48`**
+     - `SIT College` -> **`ಎಸ್ ಐ ಟಿ ಕಾಲೇಜ್`**
+     - `TUDA` -> **`ಟುಡಾ`**, `DC` -> **`ಡಿಸಿ`**
+   - **AVOID `"ಲೇಔಟ್"`** (`kn-IN-GaganNeural` reads the `ಲೇ+ಔ` diphthong awkwardly as *"le-pat"*). Use **`ಪ್ರಾಜೆಕ್ಟ್`** (`project`) or **`ಬಡಾವಣೆ`** / **`ಸೈಟ್ಸ್`** instead.
+   - Default cadence: `"voice_rate": "+2%"`, `"voice_pitch": "+0Hz"` in `common/brand.json`, using commas `,` and dashes `—` for relaxed natural pauses.
+
+---
+
+## 3. Timed Pop-In Pacing & B-Roll Breathers
+
+* **Default Card Dwell (`card_max_display_sec: 5.2s`):** Each info card slides in (`~0.4s`), holds **`5.2s`** (or **`8.5s` / `hold: true`** for Stage `follow_cta`), and exits cleanly so the audience sees clean raw footage between cards.
+* **WordBoundary Beat Syncing:** Beats `1+` automatically search TTS timestamps (`core/audio_tts.js`) for Kannada/English keywords so each card pops in right as the narrator says that number or feature.
+* **Strict Visual-to-Audio Fit:** Never make a spoken voice line longer than its scene's video duration! Keep `~1.0–4.0s` visual breathing room inside every clip.
+
+---
+
+## 4. Multi-Scene Clip Slicing When Fewer Raw Clips Exist (`< 5 clips`)
+
+When a creator drops **only 1 or 2 continuous videos** (e.g., `01_road.mp4` `33s` + `02_site_video.mp4` `16s`) instead of 5–6 separate clips:
+1. **Inspect actual clips & frames first:** Run `ffprobe` for exact duration + rotation metadata AND extract key frames so every voice line & overlay widget matches what is literally visible at those timestamps.
+2. **Slice & pace inside `site.json`:** Use optional properties on any `scenes[]` item (`core/prepare.js` auto-bakes `1080×1920 @ 30fps` CFR segments inside `work/segs/`):
+   - `"video": "02_site_video.mp4"`
+   - `"clip_start": 0.0`, `"clip_end": 6.0` — exact window in seconds
+   - `"clip_speed": 0.62` — smooth slow-motion factor (`0.55–1.0`) when a great panoramic shot needs extra narration seconds
+   - `"clip_reverse": true` — smooth return pan for closing `follow_cta` hold
+3. **Never add empty/black slides:** Keep real site or approach footage playing continuously behind every frame.

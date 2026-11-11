@@ -233,19 +233,19 @@ function generateTransitionsHtml(timelineData) {
     const tid = `tr-${i}`;
     const kind = (i - 1) % 4;
     if (kind === 0) {
-      htmlParts.push(`<div id="${tid}" class="tr-whip" style="background:linear-gradient(90deg, transparent, ${acc}cc, #ffffffdd, ${acc}cc, transparent);"></div>`);
+      htmlParts.push(`<div id="${tid}" class="tr-whip" data-layout-allow-overflow style="background:linear-gradient(90deg, transparent, ${acc}cc, #ffffffdd, ${acc}cc, transparent);"></div>`);
       jsParts.push(`tl.fromTo("#${tid}", { opacity: 0, x: -1200 }, { opacity: 0.92, x: 0, duration: 0.16, ease: "power3.in" }, ${(cutT - 0.16).toFixed(3)});
                     tl.to("#${tid}", { opacity: 0, x: 1200, duration: 0.22, ease: "power3.out" }, ${(cutT + 0.01).toFixed(3)});`);
     } else if (kind === 1) {
-      htmlParts.push(`<div id="${tid}" class="tr-ring" style="border-color:${acc};"></div>`);
+      htmlParts.push(`<div id="${tid}" class="tr-ring" data-layout-allow-overflow style="border-color:${acc};"></div>`);
       jsParts.push(`tl.fromTo("#${tid}", { opacity: 0, scale: 0.15 }, { opacity: 0.95, scale: 1.5, duration: 0.20, ease: "expo.out" }, ${(cutT - 0.08).toFixed(3)});
                     tl.to("#${tid}", { opacity: 0, scale: 1.9, duration: 0.16, ease: "power2.in" }, ${(cutT + 0.14).toFixed(3)});`);
     } else if (kind === 2) {
-      htmlParts.push(`<div id="${tid}" class="tr-slice" style="background:linear-gradient(115deg, transparent 35%, ${acc}bb 48%, #ffffff 50%, ${acc}bb 52%, transparent 65%);"></div>`);
+      htmlParts.push(`<div id="${tid}" class="tr-slice" data-layout-allow-overflow style="background:linear-gradient(115deg, transparent 35%, ${acc}bb 48%, #ffffff 50%, ${acc}bb 52%, transparent 65%);"></div>`);
       jsParts.push(`tl.fromTo("#${tid}", { opacity: 0, x: -900, y: -400 }, { opacity: 0.9, x: 900, y: 400, duration: 0.36, ease: "power2.inOut" }, ${(cutT - 0.14).toFixed(3)});
                     tl.set("#${tid}", { opacity: 0 }, ${(cutT + 0.24).toFixed(3)});`);
     } else {
-      htmlParts.push(`<div id="${tid}" class="tr-bloom" style="background:radial-gradient(circle at 50% 50%, ${acc}66 0%, rgba(255,255,255,0.22) 35%, transparent 72%);"></div>`);
+      htmlParts.push(`<div id="${tid}" class="tr-bloom" data-layout-allow-overflow style="background:radial-gradient(circle at 50% 50%, ${acc}66 0%, rgba(255,255,255,0.22) 35%, transparent 72%);"></div>`);
       jsParts.push(`tl.fromTo("#${tid}", { opacity: 0, scale: 0.7 }, { opacity: 0.95, scale: 1.35, duration: 0.17, ease: "power2.out" }, ${(cutT - 0.12).toFixed(3)});
                     tl.to("#${tid}", { opacity: 0, scale: 1.8, duration: 0.22, ease: "power3.in" }, ${(cutT + 0.06).toFixed(3)});`);
     }

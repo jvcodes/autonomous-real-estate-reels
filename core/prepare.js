@@ -16,11 +16,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { spawnSync } = require('child_process');
-const { MsEdgeTTS, OUTPUT_FORMAT } = require('msedge-tts');
+const { execSync, spawnSync } = require('child_process');
 
 const { LAYOUT, sanitizeName, ensureCssId } = require('./layout_spec');
-const { inferVoiceLocale, parseBoundaryObjects, findAnchorTime, inferKeywordsForBeat, mixMasterAudio } = require('./audio_tts');
+const { inferVoiceLocale, synthesizeSpeechFile, findAnchorTime, inferKeywordsForBeat, mixMasterAudio } = require('./audio_tts');
 const {
   generateSceneCompositionHtml,
   generateHudChromeHtml,
@@ -266,22 +265,51 @@ async function main() {
     throw new Error('site.json must define at least one scene inside scenes[]');
   }
 
-  const tts = new MsEdgeTTS();
-  const ttsFormat = OUTPUT_FORMAT.AUDIO_24KHZ_96KBITRATE_MONO_MP3 || OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3;
-  await tts.setMetadata(voice, ttsFormat, { voiceLocale: locale, wordBoundaryEnabled: true, sentenceBoundaryEnabled: true });
-
   let currentFrame = 0;
   const preparedScenes = [];
   const globalMaxDwell = Number(config.card_max_display_sec || LAYOUT.timing.cardDefaultDwellSec);
 
   for (let i = 0; i < config.scenes.length; i++) {
     const s = config.scenes[i];
-    const absVideo = !s.video || s.video === 'auto'
+    const srcVideo = !s.video || s.video === 'auto'
       ? autoClips[i] || null
       : [path.resolve(siteDir, s.video), path.resolve(clipsDir, s.video), path.resolve(REPO_ROOT, s.video)].find((p) => fs.existsSync(p)) || null;
 
-    if (!absVideo || !fs.existsSync(absVideo)) {
+    if (!srcVideo || !fs.existsSync(srcVideo)) {
       throw new Error(`Missing video for scene "${s.id}" (#${i + 1}). Drop MP4 clips into ${clipsDir} or set scene.video path.`);
+    }
+
+    const scId = ensureCssId(s.id || `scene_${i + 1}`);
+    const hasSlice =
+      typeof s.clip_start === 'number' ||
+      typeof s.clip_end === 'number' ||
+      (typeof s.clip_speed === 'number' && Math.abs(s.clip_speed - 1.0) > 0.01) ||
+      Boolean(s.clip_reverse) ||
+      Boolean(s.normalize_portrait);
+
+    let absVideo = srcVideo;
+    if (hasSlice) {
+      const rawDur = getMediaDurationSec(srcVideo);
+      const cStart = Math.max(0, Number(s.clip_start || 0));
+      const cEnd = Math.min(rawDur, typeof s.clip_end === 'number' ? s.clip_end : rawDur);
+      const cDur = Math.max(0.5, cEnd - cStart);
+      const cSpeed = Math.max(0.25, Math.min(4.0, Number(s.clip_speed || 1.0)));
+      const segDir = path.join(workDir, 'segs');
+      fs.mkdirSync(segDir, { recursive: true });
+      const segPath = path.join(segDir, `${scId}_seg.mp4`);
+      const vfParts = [
+        `scale=${width}:${height}:force_original_aspect_ratio=increase`,
+        `crop=${width}:${height}`,
+        ...(s.clip_reverse ? ['reverse'] : []),
+        `setpts=(PTS-STARTPTS)/${cSpeed.toFixed(4)}`,
+        `fps=${fps}`,
+        'setsar=1'
+      ];
+      execSync(
+        `"${FFMPEG}" -y -ss ${cStart.toFixed(3)} -t ${cDur.toFixed(3)} -i "${srcVideo}" -vf "${vfParts.join(',')}" -an -c:v libx264 -preset veryfast -crf 17 -pix_fmt yuv420p "${segPath}"`,
+        { stdio: 'ignore' }
+      );
+      absVideo = segPath;
     }
 
     const durationSec = getMediaDurationSec(absVideo);
@@ -293,7 +321,6 @@ async function main() {
     const videoFilename = path.basename(absVideo);
     linkOrCopy(absVideo, path.join(hfAssets, 'video', videoFilename));
 
-    const scId = ensureCssId(s.id || `scene_${i + 1}`);
     const absAudio = path.join(audioDir, `${scId}.mp3`);
     let audioDur = 0;
     let hasAudio = false;
@@ -301,18 +328,17 @@ async function main() {
     const audioOffsetInsideScene = 0.35;
 
     if (s.voice_text && s.voice_text.trim().length > 0) {
-      const stream = fs.createWriteStream(absAudio);
-      const { audioStream, metadataStream } = tts.toStream(s.voice_text.trim(), { rate: voiceRate, pitch: voicePitch });
-      const metaChunks = [];
-      if (metadataStream) metadataStream.on('data', (chunk) => metaChunks.push(chunk.toString('utf8')));
-      await new Promise((res, rej) => {
-        audioStream.pipe(stream);
-        stream.on('finish', res);
-        stream.on('error', rej);
+      const rawWords = await synthesizeSpeechFile({
+        text: s.voice_text.trim(),
+        outPath: absAudio,
+        voice,
+        locale,
+        rate: voiceRate,
+        pitch: voicePitch
       });
       audioDur = getMediaDurationSec(absAudio);
       hasAudio = true;
-      wordTimings = parseBoundaryObjects(metaChunks).map((w) => ({
+      wordTimings = rawWords.map((w) => ({
         ...w,
         start: Number((w.start + audioOffsetInsideScene).toFixed(3)),
         end: Number((w.end + audioOffsetInsideScene).toFixed(3)),
@@ -384,8 +410,6 @@ async function main() {
       beats: resolvedBeats
     });
   }
-
-  try { tts.close(); } catch {}
 
   const totalFrames = currentFrame;
   const totalDurationSec = Number((totalFrames / fps).toFixed(2));
