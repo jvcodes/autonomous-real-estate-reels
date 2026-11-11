@@ -1,47 +1,36 @@
 {
   "name": "autonomous-real-estate-reels",
-  "version": "1.1.0",
-  "description": "Autonomous AI Agent & Broadcast Motion Graphics Pipeline for Real Estate Instagram Reels & YouTube Shorts with Blender 3D CGI & Edge-TTS",
-  "main": "server.js",
+  "version": "2.0.0",
+  "description": "Generic 9:16 Single-Site Real Estate Reel Studio (HyperFrames + GSAP 3.15 + Edge Neural TTS + DaVinci Resolve)",
+  "main": "core/prepare.js",
   "scripts": {
-    "start": "node server.js",
-    "voiceover": "node scripts/generate_voiceovers.js",
-    "render": "node scripts/build_reels.js",
-    "render:all": "node scripts/build_reels.js --all",
-    "render:3d": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_3d_flyover.py --",
-    "render:3d:all": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_3d_flyover.py -- --all",
-    "render:vse": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_vse_reel_editor.py --",
-    "render:vse:site1": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_vse_reel_editor.py -- --site 01_PNK_Township --lang en",
-    "capture:maps": "node scripts/capture_google_maps_video.js --all",
-    "capture:maps:full": "node scripts/capture_google_maps_video.js --full",
-    "vse:combined": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_vse_combined_reels.py --",
-    "render:vse:combined": "\"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" -b -P scripts/blender_vse_combined_reels.py -- --render",
-    "composite:3d": "node scripts/render_hybrid_3d_reel.js",
-    "composite:3d:all": "node scripts/render_hybrid_3d_reel.js --all",
-    "pipeline:all": "node scripts/generate_voiceovers.js && npm run render:3d:all && node scripts/render_hybrid_3d_reel.js --all",
-    "export": "node scripts/headless_reel_capture.js"
+    "new": "node core/prepare.js --new",
+    "prep": "node core/prepare.js",
+    "studio": "node core/render.js studio",
+    "check": "node core/render.js check",
+    "mp4": "node core/render.js mp4",
+    "alpha": "node core/render.js alpha",
+    "reel": "node core/render.js reel",
+    "open:resolve": "cmd /c open_davinci.bat"
   },
   "keywords": [
     "real-estate",
+    "hyperframes",
+    "gsap",
     "instagram-reels",
     "youtube-shorts",
-    "blender-3d",
-    "google-maps",
-    "motion-graphics",
-    "autonomous-agent",
-    "antigravity",
-    "mcp",
-    "tumkur"
+    "davinci-resolve",
+    "msedge-tts"
   ],
   "author": "jvcodes",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jvcodes/autonomous-real-estate-reels.git"
+    "url": "https://github.com/jvcodes/autonomous-real-estate-reels"
   },
-  "devDependencies": {
-    "@ffmpeg-installer/ffmpeg": "^1.1.0",
-    "msedge-tts": "^2.1.1",
-    "puppeteer-core": "^24.43.1"
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "hyperframes": "^0.9.29",
+    "msedge-tts": "^2.1.1"
   }
 }

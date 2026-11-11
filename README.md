@@ -1,136 +1,68 @@
-# 🎬 Autonomous Real Estate Reels Engine (Hollywood 3D CGI + 2D Broadcast)
+# Autonomous Real Estate Reels Studio (9:16 Vertical)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Format: 9:16 Vertical Reel](https://img.shields.io/badge/Format-9%3A16%20Reels-gradient)](https://instagram.com)
-[![Engine: Blender 5.2 + FFmpeg + Edge-TTS](https://img.shields.io/badge/Engine-Blender%205.2%20%2B%20FFmpeg%20%2B%20Edge--TTS-orange)](https://github.com/jvcodes/autonomous-real-estate-reels)
-[![Tokens: ZERO Recurring Cost](https://img.shields.io/badge/LLM%20Tokens-0%20Recurring%20Cost-brightgreen)](https://github.com/jvcodes/autonomous-real-estate-reels)
+Turn raw site tour clips into broadcast-quality **1080×1920 @ 30 FPS Instagram Reels & YouTube Shorts** with animated GSAP 3.15 motion graphics, word-synced Kannada/English Edge Neural voiceovers, shared brand logo overlays, and DaVinci Resolve multi-track timelines — **at $0 recurring API cost**.
 
-An **industry-leading autonomous AI pipeline** designed to produce viral, Hollywood-grade **9:16 vertical video reels** (for Instagram Reels, YouTube Shorts, and TikTok) showcasing residential and commercial real estate layouts.
-
-Combines **Blender 5.2 3D CGI drone flyovers**, **glowing neon road trajectory splines**, **holographic plot boundary extrusions**, **3D bouncing location pins**, **regional neural voiceovers (English & Kannada)**, and **full-bleed ground walkthrough videos** with broadcast motion graphics.
+*(Looking for the original Blender 3D CGI + Google Maps v1 pipeline? Switch to tag `v1-blender-maps` / branch `main`.)*
 
 ---
 
-## 🌟 Why This Pipeline Leads The Field
+## Folder Layout
 
-| Feature | Ordinary Video Tools | Paid Cloud AI Reel Apps | This Autonomous Engine |
-| :--- | :--- | :--- | :--- |
-| **Recurring Cost** | Manual editor ($50-$200/reel) | $30-$100/mo + token credits | **$0.00 / 0 Tokens (100% Free & Local)** |
-| **3D CGI Aerials** | Not included or slow CGI | Flat 2D satellite screenshots | **Blender 5.2 Eevee 3D (RTX GPU accelerated)** |
-| **Access Route** | Static arrows | 2D lines | **3D Glowing Neon Splines with speed-ramp dive** |
-| **Plot Boundaries** | Flat 2D outline | Flat colored shapes | **3D Holographic Volumetric Extrusions** |
-| **Pin Drop** | Static graphic | 2D sticker | **3D Conical Pin with impact shockwave ripple** |
-| **Voiceover** | Paid ElevenLabs ($$$) | Generic robotic voice | **Edge-TTS Neural (English & Kannada, 0 cost)** |
-| **Production Speed** | 2-4 hours per video | 5-15 mins in queue | **~1.5 mins per reel on RTX 3050 Ti** |
-
----
-
-## 📐 Hybrid 3D Pipeline Architecture
-
-```
-[ Layout Metadata: data/featured_reels_master.json ]
-                         │
-      ┌──────────────────┴──────────────────┐
-      ▼                                     ▼
-[ Blender 5.2 Eevee 3D Engine ]   [ Microsoft Edge Neural TTS ]
-  - 3D Neon Road Spline             - English (en-IN-NeerjaNeural)
-  - Holographic Plot Extrusion      - Kannada (kn-IN-GaganNeural)
-  - 3D Bouncing Location Pin Drop   - Zero token consumption
-  - Terminal Speed-Ramp Dive        
-      │                                     │
-      ▼                                     ▼
-[ 1080x1920 3D Flyover MP4 ]       [ Crystal Clear Regional MP3 ]
-      │                                     │
-      └──────────────────┬──────────────────┘
-                         │
-                         ▼
-        [ Puppeteer Headless Broadcast Overlays ]
-          - Top 5-Segment Story Progress Tracker
-          - Live Telemetry (● REC TUMKUR REEL)
-          - Glassmorphism Price & Landmark Card
-                         │
-                         ▼
-             [ Standalone FFmpeg Muxer ]
-          - Concatenates 3D Intro + Walkthrough
-          - Whip-zoom speed-ramp transition
-          - Muxes regional voiceover + audio bed
-                         │
-                         ▼
-     [ Finished 1080x1920 Master Reel (~14.0s) ]
-```
-
----
-
-## 🚀 Quick Start & CLI Runbook
-
-### 1. Prerequisites
-- **Node.js** (v18+)
-- **Blender 5.2 LTS** (installed on default path or set in PATH)
-- **NVIDIA GPU** recommended (tested on RTX 3050 Ti with OptiX/CUDA)
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Generate Regional Voiceovers (Zero Tokens)
-Synthesizes English and Kannada voiceovers for all layouts:
-```bash
-npm run voiceover
-```
-
-### 4. Render 3D CGI Drone Flyovers (Blender Eevee)
-Single site:
-```bash
-npm run render:3d -- --site 01_PNK_Township
-```
-Batch render all 5 featured layouts:
-```bash
-npm run render:3d:all
-```
-
-### 5. Compile Hollywood 3D Hybrid Master Reels
-Composite 3D CGI flyover + on-site phone walkthrough + broadcast HUD + audio:
-```bash
-# Single site (English + Kannada)
-npm run composite:3d -- --site 01_PNK_Township --lang both
-
-# Batch compile all layouts
-npm run composite:3d:all
-```
-
-### 6. Full End-to-End Autonomous Pipeline
-Runs voiceovers $\rightarrow$ 3D CGI rendering $\rightarrow$ Walkthrough stitching for all properties in one click:
-```bash
-npm run pipeline:all
-```
-
----
-
-## 📁 Repository Structure
-
-```
+```text
 autonomous-real-estate-reels/
-├── data/
-│   ├── featured_reels_master.json   # Single source of truth (coordinates, prices, 3D splines)
-│   └── layouts_master_catalog.json  # Full 10-layout Tumkur catalog
-├── scripts/
-│   ├── blender_3d_flyover.py        # Parametric Blender 3D Eevee generator
-│   ├── generate_voiceovers.js       # MsEdgeTTS dual-language synthesizer (EN + KN)
-│   ├── render_hybrid_3d_reel.js     # Hollywood 3D + Walkthrough hybrid compositor
-│   ├── build_reels.js               # 2D Map/Overlay compositor
-│   └── server.js                    # HTTP 206 Partial Content MP4 streaming server
-├── output/
-│   ├── audio/                       # Generated .mp3 voiceovers (en & kn)
-│   ├── overlays/                    # Transparent 1080x1920 broadcast PNG graphics
-│   ├── blender/                     # 3D CGI .mp4 flyover clips
-│   └── reels/                       # Finished 1080x1920 master video reels
-├── .agents/skills/                  # Custom Antigravity agent skill definition
-├── ADR/                             # Architecture Decision Records
-└── package.json                     # NPM lifecycle commands
+├── .agents/skills/real-estate-reel/SKILL.md  <-- Always-on generic agent skill
+├── setup.toml & setup.ps1                    <-- Single-command Windows setup (winget + npm + Resolve)
+├── package.json & .gitignore                 <-- Local deps (hyperframes, gsap, msedge-tts)
+├── common/                                   <-- Shared once across ALL reels
+│   ├── brand.json                            <-- Page @handle, default voice, "Follow Page" copy
+│   ├── logo/                                 <-- Drop logo.png or logo.svg here (auto-picked up!)
+│   ├── fonts/                                <-- NIRMALA.TTF / NIRMALAB.TTF
+│   └── music/                                <-- Optional custom BGM (else built-in chord bed)
+├── core/                                     <-- Only 3 slim engine files (zero legacy clutter)
+│   ├── prepare.js                            <-- Clips + common/ -> HyperFrames HTML/TTS/XML
+│   ├── render.js                             <-- Studio preview, check, MP4 & ProRes 4444 Alpha
+│   └── resolve_import.py                     <-- DaVinci Resolve Workspace > Scripts importer
+└── sites/
+    ├── _template/                            <-- Starter 5-Stage Property Sheet
+    └── <YYYY-MM-DD>_<site_name>/             <-- One folder per property you shoot
+        ├── clips/                            <-- Drop today's MP4s here
+        ├── site.json                         <-- 5-stage property details
+        ├── work/                             <-- Generated build artifacts (gitignored)
+        └── out/                              <-- Finished .mp4, _hud_alpha.mov, .wav, .xml (gitignored)
 ```
 
 ---
 
-## 📄 License
-MIT © 2026 [jvcodes](https://github.com/jvcodes)
+## One-Time Setup (`setup.toml`)
+
+```powershell
+# Installs Node 22+, Gyan.FFmpeg, hyperframes, gsap, msedge-tts, fonts & DaVinci Resolve script
+.\setup.ps1 -InstallApps
+```
+Drop your brand logo inside `common/logo/logo.png` (or `logo.svg`) and update your `@page_handle` in `common/brand.json`.
+
+---
+
+## Daily Reel Workflow
+
+1. **Create today's site folder:**
+   ```powershell
+   npm run new -- vasanthanarasapura
+   ```
+2. **Add footage & edit `site.json`:**
+   Drop your recorded clips into `sites/<date>_vasanthanarasapura/clips/` and update the 5 standard stages in `site.json`:
+   - `scene_01_road_and_area` (Nearest highway/road + locality)
+   - `scene_02_site_approvals` (TUDA / RERA / A-Khata + utilities)
+   - `scene_03_dimensions_vastu` (Dimensions, facing, Vastu)
+   - `scene_04_pricing` (Rate per sq.ft + total plot cost)
+   - `scene_05_follow_page` (Brand logo from `common/logo/` + `@handle` Follow CTA)
+3. **Prepare, preview & render:**
+   ```powershell
+   npm run prep   -- sites/<date>_vasanthanarasapura
+   npm run check  -- sites/<date>_vasanthanarasapura
+   npm run studio -- sites/<date>_vasanthanarasapura   # Interactive browser preview
+   npm run mp4    -- sites/<date>_vasanthanarasapura   # Upload-ready MP4 + SFX WAV + XML
+   npm run reel   -- sites/<date>_vasanthanarasapura   # MP4 + ProRes 4444 Alpha MOV + DaVinci script
+   ```
+4. **DaVinci Resolve (Optional Fine-Tuning):**
+   Launch with `open_davinci.bat` and click **Workspace → Scripts → `Build_Reel_Studio`**, or press `Ctrl+Shift+I` to import `sites/<site>/out/<timeline>.xml`.

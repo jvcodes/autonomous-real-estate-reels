@@ -1,0 +1,174 @@
+{
+  "site_id": "2026-11-11_sample_layout",
+  "timeline_name": "Sample_Layout_V1",
+  "project_title": "Sample Residential Layout Tour",
+  "location_badge": "AREA NAME • MAIN ROAD",
+  "scenes": [
+    {
+      "id": "scene_01_road_and_area",
+      "video": "auto",
+      "top_label": "LOCATION & ROAD HOOK",
+      "hero_value": "AREA NAME",
+      "sub_value": "500M FROM MAIN HIGHWAY • 30-FT ROAD",
+      "glide_to": "bottom",
+      "accent": "#00D4FF",
+      "accent_secondary": "#6366F1",
+      "voice_text": "ನಮಸ್ಕಾರ! ಇಂದು ನಾವು ತುಮಕೂರಿನ ಪ್ರಮುಖ ಪ್ರದೇಶದಲ್ಲಿ, ರಾಷ್ಟ್ರೀಯ ಹೆದ್ದಾರಿಗೆ ಕೇವಲ 500 ಮೀಟರ್ ದೂರದಲ್ಲಿರುವ ಸುಂದರ ಬಡಾವಣೆಯನ್ನು ತೋರಿಸುತ್ತಿದ್ದೇವೆ.",
+      "beats": [
+        {
+          "widget": "hero_title",
+          "start_pct": 0.0,
+          "end_pct": 0.45,
+          "glide_to": "bottom",
+          "badge": "LIVE SITE TOUR",
+          "value": "YOUR AREA NAME",
+          "sub": "FAST-GROWING RESIDENTIAL HUB"
+        },
+        {
+          "widget": "route_tracker",
+          "start_pct": 0.45,
+          "end_pct": 1.0,
+          "glide_to": "top",
+          "badge": "HIGHWAY ACCESS",
+          "count_from": 0,
+          "count_to": 500,
+          "count_suffix": "M TO HIGHWAY",
+          "route_start": "THIS SITE",
+          "route_end": "MAIN ROAD / NH",
+          "sub": "2 MINUTES DRIVE • 30-FT ROAD"
+        }
+      ]
+    },
+    {
+      "id": "scene_02_site_approvals",
+      "video": "auto",
+      "top_label": "TUDA & LEGAL APPROVALS",
+      "hero_value": "TUDA APPROVED • A-KHATA",
+      "sub_value": "CLEAR TITLE • WATER • 3-PHASE POWER",
+      "glide_to": "bottom",
+      "accent": "#10B981",
+      "accent_secondary": "#00D4FF",
+      "voice_text": "ಈ ಬಡಾವಣೆಯು ಟುಡಾ ಅಪ್ರೂವಲ್ ಮತ್ತು ಎ-ಖಾತಾ ಕ್ಲಿಯರ್ ಟೈಟಲ್ ಹೊಂದಿದ್ದು, ಕುಡಿಯುವ ನೀರು, ಬೋರ್‌ವೆಲ್ ಹಾಗೂ 3-ಫೇಸ್ ವಿದ್ಯುತ್ ಸಂಪರ್ಕ ಸಿದ್ಧವಾಗಿದೆ.",
+      "beats": [
+        {
+          "widget": "verified_shield",
+          "start_pct": 0.0,
+          "end_pct": 0.48,
+          "glide_to": "bottom",
+          "badge": "100% APPROVED LAYOUT",
+          "value": "TUDA • A-KHATA",
+          "sub": "CLEAR TITLE • BANK LOAN READY"
+        },
+        {
+          "widget": "checklist_live",
+          "start_pct": 0.46,
+          "end_pct": 1.0,
+          "glide_to": "bottom",
+          "badge": "CIVIC UTILITIES",
+          "value": "READY TO BUILD",
+          "items": [
+            "30-FT ASPHALT INTERNAL ROADS",
+            "WATER PIPELINE & BOREWELL",
+            "3-PHASE POWER & DRAINAGE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scene_03_dimensions_vastu",
+      "video": "auto",
+      "top_label": "PLOT DIMENSIONS & VASTU",
+      "hero_value": "30 × 40 FT",
+      "sub_value": "1,200 SQ.FT • EAST & NORTH FACING",
+      "glide_to": "bottom",
+      "accent": "#F59E0B",
+      "accent_secondary": "#EC4899",
+      "voice_text": "ಪ್ರತಿಯೊಂದು ನಿವೇಶನ 30 ಬೈ 40 ಅಡಿ, ಅಂದರೆ 1,200 ಚದರಡಿ ವಿಸ್ತೀರ್ಣ ಹೊಂದಿದ್ದು ಪೂರ್ವ ಹಾಗೂ ಉತ್ತರ ಮುಖದ 100% ವಾಸ್ತು ಪ್ರಕಾರವಾಗಿ ರೂಪಿಸಲಾಗಿದೆ.",
+      "beats": [
+        {
+          "widget": "blueprint_draw",
+          "start_pct": 0.0,
+          "end_pct": 0.52,
+          "glide_to": "bottom",
+          "badge": "STANDARD PLOT SIZE",
+          "width_label": "30 FT",
+          "depth_label": "40 FT",
+          "count_from": 0,
+          "count_to": 1200,
+          "count_suffix": " SQ.FT",
+          "sub": "CORNER & ODD SIZES ALSO AVAILABLE"
+        },
+        {
+          "widget": "vastu_compass",
+          "start_pct": 0.50,
+          "end_pct": 1.0,
+          "glide_to": "bottom",
+          "badge": "SUNRISE ORIENTATION",
+          "value": "EAST FACING",
+          "sub": "100% VASTU COMPLIANT LAYOUT"
+        }
+      ]
+    },
+    {
+      "id": "scene_04_pricing",
+      "video": "auto",
+      "top_label": "TRANSPARENT PRICE DETAILS",
+      "hero_value": "₹1,850 / SQ.FT",
+      "sub_value": "TOTAL ₹22.2 LAKHS • NO HIDDEN FEES",
+      "glide_to": "bottom",
+      "accent": "#FBBF24",
+      "accent_secondary": "#F43F5E",
+      "voice_text": "ಬೆಲೆಯ ವಿವರ ನೋಡುವುದಾದರೆ, ಪ್ರತಿ ಚದರಡಿಗೆ ಕೇವಲ 1,850 ರೂಪಾಯಿ ಮಾತ್ರ. ಒಟ್ಟು 22.2 ಲಕ್ಷ ರೂಪಾಯಿಗಳಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.",
+      "beats": [
+        {
+          "widget": "price_odometer",
+          "start_pct": 0.0,
+          "end_pct": 0.48,
+          "glide_to": "bottom",
+          "badge": "DIRECT LAUNCH RATE",
+          "count_from": 0,
+          "count_to": 1850,
+          "count_prefix": "₹",
+          "count_suffix": " / SQ.FT",
+          "sub": "BEST VALUE IN THIS CORRIDOR"
+        },
+        {
+          "widget": "price_calc",
+          "start_pct": 0.46,
+          "end_pct": 1.0,
+          "glide_to": "bottom",
+          "badge": "PLOT VALUE BREAKDOWN",
+          "eq_left": "1,200 SQ.FT",
+          "eq_mid": "₹1,850",
+          "count_from": 0,
+          "count_to": 22.2,
+          "count_decimals": 1,
+          "count_prefix": "₹",
+          "count_suffix": " LAKHS",
+          "sub": "ZERO BROKERAGE • SPOT REGISTRATION"
+        }
+      ]
+    },
+    {
+      "id": "scene_05_follow_page",
+      "video": "auto",
+      "top_label": "FOLLOW OUR PAGE",
+      "hero_value": "FOLLOW FOR DAILY PLOTS",
+      "sub_value": "FREE SITE VISIT • DM OR CALL NOW",
+      "glide_to": "bottom",
+      "accent": "#00D4FF",
+      "accent_secondary": "#10B981",
+      "voice_text": "ಇಂತಹ ಪ್ರತಿದಿನದ ನಿವೇಶನದ ಮಾಹಿತಿಗಾಗಿ ನಮ್ಮ ಪೇಜ್ ಅನ್ನು ಈಗಲೇ ಫಾಲೋ ಮಾಡಿ. ಉಚಿತ ಸೈಟ್ ವಿಸಿಟ್‌ಗಾಗಿ ಇಂದೇ ಕರೆ ಮಾಡಿ. ಧನ್ಯವಾದಗಳು!",
+      "beats": [
+        {
+          "widget": "follow_cta",
+          "start_pct": 0.0,
+          "end_pct": 1.0,
+          "glide_to": "bottom",
+          "badge": "FOLLOW FOR DAILY UPDATES",
+          "value": "FOLLOW OUR PAGE"
+        }
+      ]
+    }
+  ]
+}

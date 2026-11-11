@@ -1,22 +1,38 @@
-# Local secrets & API keys
-config.local.js
-map_api_key.txt
-.env
-*.env.local
+# Node dependencies & portable toolchains
+node_modules/
+**/node_modules/
+.tools/
+core/node22/
 
-# Large media files (raw videos and heavy screenshots)
+# HyperFrames build caches & validation artifacts
+**/.hyperframes/
+
+# Per-site raw footage, generated HTML/audio work files, and heavy exports
+sites/*/clips/
+sites/*/work/
+sites/*/out/
+sites/.active_site.json
+!sites/_template/
+!sites/_template/**
+!sites/*/.gitkeep
+!sites/*/site.json
+
+# OS-mirrored fonts (copied automatically from Windows Fonts by setup.ps1)
+common/fonts/*.ttf
+common/fonts/*.TTF
+
+# Large binary media catch-all (keeps common/logo.* & common/sfx/* tracked)
 *.mp4
 *.mov
 *.avi
 *.mkv
-*.png
-*.jpg
-*.jpeg
+*.wav
+*.mp3
+!common/sfx/**
+!common/music/.gitkeep
 
-# Dependencies & Build artifacts
-node_modules/
-output/
-dist/
-build/
+# Secrets & OS clutter
+.env
+*.env.local
 .DS_Store
 Thumbs.db

@@ -1,0 +1,28 @@
+# Master Windows Dependency & Environment Manifest
+# Run .\setup.ps1 to install/verify everything from this file in one step.
+
+[project]
+name = "autonomous-real-estate-reels"
+min_node_major = 22
+
+[winget]
+node_lts = "OpenJS.NodeJS.LTS"
+ffmpeg = "Gyan.FFmpeg.Essentials"
+
+[winget_optional]
+# Resolve can be installed via winget or official Blackmagic installer
+davinci_resolve = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\Resolve.exe"
+
+[npm]
+manifest = "package.json"
+install_command = "npm install"
+
+[resolve]
+utility_script_src = "core/resolve_import.py"
+utility_script_name = "Build_Reel_Studio.py"
+utility_dir_rel = "Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts\\Utility"
+
+[fonts]
+required = ["NIRMALA.TTF", "NIRMALAB.TTF"]
+system_dir = "C:\\Windows\\Fonts"
+target_dir = "common/fonts"
