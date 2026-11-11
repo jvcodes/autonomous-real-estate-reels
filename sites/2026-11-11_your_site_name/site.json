@@ -1,0 +1,240 @@
+{
+  "site_id": "2026-11-11_green_valley_sites",
+  "timeline_name": "Green_Valley_Sites_Antharasanahalli",
+  "project_title": "Green Valley Sites — Antharasanahalli, Tumakuru",
+  "location_badge": "ANTHARASANAHALLI • NH 48",
+  "cta_phone": "9876543210",
+  "language": "kn",
+  "voice": "kn-IN-GaganNeural",
+  "voice_rate": "+2%",
+  "voice_pitch": "+0Hz",
+  "scenes": [
+    {
+      "id": "scene_01_location_connectivity",
+      "video": "01_road.mp4",
+      "clip_start": 0.0,
+      "clip_end": 16.5,
+      "clip_speed": 1.0,
+      "top_label": "LOCATION & CONNECTIVITY",
+      "hero_value": "GREEN VALLEY SITES",
+      "sub_value": "ANTHARASANAHALLI • NH 48 (1.5 KM)",
+      "glide_to": "bottom",
+      "accent": "#00D4FF",
+      "accent_secondary": "#6366F1",
+      "voice_text": "ಹಾಯ್ ಫ್ರೆಂಡ್ಸ್! ಇವತ್ತು ನಾವು ತುಮಕೂರು ಅಂತರಸನಹಳ್ಳಿ ಹತ್ರ ಇರೋ, ಗ್ರೀನ್ ವ್ಯಾಲಿ ಸೈಟ್ಸ್ ಪ್ರಾಜೆಕ್ಟ್ ನೋಡೋಣ ಬನ್ನಿ. ಎನ್ ಎಚ್ 48 ಹೈವೇ ಇಂದ ಜಸ್ಟ್ 1.5 ಕಿಲೋಮೀಟರ್, ಮತ್ತೆ ಎಸ್ ಐ ಟಿ ಕಾಲೇಜ್ ಇಂದ 4 ಕಿಲೋಮೀಟರ್ ಅಷ್ಟೇ!",
+      "beats": [
+        {
+          "widget": "hero_title",
+          "start_pct": 0.0,
+          "end_pct": 0.45,
+          "display_sec": 7.2,
+          "glide_to": "bottom",
+          "badge": "ANTHARASANAHALLI • TUMAKURU",
+          "value": "GREEN VALLEY SITES",
+          "sub": "PRIME NH 48 CORRIDOR • NEAR SIT COLLEGE"
+        },
+        {
+          "widget": "route_tracker",
+          "start_pct": 0.47,
+          "end_pct": 0.90,
+          "display_sec": 6.8,
+          "glide_to": "top",
+          "anchor_words": ["ಎನ್", "ಹೈವೇ", "1.5"],
+          "badge": "HIGHWAY ACCESS",
+          "count_from": 0,
+          "count_to": 1.5,
+          "count_decimals": 1,
+          "count_suffix": " KM TO NH 48",
+          "route_start": "GREEN VALLEY SITES",
+          "route_end": "SIT COLLEGE ~4 KM",
+          "sub": "FAST ACCESS • 30 & 40-FT ROADS"
+        }
+      ]
+    },
+    {
+      "id": "scene_02_approvals_trust",
+      "video": "01_road.mp4",
+      "clip_start": 16.5,
+      "clip_end": 32.92,
+      "clip_speed": 1.0,
+      "top_label": "APPROVALS & LEGAL STATUS",
+      "hero_value": "TUDA & DC CONVERTED",
+      "sub_value": "BANK LOAN AVAILABLE • ZERO BROKERAGE",
+      "glide_to": "bottom",
+      "accent": "#10B981",
+      "accent_secondary": "#00D4FF",
+      "voice_text": "ಈ ಪ್ರಾಜೆಕ್ಟ್ ಟುಡಾ ಅಪ್ರೂವ್ಡ್, ಜೊತೆಗೆ ಡಿಸಿ ಕನ್ವರ್ಷನ್ ಕೂಡ ಆಗಿದೆ. ಬ್ಯಾಂಕ್ ಲೋನ್ ಆರಾಮಾಗಿ ಸಿಗುತ್ತೆ, ಮತ್ತೆ ನೋ ಬ್ರೋಕರೇಜ್!",
+      "beats": [
+        {
+          "widget": "verified_shield",
+          "start_pct": 0.02,
+          "end_pct": 0.35,
+          "display_sec": 5.1,
+          "glide_to": "bottom",
+          "badge": "LEGAL APPROVALS (DEMO)",
+          "value": "TUDA • DC CONVERTED",
+          "sub": "100% CLEAR TITLE • READY FOR REGISTRATION"
+        },
+        {
+          "widget": "dual_metric",
+          "start_pct": 0.36,
+          "end_pct": 0.72,
+          "display_sec": 5.0,
+          "anchor_words": ["ಲೋನ್", "ಬ್ರೋಕರೇಜ್"],
+          "glide_to": "bottom",
+          "badge": "BUYER ADVANTAGE",
+          "left_label": "BANK LOAN (DEMO)",
+          "left_value": "AVAILABLE",
+          "right_label": "BROKERAGE FEE",
+          "right_value": "ZERO FEE"
+        }
+      ]
+    },
+    {
+      "id": "scene_03_site_features",
+      "video": "02_site_video.mp4",
+      "clip_start": 0.0,
+      "clip_end": 6.0,
+      "clip_speed": 0.60,
+      "top_label": "SITE FEATURES & UTILITIES",
+      "hero_value": "READY INFRASTRUCTURE",
+      "sub_value": "30 & 40-FT ROADS • WATER • POWER • UGD",
+      "glide_to": "bottom",
+      "accent": "#38BDF8",
+      "accent_secondary": "#10B981",
+      "voice_text": "ಸೈಟ್ ಒಳಗೆ ನೋಡಿ — 30 ಮತ್ತೆ 40 ಅಡಿ ವೈಡ್ ರೋಡ್, ಬೋರ್‌ವೆಲ್ ವಾಟರ್, ಕರೆಂಟ್, ಮತ್ತೆ ಅಂಡರ್‌ಗ್ರೌಂಡ್ ಡ್ರೈನೇಜ್ ಎಲ್ಲಾ ಫುಲ್ ರೆಡಿ ಇದೆ!",
+      "beats": [
+        {
+          "widget": "checklist_live",
+          "start_pct": 0.03,
+          "end_pct": 0.85,
+          "display_sec": 7.9,
+          "glide_to": "bottom",
+          "badge": "CIVIC UTILITIES",
+          "value": "ALL INFRASTRUCTURE READY",
+          "items": [
+            "30 & 40-FT WIDE INTERNAL ROADS",
+            "BOREWELL WATER & UGD DRAINAGE",
+            "ELECTRICITY POLES & POWER READY"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scene_04_dimensions_vastu",
+      "video": "02_site_video.mp4",
+      "clip_start": 6.0,
+      "clip_end": 12.2,
+      "clip_speed": 0.48,
+      "top_label": "PLOT DIMENSIONS & VASTU",
+      "hero_value": "30×40 • 30×50 • 40×60",
+      "sub_value": "EAST & NORTH FACING • CORNER PLOTS",
+      "glide_to": "bottom",
+      "accent": "#F59E0B",
+      "accent_secondary": "#EC4899",
+      "voice_text": "ಇಲ್ಲಿ ಸೈಟ್ ಡೈಮೆನ್ಷನ್ಸ್ ನೋಡೋದಾದ್ರೆ, 30 ಬೈ 40, 30 ಬೈ 50, ಮತ್ತೆ 40 ಬೈ 60 ಸಿಗುತ್ತೆ. ಈಸ್ಟ್ ಮತ್ತೆ ನಾರ್ತ್ ಫೇಸಿಂಗ್, ಕಾರ್ನರ್ ಸೈಟ್ಸ್ ಕೂಡ ಅವೈಲಬಲ್ ಇದೆ!",
+      "beats": [
+        {
+          "widget": "blueprint_draw",
+          "start_pct": 0.02,
+          "end_pct": 0.56,
+          "display_sec": 6.8,
+          "glide_to": "bottom",
+          "badge": "PLOT SIZES AVAILABLE",
+          "width_label": "30 FT",
+          "depth_label": "40 FT",
+          "count_from": 0,
+          "count_to": 1200,
+          "count_suffix": " SQ.FT",
+          "sub": "ALSO 30×50 (1,500) & 40×60 (2,400) SQ.FT"
+        },
+        {
+          "widget": "vastu_compass",
+          "start_pct": 0.58,
+          "end_pct": 0.96,
+          "display_sec": 5.4,
+          "anchor_words": ["ಈಸ್ಟ್", "ನಾರ್ತ್", "ಕಾರ್ನರ್"],
+          "glide_to": "bottom",
+          "badge": "VASTU & CORNER PLOTS",
+          "value": "EAST & NORTH FACING",
+          "sub": "CORNER SITES ALSO AVAILABLE"
+        }
+      ]
+    },
+    {
+      "id": "scene_05_pricing",
+      "video": "02_site_video.mp4",
+      "clip_start": 10.5,
+      "clip_end": 15.75,
+      "clip_speed": 0.44,
+      "top_label": "TRANSPARENT PRICE DETAILS",
+      "hero_value": "₹2,500 / SQ.FT",
+      "sub_value": "30×40: ₹30L • 30×50: ₹37.5L • 40×60: ₹60L",
+      "glide_to": "bottom",
+      "accent": "#FBBF24",
+      "accent_secondary": "#F43F5E",
+      "voice_text": "ಬೆಲೆ ಬಂದ್ಬಿಟ್ಟು ಸ್ಕ್ವೇರ್ ಫೀಟ್‌ಗೆ 2,500 ರೂಪಾಯಿ. 30 ಬೈ 40 ಸೈಟ್ 30 ಲಕ್ಷದಿಂದ ಸ್ಟಾರ್ಟ್ ಆಗುತ್ತೆ, ರಿಜಿಸ್ಟ್ರೇಷನ್ ಎಕ್ಸ್ಟ್ರಾ ಇರುತ್ತೆ.",
+      "beats": [
+        {
+          "widget": "price_odometer",
+          "start_pct": 0.02,
+          "end_pct": 0.44,
+          "display_sec": 4.9,
+          "glide_to": "bottom",
+          "badge": "DIRECT SITE PRICE",
+          "count_from": 0,
+          "count_to": 2500,
+          "count_prefix": "₹",
+          "count_suffix": " / SQ.FT",
+          "sub": "ZERO BROKERAGE • LOAN AVAILABLE"
+        },
+        {
+          "widget": "price_calc",
+          "start_pct": 0.45,
+          "end_pct": 0.94,
+          "display_sec": 5.4,
+          "anchor_words": ["30", "ಲಕ್ಷದಿಂದ"],
+          "glide_to": "bottom",
+          "badge": "SITE BUDGET BREAKDOWN",
+          "eq_left": "1,200 SQ.FT",
+          "eq_mid": "₹2,500",
+          "count_from": 0,
+          "count_to": 30.0,
+          "count_decimals": 1,
+          "count_prefix": "₹",
+          "count_suffix": " LAKHS",
+          "sub": "30×50: ₹37.5L • 40×60: ₹60L • REG EXTRA"
+        }
+      ]
+    },
+    {
+      "id": "scene_06_follow_cta",
+      "video": "02_site_video.mp4",
+      "clip_start": 9.0,
+      "clip_end": 15.75,
+      "clip_speed": 0.68,
+      "clip_reverse": true,
+      "top_label": "FOLLOW @TUMKURSITES",
+      "hero_value": "GREEN VALLEY SITES",
+      "sub_value": "CALL: 9876543210 • BOOK SITE VISIT",
+      "glide_to": "bottom",
+      "accent": "#00D4FF",
+      "accent_secondary": "#10B981",
+      "voice_text": "ಇಂತಹ ಒಳ್ಳೆ ಸೈಟ್ ಅಪ್‌ಡೇಟ್ಸ್‌ಗೆ ನಮ್ಮ ತುಮಕೂರ್ ಸೈಟ್ಸ್ ಪೇಜ್ ನ ಈಗಲೇ ಫಾಲೋ ಮಾಡಿ. ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗೆ ಸ್ಕ್ರೀನ್ ಮೇಲಿರೋ ನಂಬರ್‌ಗೆ ಕಾಲ್ ಮಾಡಿ!",
+      "beats": [
+        {
+          "widget": "follow_cta",
+          "start_pct": 0.02,
+          "end_pct": 1.0,
+          "hold": true,
+          "glide_to": "bottom",
+          "badge": "FOLLOW FOR DAILY UPDATES",
+          "value": "GREEN VALLEY SITES",
+          "handle": "@tumkursites",
+          "button_text": "+ FOLLOW TUMKUR SITES",
+          "sub": "CALL: 9876543210 (DEMO) • FREE SITE VISIT"
+        }
+      ]
+    }
+  ]
+}

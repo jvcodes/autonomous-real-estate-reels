@@ -2,7 +2,7 @@
 
 Turn raw property tour clips into crisp **1080×1920 @ 30 FPS Instagram Reels & YouTube Shorts** with modular **HyperFrames + GSAP 3.15** motion graphics, natural daily spoken **Kanglish (Kannada + English)** Edge Neural voiceovers, word-synced captions, shared brand logo overlays, non-blocking screen geometry, and **DaVinci Resolve** multi-track timelines — **at $0 recurring API cost**.
 
-*(Need the legacy Blender 3D CGI + Google Maps pipeline? Check branch `main` / tag `v1-blender-maps`.)*
+*(Need the legacy Blender 3D CGI + Google Maps v1 pipeline? Check out tag `v1-blender-maps`.)*
 
 ---
 

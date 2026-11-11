@@ -1,0 +1,54 @@
+============================================================
+SITE SCRIPT & REEL BRIEF
+============================================================
+
+1. SITE NAME & LOCATION:
+   - Project Name: Green Valley Sites
+   - Area: Antharasanahalli, Tumakuru
+   - Nearest Highway: NH 48, approximately 1.5 km
+   - Landmark: SIT College, approximately 4 km
+   - Preferred Clip: auto
+
+2. APPROVALS & CIVIC UTILITIES:
+   - Approval: TUDA Approved (dummy)
+   - DC Conversion: Yes (dummy)
+   - Water: Borewell
+   - Electricity: Available
+   - Roads: 30 and 40 feet
+   - Drainage: Underground drainage
+
+3. DIMENSIONS & VASTU:
+   - 30x40 – 1,200 sq.ft
+   - 30x50 – 1,500 sq.ft
+   - 40x60 – 2,400 sq.ft
+   - Facing: East and North
+   - Corner Sites: Available
+
+4. PRICE & PAYMENT:
+   - Price: ₹2,500 per sq.ft
+   - 30x40 Site: ₹30 Lakhs
+   - 30x50 Site: ₹37.5 Lakhs
+   - 40x60 Site: ₹60 Lakhs
+   - Bank Loan: Available (dummy)
+   - Brokerage: Zero
+   - Registration: Extra
+
+5. FOLLOW & CTA:
+   - Instagram: @tumkursites
+   - Phone: 9876543210 (dummy)
+   - Closing Line: ಇಂತಹ ಉತ್ತಮ ಸೈಟ್‌ಗಳ ಮಾಹಿತಿಗಾಗಿ ನಮ್ಮ Tumkur Sites ಪೇಜ್ ಫಾಲೋ ಮಾಡಿ. ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ ಇಂದೇ ಕರೆ ಮಾಡಿ.
+
+6. VISUAL & LANGUAGE:
+   - Language: Kannada (kn-IN-GaganNeural)
+   - Duration: 1–2 minutes
+   - Format: 9:16 vertical reel
+   - Style: Cinematic real-estate video
+   - Show: Location map, highway route, site entrance, roads, plots, dimensions and price.
+   - Subtitles: Kannada
+   - Music: Light background music
+   - Voice: Natural Tumkur Kannada with pauses.
+   - Order: Location → Connectivity → Approvals → Site Features → Dimensions → Price → CTA.
+
+============================================================
+END OF BRIEF
+============================================================
