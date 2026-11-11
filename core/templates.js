@@ -94,23 +94,8 @@ function generateSceneCompositionHtml(scene, sceneIndex, _totalScenes, fps, bran
   const acc2 = scene.accent_secondary || '#6366F1';
   const compId = scene.id;
 
-  const hasTopBeat = scene.beats.some((b) => (b.glide_to || scene.glide_to) === 'top');
-  const hasBottomBeat = scene.beats.some((b) => (b.glide_to || scene.glide_to) !== 'top');
-
-  const htmlParts = [
-    `${hasTopBeat ? '<div class="scrim-top" data-layout-ignore></div>' : ''}
-     ${hasBottomBeat ? '<div class="scrim-bottom" data-layout-ignore></div>' : ''}`
-  ];
-  const cssParts = [
-    `.scrim-top {
-       position: absolute; left: 0; right: 0; top: 0; height: 470px; pointer-events: none;
-       background: linear-gradient(180deg, rgba(4,7,16,0.68) 0%, rgba(4,7,16,0.28) 58%, rgba(4,7,16,0) 100%);
-     }
-     .scrim-bottom {
-       position: absolute; left: 0; right: 0; top: 1120px; height: 640px; pointer-events: none;
-       background: linear-gradient(180deg, rgba(4,7,16,0) 0%, rgba(4,7,16,0.52) 32%, rgba(4,7,16,0.72) 72%, rgba(4,7,16,0.18) 100%);
-     }`
-  ];
+  const htmlParts = [];
+  const cssParts = [];
   const jsParts = [];
 
   scene.beats.forEach((b, bIdx) => {
@@ -361,10 +346,10 @@ function generateRootHtml(timelineData, { transparentOverlay = false } = {}) {
           const st = s.startSec;
           const d = s.durationSec;
           if (idx === 0) {
-            return `tl.fromTo("#cam-wrap-0", { scale: 1.0, y: 0 }, { scale: 1.08, y: -22, duration: ${(d * 0.85).toFixed(3)}, ease: "power2.inOut" }, 0.15);`;
+            return `tl.fromTo("#cam-wrap-0", { scale: 1.0, y: 0 }, { scale: 1.025, y: -8, duration: ${(d * 0.85).toFixed(3)}, ease: "power2.inOut" }, 0.15);`;
           }
           return `
-          tl.fromTo("#cam-wrap-${idx}", { scale: 1.0, x: 0, y: 0 }, { scale: 1.08, x: ${idx % 2 === 0 ? -12 : 12}, y: -18, duration: ${(Math.min(7.5, d * 0.5)).toFixed(3)}, ease: "power2.inOut" }, ${(st + 0.35).toFixed(3)});
+          tl.fromTo("#cam-wrap-${idx}", { scale: 1.0, x: 0, y: 0 }, { scale: 1.025, x: ${idx % 2 === 0 ? -5 : 5}, y: -6, duration: ${(Math.min(7.5, d * 0.5)).toFixed(3)}, ease: "power2.inOut" }, ${(st + 0.35).toFixed(3)});
           tl.to("#cam-wrap-${idx}", { scale: 1.0, x: 0, y: 0, duration: ${(Math.min(5.0, d * 0.32)).toFixed(3)}, ease: "power2.inOut" }, ${(st + d * 0.62).toFixed(3)});`;
         })
         .join('\n');

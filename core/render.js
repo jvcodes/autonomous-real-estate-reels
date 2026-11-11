@@ -144,7 +144,7 @@ function main() {
   if (mode === 'mp4' || mode === 'reel') {
     console.log(`\n[HyperFrames] Rendering 9:16 MP4 -> ${outMp4}`);
     execSync(
-      `"${nodeExe}" "${HF_CLI}" render . --output "${outMp4}" --fps ${data.fps || 30} --quality looks --gpu --browser-gpu --workers 4`,
+      `"${nodeExe}" "${HF_CLI}" render . --output "${outMp4}" --fps ${data.fps || 30} --quality delivery --gpu --browser-gpu --workers 4`,
       { cwd: hfDir, env: envWithTools, stdio: 'inherit' }
     );
 

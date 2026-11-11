@@ -298,15 +298,16 @@ async function main() {
       fs.mkdirSync(segDir, { recursive: true });
       const segPath = path.join(segDir, `${scId}_seg.mp4`);
       const vfParts = [
-        `scale=${width}:${height}:force_original_aspect_ratio=increase`,
+        `scale=${width}:${height}:force_original_aspect_ratio=increase:flags=lanczos`,
         `crop=${width}:${height}`,
+        'unsharp=3:3:0.35:3:3:0.0',
         ...(s.clip_reverse ? ['reverse'] : []),
         `setpts=(PTS-STARTPTS)/${cSpeed.toFixed(4)}`,
         `fps=${fps}`,
         'setsar=1'
       ];
       execSync(
-        `"${FFMPEG}" -y -ss ${cStart.toFixed(3)} -t ${cDur.toFixed(3)} -i "${srcVideo}" -vf "${vfParts.join(',')}" -an -c:v libx264 -preset veryfast -crf 17 -pix_fmt yuv420p "${segPath}"`,
+        `"${FFMPEG}" -y -ss ${cStart.toFixed(3)} -t ${cDur.toFixed(3)} -i "${srcVideo}" -vf "${vfParts.join(',')}" -an -c:v libx264 -preset fast -crf 14 -pix_fmt yuv420p "${segPath}"`,
         { stdio: 'ignore' }
       );
       absVideo = segPath;

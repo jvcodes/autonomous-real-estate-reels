@@ -262,7 +262,6 @@ function renderBeatWidget({ beat, bIdx, sceneIndex, dur, acc, acc2, brandMeta })
   if (wType === 'vastu_compass') {
     return {
       html: `
-        <div id="${bid}-spot" class="yt-hl" data-layout-ignore></div>
         <div id="${bid}" class="compass-card" style="top:${slotTop}px;">
           <div class="comp-dial-wrap">
             <svg class="comp-svg" viewBox="0 0 180 180" data-layout-ignore>
@@ -283,12 +282,6 @@ function renderBeatWidget({ beat, bIdx, sceneIndex, dur, acc, acc2, brandMeta })
           </div>
         </div>`,
       css: `
-        #${bid}-spot {
-          --yt-hl-x: 52%; --yt-hl-y: 44%; --yt-hl-rx: 46%; --yt-hl-ry: 32%;
-          position: absolute; inset: 0; pointer-events: none; opacity: 0; background: rgba(5, 8, 16, 0.16);
-          -webkit-mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 58%, black 92%);
-          mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 58%, black 92%);
-        }
         #${bid} {
           position: absolute; left: ${cardLeft}px; width: ${cardW}px; padding: ${LAYOUT.card.paddingY}px ${LAYOUT.card.paddingX}px; border-radius: ${LAYOUT.card.borderRadiusPx}px; opacity: 0;
           display: flex; align-items: center; gap: 22px; background: rgba(8, 12, 24, 0.91); border: 2px solid ${acc};
@@ -298,12 +291,9 @@ function renderBeatWidget({ beat, bIdx, sceneIndex, dur, acc, acc2, brandMeta })
         #${bid} .comp-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: ${LAYOUT.font.heroDisplayPx}px; color: #ffffff; line-height: 1.05; }
         #${bid} .comp-sub { font-size: ${LAYOUT.font.bodySubPx}px; font-weight: 600; color: #fde68a; margin-top: 6px; }`,
       js: `
-        tl.fromTo("#${bid}-spot", { opacity: 0 }, { opacity: 1, duration: 0.40, ease: "power2.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}", { opacity: 0, y: 34, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-needle", { rotation: -210 }, { rotation: 0, duration: 1.15, ease: "back.out(1.4)" }, ${(bStart + 0.14).toFixed(3)});
-        ${shouldExit ? `
-          tl.to("#${bid}-spot", { opacity: 0, duration: 0.24, ease: "power2.in" }, ${exitAt.toFixed(3)});
-          tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}`
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}`
     };
   }
 
