@@ -1,0 +1,31 @@
+============================================================
+SITE SCRIPT & REEL BRIEF (Fill in plain text — no JSON needed)
+The agent reads this file + clips/ and converts it into a finished 9:16 reel.
+============================================================
+
+1. SITE NAME & LOCATION (Stage 1 — First ~10-15s):
+   - Area / Locality: 
+   - Nearest Highway / Main Road & Distance: 
+   - Preferred Clip Filename (or leave "auto"): 
+
+2. APPROVALS & CIVIC UTILITIES (Stage 2 — Second):
+   - Approvals (TUDA / BMRDA / RERA / A-Khata / DC Conversion): 
+   - Water / Borewell / Electricity / Roads / Drainage: 
+
+3. DIMENSIONS & VASTU FACING (Stage 3 — Third):
+   - Plot Sizes (e.g. 30x40 = 1,200 sq.ft, corner plots): 
+   - Facing & Vastu (e.g. East / North): 
+
+4. PRICE & PAYMENT DETAILS (Stage 4 — Fourth):
+   - Price per sq.ft: 
+   - Total Plot Price: 
+   - Bank Loan / Zero Brokerage / Spot Reg Notes: 
+
+5. FOLLOW OUR PAGE & CTA (Stage 5 — Final):
+   - Override @handle / Phone (leave blank to auto-use common/brand.json + common/logo/): 
+   - Spoken Closing Line Idea: 
+
+6. VISUAL LOOK, LANGUAGE & FLOW OVERRIDES (Optional):
+   - Voice Language (Kannada "kn-IN-GaganNeural" or English "en-IN-NeerjaNeural"): kn-IN-GaganNeural
+   - Reel Visual Style / Card Positions (e.g. keep HUD bottom except highway route top): 
+   - Any Extra Stage or Custom Order ("show park after approvals before price"): 

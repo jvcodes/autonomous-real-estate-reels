@@ -1536,6 +1536,8 @@ function createNewSite(rawName) {
   fs.mkdirSync(path.join(destDir, 'clips'), { recursive: true });
   fs.mkdirSync(path.join(destDir, 'out'), { recursive: true });
   fs.copyFileSync(path.join(TEMPLATE_DIR, 'site.json'), path.join(destDir, 'site.json'));
+  const tmplScript = path.join(TEMPLATE_DIR, 'script.txt');
+  if (fs.existsSync(tmplScript)) fs.copyFileSync(tmplScript, path.join(destDir, 'script.txt'));
 
   const cfg = JSON.parse(fs.readFileSync(path.join(destDir, 'site.json'), 'utf8'));
   cfg.site_id = folderName;

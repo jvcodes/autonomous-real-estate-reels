@@ -26,7 +26,8 @@ autonomous-real-estate-reels/
     ├── _template/                            <-- Starter 5-Stage Property Sheet
     └── <YYYY-MM-DD>_<site_name>/             <-- One folder per property you shoot
         ├── clips/                            <-- Drop today's MP4s here
-        ├── site.json                         <-- 5-stage property details
+        ├── script.txt                        <-- Optional plain-text site script for the AI agent
+        ├── site.json                         <-- 5-stage property details (auto-built from script.txt)
         ├── work/                             <-- Generated build artifacts (gitignored)
         └── out/                              <-- Finished .mp4, _hud_alpha.mov, .wav, .xml (gitignored)
 ```

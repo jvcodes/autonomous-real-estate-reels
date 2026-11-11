@@ -16,6 +16,7 @@ sites/.active_site.json
 !sites/_template/**
 !sites/*/.gitkeep
 !sites/*/site.json
+!sites/*/script.txt
 
 # OS-mirrored fonts (copied automatically from Windows Fonts by setup.ps1)
 common/fonts/*.ttf
