@@ -476,12 +476,12 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
   `);
   cssParts.push(`
     .scrim-top {
-      position: absolute; left: 0; right: 0; top: 0; height: 500px; pointer-events: none;
-      background: linear-gradient(180deg, rgba(4,7,16,0.72) 0%, rgba(4,7,16,0.34) 55%, rgba(4,7,16,0) 100%);
+      position: absolute; left: 0; right: 0; top: 0; height: 470px; pointer-events: none;
+      background: linear-gradient(180deg, rgba(4,7,16,0.68) 0%, rgba(4,7,16,0.28) 58%, rgba(4,7,16,0) 100%);
     }
     .scrim-bottom {
-      position: absolute; left: 0; right: 0; top: 900px; height: 540px; pointer-events: none;
-      background: linear-gradient(180deg, rgba(4,7,16,0) 0%, rgba(4,7,16,0.62) 42%, rgba(4,7,16,0.82) 78%, rgba(4,7,16,0.22) 100%);
+      position: absolute; left: 0; right: 0; top: 1120px; height: 640px; pointer-events: none;
+      background: linear-gradient(180deg, rgba(4,7,16,0) 0%, rgba(4,7,16,0.52) 32%, rgba(4,7,16,0.72) 72%, rgba(4,7,16,0.18) 100%);
     }
   `);
 
@@ -491,16 +491,18 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
     const bEnd = Math.min(dur, beat.endSec);
     const bDur = Math.max(1.0, bEnd - bStart);
     const isTop = (beat.glide_to || scene.glide_to) === 'top';
-    const slotTop = isTop ? 196 : 975;
+    const slotTop = isTop ? 212 : 1225;
     const isLastBeat = bIdx === scene.beats.length - 1;
-    const exitDur = 0.20;
-    const exitAt = isLastBeat ? Math.max(bStart + 0.45, dur - 0.12) : Math.max(bStart + 0.45, bEnd - exitDur - 0.04);
+    const shouldHoldToEnd = Boolean(beat.hold) || (beat.widget === 'follow_cta' && beat.hold !== false && dur - bEnd <= 0.35 && bDur <= 10.5);
+    const exitDur = 0.22;
+    const exitAt = Math.max(bStart + 0.85, bEnd - exitDur);
+    const shouldExit = !shouldHoldToEnd || !isLastBeat;
     const wType = beat.widget || 'highlight_pill';
 
     if (wType === 'hero_title') {
       const words = String(beat.value || '').split(/\s+/).filter(Boolean);
       const isOpening = sceneIndex === 0;
-      const yPos = isOpening ? 955 : slotTop;
+      const yPos = isTop ? 212 : 1225;
       htmlParts.push(`
         <div id="${bid}" class="hero-stage" style="top:${yPos}px;">
           <div class="hero-pin" id="${bid}-pin" data-layout-ignore>
@@ -516,22 +518,22 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; pointer-events: none; opacity: 0;
-          padding: 26px 32px; border-radius: 26px;
+          position: absolute; left: 44px; width: 840px; pointer-events: none; opacity: 0;
+          padding: 20px 28px; border-radius: 24px;
           background: linear-gradient(135deg, rgba(8,12,24,0.90), rgba(14,22,42,0.86));
-          border: 2px solid ${acc}88; box-shadow: 0 26px 64px rgba(0,0,0,0.58);
+          border: 2px solid ${acc}88; box-shadow: 0 24px 56px rgba(0,0,0,0.58);
         }
         #${bid} .hero-pin {
-          display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px; border-radius: 999px;
+          display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 999px;
           background: ${acc}24; border: 1.5px solid ${acc};
-          font-family: "Space Mono", monospace; font-size: 22px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; margin-bottom: 14px;
+          font-family: "Space Mono", monospace; font-size: 20px; font-weight: 700; letter-spacing: 0.1em; color: #ffffff; margin-bottom: 10px;
         }
-        #${bid} .hero-pin .dot { width: 11px; height: 11px; border-radius: 50%; background: ${acc}; display: inline-block; }
-        #${bid} .hero-words { font-family: "Montserrat", "Outfit", sans-serif; font-weight: 900; font-size: 56px; line-height: 1.08; letter-spacing: -0.02em; color: #ffffff; overflow: visible; }
+        #${bid} .hero-pin .dot { width: 10px; height: 10px; border-radius: 50%; background: ${acc}; display: inline-block; }
+        #${bid} .hero-words { font-family: "Montserrat", "Outfit", sans-serif; font-weight: 900; font-size: 48px; line-height: 1.06; letter-spacing: -0.02em; color: #ffffff; overflow: visible; }
         #${bid} .hw { display: inline-block; }
-        #${bid} .hero-bar-wrap { margin: 14px 0 12px; width: 100%; height: 4px; background: rgba(255,255,255,0.16); border-radius: 4px; overflow: hidden; }
+        #${bid} .hero-bar-wrap { margin: 10px 0 9px; width: 100%; height: 4px; background: rgba(255,255,255,0.16); border-radius: 4px; overflow: hidden; }
         #${bid} .hero-bar { width: 100%; height: 100%; background: linear-gradient(90deg, ${acc}, ${acc2}); transform-origin: left center; }
-        #${bid} .hero-sub { font-size: 28px; font-weight: 600; color: #e2e8f0; letter-spacing: 0.02em; line-height: 1.25; }
+        #${bid} .hero-sub { font-size: 28px; font-weight: 600; color: #e2e8f0; letter-spacing: 0.015em; line-height: 1.22; }
       `);
       const tIn = isOpening ? 0.0 : bStart;
       jsParts.push(`
@@ -543,7 +545,7 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
         `).join('')}
         tl.fromTo("#${bid}-bar", { scaleX: ${isOpening ? 0.35 : 0} }, { scaleX: 1, duration: 0.50, ease: "power3.out" }, ${(tIn + (isOpening ? 0.05 : 0.14)).toFixed(3)});
         tl.fromTo("#${bid}-sub", { opacity: ${isOpening ? 0.8 : 0}, y: ${isOpening ? 4 : 8} }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, ${(tIn + (isOpening ? 0.08 : 0.24)).toFixed(3)});
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: -18, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 18, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     } else if (wType === 'route_tracker') {
       const targetVal = Number(beat.count_to || 500);
@@ -555,12 +557,12 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
             <span class="route-eta" data-layout-ignore>${escHtml(beat.sub || 'QUICK DRIVE')}</span>
           </div>
           <div class="route-val"><span id="${bid}-num" class="num">0</span><span>${escHtml(suffix)}</span></div>
-          <svg class="route-svg" viewBox="0 0 820 82" data-layout-ignore>
-            <path d="M 32 52 Q 260 8 410 42 T 788 28" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="6" stroke-dasharray="10 10" stroke-linecap="round"/>
-            <path id="${bid}-path" d="M 32 52 Q 260 8 410 42 T 788 28" fill="none" stroke="${acc}" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="100 120" stroke-dashoffset="110"/>
-            <circle cx="32" cy="52" r="10" fill="#ffffff" stroke="${acc}" stroke-width="5"/>
-            <circle cx="788" cy="28" r="11" fill="${acc2}" stroke="#ffffff" stroke-width="4"/>
-            <circle id="${bid}-pin" cx="32" cy="52" r="13" fill="#ffffff" stroke="${acc}" stroke-width="5"/>
+          <svg class="route-svg" viewBox="0 0 820 74" data-layout-ignore>
+            <path d="M 32 48 Q 260 8 410 38 T 788 26" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="6" stroke-dasharray="10 10" stroke-linecap="round"/>
+            <path id="${bid}-path" d="M 32 48 Q 260 8 410 38 T 788 26" fill="none" stroke="${acc}" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="100 120" stroke-dashoffset="110"/>
+            <circle cx="32" cy="48" r="10" fill="#ffffff" stroke="${acc}" stroke-width="5"/>
+            <circle cx="788" cy="26" r="11" fill="${acc2}" stroke="#ffffff" stroke-width="4"/>
+            <circle id="${bid}-pin" cx="32" cy="48" r="13" fill="#ffffff" stroke="${acc}" stroke-width="5"/>
           </svg>
           <div class="route-labels" data-layout-ignore>
             <span>${escHtml(beat.route_start || 'YOUR PLOT')}</span>
@@ -570,31 +572,31 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 22px 28px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 18px 26px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.90); border: 2px solid ${acc}99;
-          box-shadow: 0 24px 60px rgba(0,0,0,0.58); pointer-events: none;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.58); pointer-events: none;
         }
-        #${bid} .route-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        #${bid} .route-eta { font-family: "Space Mono", monospace; font-size: 22px; font-weight: 700; color: #38bdf8; }
-        #${bid} .route-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 62px; line-height: 1.05; color: #ffffff; margin-bottom: 6px; }
-        #${bid} .route-svg { width: 100%; height: 76px; overflow: visible; }
-        #${bid} .route-labels { display: flex; justify-content: space-between; font-size: 24px; font-weight: 800; letter-spacing: 0.06em; color: #e2e8f0; margin-top: 4px; }
+        #${bid} .route-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        #${bid} .route-eta { font-family: "Space Mono", monospace; font-size: 20px; font-weight: 700; color: #38bdf8; }
+        #${bid} .route-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 54px; line-height: 1.04; color: #ffffff; margin-bottom: 4px; }
+        #${bid} .route-svg { width: 100%; height: 64px; overflow: visible; }
+        #${bid} .route-labels { display: flex; justify-content: space-between; font-size: 22px; font-weight: 800; letter-spacing: 0.06em; color: #e2e8f0; margin-top: 2px; }
       `);
       jsParts.push(`
         (function() {
           const obj = { v: ${Number(beat.count_from || 0)} };
           const numEl = document.getElementById("${bid}-num");
-          tl.fromTo("#${bid}", { opacity: 0, y: ${isTop ? -32 : 32}, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
-          tl.fromTo("#${bid}-path", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: ${(Math.min(1.5, bDur * 0.50)).toFixed(3)}, ease: "power2.inOut" }, ${(bStart + 0.14).toFixed(3)});
+          tl.fromTo("#${bid}", { opacity: 0, y: ${isTop ? -28 : 28}, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.38, ease: "expo.out" }, ${bStart.toFixed(3)});
+          tl.fromTo("#${bid}-path", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: ${(Math.min(1.4, bDur * 0.45)).toFixed(3)}, ease: "power2.inOut" }, ${(bStart + 0.12).toFixed(3)});
           tl.to("#${bid}-pin", {
             motionPath: { path: "#${bid}-path", align: "#${bid}-path", alignOrigin: [0.5, 0.5] },
-            duration: ${(Math.min(1.5, bDur * 0.50)).toFixed(3)}, ease: "power2.inOut"
-          }, ${(bStart + 0.14).toFixed(3)});
-          tl.to(obj, {
-            v: ${targetVal}, duration: ${(Math.min(1.4, bDur * 0.46)).toFixed(3)}, ease: "power3.out",
-            onUpdate: () => { if (numEl) numEl.textContent = Math.round(obj.v).toLocaleString(); }
+            duration: ${(Math.min(1.4, bDur * 0.45)).toFixed(3)}, ease: "power2.inOut"
           }, ${(bStart + 0.12).toFixed(3)});
-          ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: -22, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+          tl.to(obj, {
+            v: ${targetVal}, duration: ${(Math.min(1.3, bDur * 0.42)).toFixed(3)}, ease: "power3.out",
+            onUpdate: () => { if (numEl) numEl.textContent = Math.round(obj.v).toLocaleString(); }
+          }, ${(bStart + 0.10).toFixed(3)});
+          ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: ${isTop ? -20 : 20}, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
         })();
       `);
     } else if (wType === 'growth_curve') {
@@ -626,25 +628,25 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 24px 28px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 18px 26px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.90); border: 2px solid ${acc}99;
-          box-shadow: 0 24px 60px rgba(0,0,0,0.58); pointer-events: none;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.58); pointer-events: none;
         }
-        #${bid} .gc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
-        #${bid} .gc-title { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 48px; line-height: 1.08; color: #ffffff; }
-        #${bid} .gc-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 6px; }
-        #${bid} .gc-tag { padding: 10px 18px; border-radius: 14px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 22px; color: #090d16; background: linear-gradient(135deg, ${acc}, #ffffff); white-space: nowrap; }
-        #${bid} .gc-svg { width: 100%; height: 112px; overflow: visible; }
+        #${bid} .gc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+        #${bid} .gc-title { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 42px; line-height: 1.06; color: #ffffff; }
+        #${bid} .gc-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 4px; }
+        #${bid} .gc-tag { padding: 8px 16px; border-radius: 14px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 20px; color: #090d16; background: linear-gradient(135deg, ${acc}, #ffffff); white-space: nowrap; }
+        #${bid} .gc-svg { width: 100%; height: 96px; overflow: visible; }
       `);
       jsParts.push(`
-        tl.fromTo("#${bid}", { opacity: 0, y: 38, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}", { opacity: 0, y: 34, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-curve", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 1.15, ease: "power2.inOut" }, ${(bStart + 0.16).toFixed(3)});
         tl.fromTo("#${bid}-area", { opacity: 0 }, { opacity: 1, duration: 0.85, ease: "power2.out" }, ${(bStart + 0.45).toFixed(3)});
         tl.fromTo("#${bid}-pt1", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(1.6)" }, ${(bStart + 0.18).toFixed(3)});
         tl.fromTo("#${bid}-pt2", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(1.6)" }, ${(bStart + 0.72).toFixed(3)});
         tl.fromTo("#${bid}-pt3", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.26, ease: "back.out(1.8)" }, ${(bStart + 1.18).toFixed(3)});
         tl.fromTo("#${bid}-tag", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, ${(bStart + 1.10).toFixed(3)});
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: 24, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     } else if (wType === 'dual_metric') {
       htmlParts.push(`
@@ -663,23 +665,23 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
         </div>
       `);
       cssParts.push(`
-        #${bid} { position: absolute; left: 48px; width: 880px; pointer-events: none; opacity: 0; }
-        #${bid} .dual-badge { margin-bottom: 14px; }
-        #${bid} .dual-grid { display: flex; gap: 22px; width: 100%; }
-        #${bid} .dual-wing { flex: 1; padding: 24px 26px; border-radius: 24px; background: rgba(8, 12, 24, 0.90); border: 2px solid; box-shadow: 0 22px 52px rgba(0,0,0,0.55); }
-        #${bid} .dw-k { font-family: "Space Mono", monospace; font-size: 22px; font-weight: 700; color: #94a3b8; letter-spacing: 0.08em; margin-bottom: 8px; }
-        #${bid} .dw-v { font-family: "Montserrat", sans-serif; font-size: 44px; font-weight: 900; color: #ffffff; line-height: 1.05; }
+        #${bid} { position: absolute; left: 44px; width: 840px; pointer-events: none; opacity: 0; }
+        #${bid} .dual-badge { margin-bottom: 10px; }
+        #${bid} .dual-grid { display: flex; gap: 18px; width: 100%; }
+        #${bid} .dual-wing { flex: 1; padding: 18px 22px; border-radius: 22px; background: rgba(8, 12, 24, 0.90); border: 2px solid; box-shadow: 0 20px 48px rgba(0,0,0,0.55); }
+        #${bid} .dw-k { font-family: "Space Mono", monospace; font-size: 20px; font-weight: 700; color: #94a3b8; letter-spacing: 0.08em; margin-bottom: 6px; }
+        #${bid} .dw-v { font-family: "Montserrat", sans-serif; font-size: 40px; font-weight: 900; color: #ffffff; line-height: 1.05; }
       `);
       jsParts.push(`
         tl.fromTo("#${bid}", { opacity: 0 }, { opacity: 1, duration: 0.14 }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-left", { opacity: 0, x: -70, filter: "blur(6px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-right", { opacity: 0, x: 70, filter: "blur(6px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, ${(bStart + 0.16).toFixed(3)});
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, scale: 0.96, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, scale: 0.96, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     } else if (wType === 'blueprint_draw') {
       const areaTo = Number(beat.count_to || 1200);
       htmlParts.push(`
-        <div id="${bid}" class="bp-card" style="top:${slotTop - 25}px;">
+        <div id="${bid}" class="bp-card" style="top:${isTop ? 204 : 1195}px;">
           <div class="bp-head">
             <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc};">${escHtml(beat.badge || 'PLOT DIMENSIONS')}</span>
             <span class="bp-dims" data-layout-ignore>${escHtml(beat.width_label || '30 FT')} × ${escHtml(beat.depth_label || '40 FT')}</span>
@@ -710,23 +712,23 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 22px 28px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 18px 24px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.91); border: 2px solid ${acc};
-          box-shadow: 0 26px 64px rgba(0,0,0,0.62); pointer-events: none;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.62); pointer-events: none;
         }
-        #${bid} .bp-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        #${bid} .bp-dims { font-family: "Space Mono", monospace; font-size: 24px; font-weight: 700; color: ${acc}; }
-        #${bid} .bp-body { display: flex; align-items: center; gap: 22px; }
-        #${bid} .bp-rect-svg { width: 235px; height: 190px; flex-shrink: 0; }
-        #${bid} .bp-big { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 72px; color: #ffffff; line-height: 1.0; }
-        #${bid} .bp-unit { font-size: 32px; color: ${acc}; font-weight: 800; }
-        #${bid} .bp-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 10px; line-height: 1.25; }
+        #${bid} .bp-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        #${bid} .bp-dims { font-family: "Space Mono", monospace; font-size: 22px; font-weight: 700; color: ${acc}; }
+        #${bid} .bp-body { display: flex; align-items: center; gap: 18px; }
+        #${bid} .bp-rect-svg { width: 205px; height: 165px; flex-shrink: 0; }
+        #${bid} .bp-big { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 62px; color: #ffffff; line-height: 1.0; }
+        #${bid} .bp-unit { font-size: 30px; color: ${acc}; font-weight: 800; }
+        #${bid} .bp-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 8px; line-height: 1.22; }
       `);
       jsParts.push(`
         (function() {
           const obj = { a: ${Number(beat.count_from || 0)} };
           const areaEl = document.getElementById("${bid}-area");
-          tl.fromTo("#${bid}", { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+          tl.fromTo("#${bid}", { opacity: 0, y: 34, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
           tl.fromTo("#${bid}-stroke", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 1.25, ease: "power2.inOut" }, ${(bStart + 0.14).toFixed(3)});
           tl.fromTo("#${bid}-fill", { opacity: 0 }, { opacity: 0.18, duration: 0.85, ease: "power2.out" }, ${(bStart + 0.55).toFixed(3)});
           tl.fromTo(["#${bid}-c1","#${bid}-c2","#${bid}-c3","#${bid}-c4"], { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.25, stagger: 0.14, ease: "back.out(1.6)" }, ${(bStart + 0.18).toFixed(3)});
@@ -734,7 +736,7 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
             a: ${areaTo}, duration: 1.25, ease: "power3.out",
             onUpdate: () => { if (areaEl) areaEl.textContent = Math.round(obj.a).toLocaleString(); }
           }, ${(bStart + 0.16).toFixed(3)});
-          ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: 22, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+          ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
         })();
       `);
     } else if (wType === 'vastu_compass') {
@@ -756,7 +758,7 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
             </svg>
           </div>
           <div class="comp-copy">
-            <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:10px;">${escHtml(beat.badge || 'FACING & VASTU')}</span>
+            <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:8px;">${escHtml(beat.badge || 'FACING & VASTU')}</span>
             <div class="comp-val">${escHtml(beat.value || 'EAST FACING')}</div>
             <div class="comp-sub">${escHtml(beat.sub || '100% VASTU COMPLIANT')}</div>
           </div>
@@ -764,34 +766,34 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid}-spot {
-          --yt-hl-x: 52%; --yt-hl-y: 44%; --yt-hl-rx: 44%; --yt-hl-ry: 28%;
-          position: absolute; inset: 0; pointer-events: none; opacity: 0; background: rgba(5, 8, 16, 0.22);
-          -webkit-mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 55%, black 92%);
-          mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 55%, black 92%);
+          --yt-hl-x: 52%; --yt-hl-y: 44%; --yt-hl-rx: 46%; --yt-hl-ry: 32%;
+          position: absolute; inset: 0; pointer-events: none; opacity: 0; background: rgba(5, 8, 16, 0.16);
+          -webkit-mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 58%, black 92%);
+          mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 58%, black 92%);
         }
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 22px 28px; border-radius: 26px; opacity: 0;
-          display: flex; align-items: center; gap: 26px; background: rgba(8, 12, 24, 0.91); border: 2px solid ${acc};
-          box-shadow: 0 26px 60px rgba(0,0,0,0.62); pointer-events: none;
+          position: absolute; left: 44px; width: 840px; padding: 18px 26px; border-radius: 24px; opacity: 0;
+          display: flex; align-items: center; gap: 22px; background: rgba(8, 12, 24, 0.91); border: 2px solid ${acc};
+          box-shadow: 0 22px 54px rgba(0,0,0,0.62); pointer-events: none;
         }
-        #${bid} .comp-svg { width: 170px; height: 170px; flex-shrink: 0; }
-        #${bid} .comp-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 54px; color: #ffffff; line-height: 1.05; }
-        #${bid} .comp-sub { font-size: 28px; font-weight: 600; color: #fde68a; margin-top: 8px; }
+        #${bid} .comp-svg { width: 150px; height: 150px; flex-shrink: 0; }
+        #${bid} .comp-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 48px; color: #ffffff; line-height: 1.05; }
+        #${bid} .comp-sub { font-size: 28px; font-weight: 600; color: #fde68a; margin-top: 6px; }
       `);
       jsParts.push(`
-        tl.fromTo("#${bid}-spot", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, ${bStart.toFixed(3)});
-        tl.fromTo("#${bid}", { opacity: 0, y: 36, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}-spot", { opacity: 0 }, { opacity: 1, duration: 0.40, ease: "power2.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}", { opacity: 0, y: 34, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-needle", { rotation: -210 }, { rotation: 0, duration: 1.15, ease: "back.out(1.4)" }, ${(bStart + 0.14).toFixed(3)});
-        ${!isLastBeat ? `
-          tl.to("#${bid}-spot", { opacity: 0, duration: 0.25, ease: "power2.in" }, ${exitAt.toFixed(3)});
+        ${shouldExit ? `
+          tl.to("#${bid}-spot", { opacity: 0, duration: 0.24, ease: "power2.in" }, ${exitAt.toFixed(3)});
           tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});
         ` : ''}
       `);
     } else if (wType === 'checklist_live') {
       const items = beat.items || ['TUDA / CLEAR TITLE', 'DRINKING WATER & BOREWELL', '3-PHASE ELECTRICITY'];
-      const itemGap = Math.min(1.5, (bDur * 0.60) / Math.max(1, items.length));
+      const itemGap = Math.min(1.2, (bDur * 0.55) / Math.max(1, items.length));
       htmlParts.push(`
-        <div id="${bid}" class="chk-stage" style="top:${slotTop - 42}px;">
+        <div id="${bid}" class="chk-stage" style="top:${isTop ? 204 : 1190}px;">
           <div class="chk-head">
             <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc};">${escHtml(beat.badge || 'UTILITIES')}</span>
             <span class="chk-title" data-layout-ignore>${escHtml(beat.value || 'READY INFRASTRUCTURE')}</span>
@@ -811,27 +813,27 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 22px 26px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 18px 24px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.91); border: 2px solid ${acc}99;
-          box-shadow: 0 24px 60px rgba(0,0,0,0.60); pointer-events: none;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.60); pointer-events: none;
         }
-        #${bid} .chk-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+        #${bid} .chk-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
         #${bid} .chk-title { font-family: "Space Mono", monospace; font-size: 20px; font-weight: 700; color: ${acc}; }
-        #${bid} .chk-list { display: flex; flex-direction: column; gap: 10px; }
-        #${bid} .chk-item { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 16px; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.08); opacity: 0.42; }
-        #${bid} .chk-ring { width: 42px; height: 42px; flex-shrink: 0; }
-        #${bid} .chk-txt { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 30px; color: #ffffff; letter-spacing: 0.02em; }
+        #${bid} .chk-list { display: flex; flex-direction: column; gap: 8px; }
+        #${bid} .chk-item { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.08); opacity: 0.42; }
+        #${bid} .chk-ring { width: 38px; height: 38px; flex-shrink: 0; }
+        #${bid} .chk-txt { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 28px; color: #ffffff; letter-spacing: 0.015em; }
       `);
       jsParts.push(`
-        tl.fromTo("#${bid}", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}", { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.38, ease: "expo.out" }, ${bStart.toFixed(3)});
         ${items.map((_, idx) => {
           const at = bStart + 0.14 + idx * itemGap;
           return `
-            tl.fromTo("#${bid}-i${idx}", { opacity: 0.42, x: -12, borderColor: "rgba(255,255,255,0.08)" }, { opacity: 1, x: 0, backgroundColor: "rgba(16,185,129,0.16)", borderColor: "#10B981", duration: 0.36, ease: "expo.out" }, ${at.toFixed(3)});
-            tl.fromTo("#${bid}-t${idx}", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 0.36, ease: "power2.out" }, ${(at + 0.14).toFixed(3)});
+            tl.fromTo("#${bid}-i${idx}", { opacity: 0.42, x: -12, borderColor: "rgba(255,255,255,0.08)" }, { opacity: 1, x: 0, backgroundColor: "rgba(16,185,129,0.16)", borderColor: "#10B981", duration: 0.34, ease: "expo.out" }, ${at.toFixed(3)});
+            tl.fromTo("#${bid}-t${idx}", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, ${(at + 0.12).toFixed(3)});
           `;
         }).join('')}
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     } else if (wType === 'verified_shield') {
       htmlParts.push(`
@@ -843,7 +845,7 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
             </svg>
           </div>
           <div>
-            <span class="eyebrow" data-layout-ignore style="border:1.5px solid #10B981; margin-bottom:10px;">${escHtml(beat.badge || 'APPROVALS VERIFIED')}</span>
+            <span class="eyebrow" data-layout-ignore style="border:1.5px solid #10B981; margin-bottom:8px;">${escHtml(beat.badge || 'APPROVALS VERIFIED')}</span>
             <div class="sh-val">${escHtml(beat.value || 'TUDA • A-KHATA')}</div>
             <div class="sh-sub">${escHtml(beat.sub || '')}</div>
           </div>
@@ -851,25 +853,25 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 24px 28px; border-radius: 26px; opacity: 0;
-          display: flex; align-items: center; gap: 24px; background: rgba(8, 12, 24, 0.92); border: 2px solid #10B981;
-          box-shadow: 0 26px 64px rgba(0,0,0,0.62); pointer-events: none;
+          position: absolute; left: 44px; width: 840px; padding: 20px 26px; border-radius: 24px; opacity: 0;
+          display: flex; align-items: center; gap: 22px; background: rgba(8, 12, 24, 0.92); border: 2px solid #10B981;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.62); pointer-events: none;
         }
-        #${bid} .sh-svg { width: 92px; height: 96px; flex-shrink: 0; }
-        #${bid} .sh-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 48px; color: #ffffff; line-height: 1.05; }
-        #${bid} .sh-sub { font-size: 28px; font-weight: 600; color: #a7f3d0; margin-top: 8px; }
+        #${bid} .sh-svg { width: 82px; height: 86px; flex-shrink: 0; }
+        #${bid} .sh-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 42px; color: #ffffff; line-height: 1.05; }
+        #${bid} .sh-sub { font-size: 28px; font-weight: 600; color: #a7f3d0; margin-top: 6px; }
       `);
       jsParts.push(`
-        tl.fromTo("#${bid}", { opacity: 0, y: 38, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}", { opacity: 0, y: 34, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-sp", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 0.65, ease: "power2.inOut" }, ${(bStart + 0.1).toFixed(3)});
         tl.fromTo("#${bid}-chk", { strokeDashoffset: 110 }, { strokeDashoffset: 0, duration: 0.42, ease: "back.out(1.4)" }, ${(bStart + 0.48).toFixed(3)});
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     } else if (wType === 'price_odometer') {
       const pTo = Number(beat.count_to || 1850);
       htmlParts.push(`
         <div id="${bid}" class="price-hero" style="top:${slotTop}px;">
-          <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:12px;">${escHtml(beat.badge || 'LAUNCH RATE')}</span>
+          <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:10px;">${escHtml(beat.badge || 'LAUNCH RATE')}</span>
           <div class="ph-main">
             <span class="ph-cur">${escHtml(beat.count_prefix || '₹')}</span><span id="${bid}-val" class="num">0</span><span class="ph-suf">${escHtml(beat.count_suffix || ' / SQ.FT')}</span>
           </div>
@@ -878,25 +880,25 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 26px 32px; border-radius: 28px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 20px 28px; border-radius: 26px; opacity: 0;
           background: linear-gradient(135deg, rgba(16,12,8,0.92), rgba(28,18,6,0.90));
-          border: 2.5px solid ${acc}; box-shadow: 0 28px 70px rgba(0,0,0,0.68); pointer-events: none;
+          border: 2.5px solid ${acc}; box-shadow: 0 24px 60px rgba(0,0,0,0.68); pointer-events: none;
         }
-        #${bid} .ph-main { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 76px; line-height: 1.04; color: #ffffff; }
+        #${bid} .ph-main { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.04; color: #ffffff; }
         #${bid} .ph-cur { color: ${acc}; }
-        #${bid} .ph-suf { font-size: 36px; color: #fde68a; font-weight: 800; }
-        #${bid} .ph-sub { font-size: 28px; font-weight: 600; color: #fef3c7; margin-top: 10px; }
+        #${bid} .ph-suf { font-size: 32px; color: #fde68a; font-weight: 800; }
+        #${bid} .ph-sub { font-size: 28px; font-weight: 600; color: #fef3c7; margin-top: 8px; }
       `);
       jsParts.push(`
         (function() {
           const obj = { v: ${Number(beat.count_from || 0)} };
           const el = document.getElementById("${bid}-val");
-          tl.fromTo("#${bid}", { opacity: 0, scale: 0.90, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+          tl.fromTo("#${bid}", { opacity: 0, scale: 0.90, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
           tl.to(obj, {
             v: ${pTo}, duration: 1.35, ease: "power4.out",
             onUpdate: () => { if (el) el.textContent = Math.round(obj.v).toLocaleString(); }
           }, ${(bStart + 0.08).toFixed(3)});
-          ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: -18, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+          ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 18, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
         })();
       `);
     } else if (wType === 'price_calc') {
@@ -904,7 +906,7 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       const dec = Number(beat.count_decimals || 1);
       htmlParts.push(`
         <div id="${bid}" class="calc-card" style="top:${slotTop}px;">
-          <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:14px;">${escHtml(beat.badge || 'TOTAL PLOT VALUE')}</span>
+          <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:10px;">${escHtml(beat.badge || 'TOTAL PLOT VALUE')}</span>
           <div class="calc-row">
             <span class="c-chip" id="${bid}-c1">${escHtml(beat.eq_left || '1,200 SQ.FT')}</span>
             <span class="c-op">×</span>
@@ -917,15 +919,15 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 24px 28px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 18px 26px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.92); border: 2px solid ${acc2};
-          box-shadow: 0 26px 64px rgba(0,0,0,0.62); pointer-events: none;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.62); pointer-events: none;
         }
-        #${bid} .calc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-        #${bid} .c-chip { padding: 10px 18px; border-radius: 14px; background: rgba(255,255,255,0.12); font-family: "Space Mono", monospace; font-size: 28px; font-weight: 700; color: #ffffff; }
-        #${bid} .c-op { font-size: 32px; font-weight: 900; color: ${acc}; }
-        #${bid} .c-res { padding: 10px 22px; border-radius: 16px; background: linear-gradient(135deg, ${acc}, ${acc2}); font-family: "Montserrat", sans-serif; font-size: 36px; font-weight: 900; color: #ffffff; }
-        #${bid} .calc-sub { font-size: 28px; font-weight: 600; color: #e2e8f0; margin-top: 12px; }
+        #${bid} .calc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        #${bid} .c-chip { padding: 8px 16px; border-radius: 14px; background: rgba(255,255,255,0.12); font-family: "Space Mono", monospace; font-size: 28px; font-weight: 700; color: #ffffff; }
+        #${bid} .c-op { font-size: 30px; font-weight: 900; color: ${acc}; }
+        #${bid} .c-res { padding: 8px 20px; border-radius: 14px; background: linear-gradient(135deg, ${acc}, ${acc2}); font-family: "Montserrat", sans-serif; font-size: 32px; font-weight: 900; color: #ffffff; }
+        #${bid} .calc-sub { font-size: 28px; font-weight: 600; color: #e2e8f0; margin-top: 10px; }
       `);
       jsParts.push(`
         (function() {
@@ -939,23 +941,23 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
             v: ${cTo}, duration: 1.25, ease: "power3.out",
             onUpdate: () => { if (nEl) nEl.textContent = obj.v.toFixed(${dec}); }
           }, ${(bStart + 0.56).toFixed(3)});
-          ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+          ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
         })();
       `);
     } else if (wType === 'follow_cta' || wType === 'interactive_cta') {
       const isFollow = wType === 'follow_cta';
       const logoRel = brandMeta.hfLogoRelPath;
       const headline = beat.value || (isFollow ? brandMeta.follow_headline || 'FOLLOW OUR PAGE' : 'BOOK FREE SITE VISIT');
-      const handleTxt = beat.handle || brandMeta.page_handle || '@your_page_handle';
+      const handleTxt = beat.handle || brandMeta.page_handle || '@tumkursites';
       const btnText = beat.button_text || (isFollow ? brandMeta.follow_button_text || `+ FOLLOW ${handleTxt}` : headline);
       const subTxt = beat.sub || (isFollow ? brandMeta.follow_subtext : 'EXPERIENCE THE PROPERTY LIVE IN PERSON');
 
       htmlParts.push(`
-        <div id="${bid}" class="cta-stage" style="top:${slotTop - 25}px;">
+        <div id="${bid}" class="cta-stage" style="top:${isTop ? 204 : 1192}px;">
           <div class="cta-top-row">
             ${logoRel ? `<img class="cta-logo" src="../${logoRel}" alt="Brand Logo" data-layout-ignore/>` : ''}
             <div>
-              <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:8px;">${escHtml(beat.badge || (isFollow ? brandMeta.follow_badge : 'SITE VISITS OPEN'))}</span>
+              <span class="eyebrow" data-layout-ignore style="border:1.5px solid ${acc}; margin-bottom:6px;">${escHtml(beat.badge || (isFollow ? brandMeta.follow_badge : 'SITE VISITS OPEN'))}</span>
               <div class="cta-head">${escHtml(headline)}</div>
               ${isFollow ? `<div class="cta-handle">${escHtml(handleTxt)}</div>` : ''}
             </div>
@@ -972,34 +974,34 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 24px 30px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 18px 26px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.93); border: 2px solid ${acc};
-          box-shadow: 0 26px 64px rgba(0,0,0,0.64); pointer-events: none;
+          box-shadow: 0 22px 56px rgba(0,0,0,0.64); pointer-events: none;
         }
-        #${bid} .cta-top-row { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
-        #${bid} .cta-logo { width: 88px; height: 88px; border-radius: 20px; object-fit: contain; padding: 6px; background: rgba(255,255,255,0.08); border: 1.5px solid ${acc}88; flex-shrink: 0; }
-        #${bid} .cta-head { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 40px; color: #ffffff; line-height: 1.08; }
-        #${bid} .cta-handle { font-family: "Space Mono", monospace; font-size: 28px; font-weight: 700; color: ${acc}; margin-top: 4px; }
+        #${bid} .cta-top-row { display: flex; align-items: center; gap: 18px; margin-bottom: 12px; }
+        #${bid} .cta-logo { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; padding: 2px; background: #faf9f6; border: 2px solid ${acc}; flex-shrink: 0; }
+        #${bid} .cta-head { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 36px; color: #ffffff; line-height: 1.06; }
+        #${bid} .cta-handle { font-family: "Space Mono", monospace; font-size: 28px; font-weight: 700; color: ${acc}; margin-top: 2px; }
         #${bid} .cta-btn-wrap {
           position: relative; display: flex; align-items: center; justify-content: center;
-          padding: 20px 68px 20px 28px; border-radius: 20px; overflow: visible;
+          padding: 16px 64px 16px 26px; border-radius: 18px; overflow: visible;
           background: linear-gradient(135deg, #0369a1, #047857); border: 2px solid ${acc};
-          box-shadow: 0 12px 34px ${acc}44;
+          box-shadow: 0 12px 32px ${acc}44;
         }
-        #${bid} .cta-btn-txt { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 36px; color: #ffffff; letter-spacing: 0.02em; text-align: center; }
-        #${bid} .cta-ripple { position: absolute; width: 76px; height: 76px; border-radius: 50%; border: 4px solid #ffffff; opacity: 0; right: 20px; top: 50%; margin-top: -38px; pointer-events: none; }
-        #${bid} .cta-cursor { position: absolute; width: 48px; height: 56px; right: 22px; top: 40px; opacity: 0; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); pointer-events: none; }
-        #${bid} .cta-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 14px; text-align: center; }
+        #${bid} .cta-btn-txt { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 34px; color: #ffffff; letter-spacing: 0.02em; text-align: center; }
+        #${bid} .cta-ripple { position: absolute; width: 72px; height: 72px; border-radius: 50%; border: 4px solid #ffffff; opacity: 0; right: 20px; top: 50%; margin-top: -36px; pointer-events: none; }
+        #${bid} .cta-cursor { position: absolute; width: 46px; height: 54px; right: 20px; top: 34px; opacity: 0; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5)); pointer-events: none; }
+        #${bid} .cta-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 10px; text-align: center; }
       `);
-      const tapAt = bStart + Math.min(1.9, bDur * 0.36);
+      const tapAt = bStart + Math.min(1.8, bDur * 0.34);
       jsParts.push(`
-        tl.fromTo("#${bid}", { opacity: 0, y: 36, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}", { opacity: 0, y: 34, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.fromTo("#${bid}-cur", { opacity: 0, x: 96, y: 74 }, { opacity: 1, x: 0, y: 0, duration: Math.max(0.45, ${(tapAt - bStart - 0.15).toFixed(3)}), ease: "power2.out" }, ${(bStart + 0.15).toFixed(3)});
         tl.to("#${bid}-btn", { scale: 0.94, duration: 0.10, ease: "power2.in" }, ${tapAt.toFixed(3)});
         tl.to("#${bid}-btn", { scale: 1.03, duration: 0.24, ease: "back.out(1.8)" }, ${(tapAt + 0.10).toFixed(3)});
         tl.fromTo("#${bid}-rip", { opacity: 0.95, scale: 0.25 }, { opacity: 0, scale: 2.2, duration: 0.55, ease: "power2.out" }, ${(tapAt + 0.05).toFixed(3)});
         tl.to("#${bid}-cur", { opacity: 0, duration: 0.35, ease: "power2.in" }, ${(tapAt + 1.4).toFixed(3)});
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     } else {
       htmlParts.push(`
@@ -1011,22 +1013,22 @@ function generateSceneCompositionHtml(scene, sceneIndex, totalScenes, fps, brand
       `);
       cssParts.push(`
         #${bid} {
-          position: absolute; left: 48px; width: 880px; padding: 24px 30px; border-radius: 26px; opacity: 0;
+          position: absolute; left: 44px; width: 840px; padding: 20px 26px; border-radius: 24px; opacity: 0;
           background: rgba(8, 12, 24, 0.91); border: 2px solid ${acc};
-          box-shadow: 0 24px 60px rgba(0,0,0,0.58); pointer-events: none;
+          box-shadow: 0 22px 54px rgba(0,0,0,0.58); pointer-events: none;
         }
-        #${bid} .hl-top { margin-bottom: 10px; }
-        #${bid} .hl-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 50px; line-height: 1.1; color: #ffffff; }
+        #${bid} .hl-top { margin-bottom: 8px; }
+        #${bid} .hl-val { font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 44px; line-height: 1.08; color: #ffffff; }
         #${bid} .hl-sweep {
           background-image: linear-gradient(90deg, ${acc}44, ${acc2}44); background-repeat: no-repeat; background-size: 0% 100%;
           padding: 2px 10px; border-radius: 10px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
         }
-        #${bid} .hl-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 10px; line-height: 1.25; }
+        #${bid} .hl-sub { font-size: 28px; font-weight: 600; color: #cbd5e1; margin-top: 8px; line-height: 1.22; }
       `);
       jsParts.push(`
-        tl.fromTo("#${bid}", { opacity: 0, x: ${bIdx % 2 === 0 ? -42 : 42}, filter: "blur(6px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, ${bStart.toFixed(3)});
+        tl.fromTo("#${bid}", { opacity: 0, x: ${bIdx % 2 === 0 ? -42 : 42}, filter: "blur(6px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.40, ease: "expo.out" }, ${bStart.toFixed(3)});
         tl.to("#${bid}-sw", { backgroundSize: "100% 100%", duration: 0.65, ease: "power2.out" }, ${(bStart + 0.18).toFixed(3)});
-        ${!isLastBeat ? `tl.to("#${bid}", { opacity: 0, x: ${bIdx % 2 === 0 ? 30 : -30}, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
+        ${shouldExit ? `tl.to("#${bid}", { opacity: 0, y: 20, duration: ${exitDur}, ease: "power3.in" }, ${exitAt.toFixed(3)});` : ''}
       `);
     }
   });
@@ -1039,6 +1041,29 @@ function generateHudChromeHtml(timelineData, brandMeta) {
   const fps = timelineData.fps;
   const scenes = timelineData.scenes;
   const showLogo = brandMeta.logo_hud_watermark !== false && brandMeta.hfLogoRelPath;
+  const logoRight = String(brandMeta.logo_hud_position || 'top-right').toLowerCase() !== 'top-left';
+
+  const counterHtml = `
+    <div class="scene-counter" data-layout-ignore>
+      <span id="sc-cur">01</span><span>/${String(scenes.length).padStart(2, '0')}</span>
+    </div>
+  `;
+  const locPillHtml = `
+    <div class="loc-pill" data-layout-ignore>
+      <span class="live-dot"></span>
+      <span>${escHtml(timelineData.location_badge || 'SITE TOUR')}</span>
+      <span class="eq-bars" aria-hidden="true">
+        <i id="eq-0"></i><i id="eq-1"></i><i id="eq-2"></i><i id="eq-3"></i>
+      </span>
+    </div>
+  `;
+  const logoHtml = showLogo
+    ? `
+      <div class="brand-chip ${logoRight ? 'brand-corner-right' : 'brand-corner-left'}" data-layout-ignore>
+        <img class="brand-logo" src="../${brandMeta.hfLogoRelPath}" alt="Brand Logo" />
+      </div>
+    `
+    : '';
 
   const htmlBody = `
     <div class="hud-top">
@@ -1047,52 +1072,47 @@ function generateHudChromeHtml(timelineData, brandMeta) {
       </div>
       <div class="hud-row">
         <div class="hud-left-cluster">
-          ${showLogo ? `
-            <div class="brand-chip" data-layout-ignore>
-              <img class="brand-logo" src="../${brandMeta.hfLogoRelPath}" alt="Logo" />
-            </div>
-          ` : ''}
-          <div class="loc-pill" data-layout-ignore>
-            <span class="live-dot"></span>
-            <span>${escHtml(timelineData.location_badge || 'SITE TOUR')}</span>
-            <span class="eq-bars" aria-hidden="true">
-              <i id="eq-0"></i><i id="eq-1"></i><i id="eq-2"></i><i id="eq-3"></i>
-            </span>
-          </div>
+          ${logoRight ? counterHtml + locPillHtml : logoHtml + locPillHtml}
         </div>
-        <div class="scene-counter" data-layout-ignore>
-          <span id="sc-cur">01</span><span>/${String(scenes.length).padStart(2, '0')}</span>
+        <div class="hud-right-cluster">
+          ${logoRight ? logoHtml : counterHtml}
         </div>
       </div>
     </div>
   `;
 
   const styles = `
-    .hud-top { position: absolute; left: 40px; right: 40px; top: 72px; pointer-events: none; }
-    .stories-bar { display: flex; gap: 8px; width: 100%; height: 6px; margin-bottom: 14px; }
+    .hud-top { position: absolute; left: 40px; right: 40px; top: 56px; pointer-events: none; }
+    .stories-bar { display: flex; gap: 8px; width: 100%; height: 6px; margin-bottom: 12px; }
     .sb-track { flex: 1; height: 100%; background: rgba(255,255,255,0.28); border-radius: 99px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
     .sb-fill { width: 100%; height: 100%; transform-origin: left center; }
-    .hud-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-    .hud-left-cluster { display: flex; align-items: center; gap: 10px; }
-    .brand-chip {
-      width: 48px; height: 48px; border-radius: 14px; padding: 4px;
-      background: rgba(8, 12, 24, 0.90); border: 1.5px solid rgba(255,255,255,0.28);
+    .hud-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .hud-left-cluster { display: flex; align-items: center; gap: 10px; max-width: 820px; margin-top: 4px; }
+    .hud-right-cluster { display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; }
+    .brand-chip.brand-corner-right {
+      width: 110px; height: 110px; border-radius: 50%; padding: 2px; overflow: hidden;
+      background: #faf9f6; border: 2.5px solid rgba(255,255,255,0.92);
+      display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+    }
+    .brand-chip.brand-corner-left {
+      width: 52px; height: 52px; border-radius: 50%; padding: 2px; overflow: hidden;
+      background: #faf9f6; border: 2px solid rgba(255,255,255,0.85);
       display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 26px rgba(0,0,0,0.45);
     }
-    .brand-logo { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; }
+    .brand-logo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     .loc-pill {
       display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; border-radius: 999px;
       background: rgba(8, 12, 24, 0.88); border: 1.5px solid rgba(255,255,255,0.22);
-      font-family: "Space Mono", monospace; font-size: 20px; font-weight: 700; letter-spacing: 0.08em; color: #ffffff;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+      font-family: "Space Mono", monospace; font-size: 19px; font-weight: 700; letter-spacing: 0.08em; color: #ffffff;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.45); white-space: nowrap;
     }
-    .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #10B981; display: inline-block; }
+    .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #10B981; display: inline-block; flex-shrink: 0; }
     .eq-bars { display: inline-flex; align-items: flex-end; gap: 3px; height: 16px; margin-left: 4px; }
     .eq-bars i { width: 3.5px; height: 16px; border-radius: 2px; background: #38bdf8; display: block; transform-origin: bottom center; }
     .scene-counter {
-      padding: 9px 16px; border-radius: 999px;
+      padding: 9px 15px; border-radius: 999px;
       background: rgba(8, 12, 24, 0.88); border: 1.5px solid rgba(255,255,255,0.22);
-      font-family: "Space Mono", monospace; font-size: 20px; font-weight: 700; color: #38bdf8;
+      font-family: "Space Mono", monospace; font-size: 19px; font-weight: 700; color: #38bdf8; flex-shrink: 0;
     }
   `;
 
@@ -1181,7 +1201,8 @@ function buildCaptionGroups(scenes) {
     const sc = scenes[sIdx];
     const words = sc.wordTimings || [];
     if (!words.length) continue;
-    const slotY = sIdx === 0 ? 1250 : sc.glide_to === 'top' ? 1215 : 186;
+    // Always keep captions in one crisp lower safe band (1525px) below card zone and above IG bottom chrome
+    const slotY = 1525;
     let cur = [];
     for (let wi = 0; wi < words.length; wi++) {
       const w = words[wi];
@@ -1190,7 +1211,7 @@ function buildCaptionGroups(scenes) {
       const hasPunct = /[.,!?]$/.test(w.text);
       const pause = next ? next.start - w.end : 0;
       const charCount = cur.reduce((a, b) => a + b.text.length, 0);
-      if (cur.length >= 3 || charCount > 24 || hasPunct || pause > 0.24 || !next) {
+      if (cur.length >= 3 || charCount > 20 || hasPunct || pause > 0.24 || !next) {
         groups.push({
           y: slotY,
           acc: sc.accent || '#00D4FF',
@@ -1215,9 +1236,9 @@ function generateCaptionsHtml(timelineData) {
   const htmlBody = `<div id="cap-layer" class="cap-layer"></div>`;
   const styles = `
     .cap-layer { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
-    .cap-group { position: absolute; left: 48px; width: 880px; display: flex; justify-content: flex-start; pointer-events: none; overflow: visible; opacity: 0; visibility: hidden; }
-    .cap-pill { display: inline-flex; flex-wrap: wrap; column-gap: 18px; row-gap: 8px; align-items: center; padding: 13px 24px; border-radius: 18px; background: rgba(6, 10, 20, 0.92); border: 1.5px solid; box-shadow: 0 12px 32px rgba(0,0,0,0.52); overflow: visible; }
-    .cap-w { font-family: "NirmalaKannada", "Inter", sans-serif; font-weight: 700; font-size: 32px; line-height: 1.36; letter-spacing: 0.015em; color: #cbd5e1; display: inline-block; padding: 0 2px; border-bottom: 3px solid transparent; }
+    .cap-group { position: absolute; left: 44px; width: 840px; display: flex; justify-content: flex-start; pointer-events: none; overflow: visible; opacity: 0; visibility: hidden; }
+    .cap-pill { display: inline-flex; flex-wrap: wrap; column-gap: 18px; row-gap: 8px; align-items: center; padding: 11px 22px; border-radius: 16px; background: rgba(6, 10, 20, 0.90); border: 1.5px solid; box-shadow: 0 10px 28px rgba(0,0,0,0.52); overflow: visible; }
+    .cap-w { font-family: "NirmalaKannada", "Inter", sans-serif; font-weight: 700; font-size: 31px; line-height: 1.32; letter-spacing: 0.015em; color: #cbd5e1; display: inline-block; padding: 0 2px; border-bottom: 3px solid transparent; }
   `;
   const scriptBody = `
     const GROUPS = ${JSON.stringify(groups)};
@@ -1632,11 +1653,12 @@ async function main() {
     if (fs.existsSync(src)) linkOrCopy(src, path.join(hfAssets, 'fonts', f));
   });
 
-  // Auto-discover Brand Logo from common/logo/
+  // Auto-discover Brand Logo from common/logo/ (normalize filename cleanly without spaces)
   const logoSrc = resolveCommonLogo(config);
   let hfLogoRelPath = null;
   if (logoSrc) {
-    hfLogoRelPath = `assets/brand/${path.basename(logoSrc)}`;
+    const logoExt = path.extname(logoSrc).toLowerCase() || '.png';
+    hfLogoRelPath = `assets/brand/brand_logo${logoExt}`;
     linkOrCopy(logoSrc, path.join(hfDir, hfLogoRelPath));
     console.log(`[Brand Kit] Logo loaded -> ${logoSrc}`);
   }
@@ -1722,31 +1744,37 @@ async function main() {
         ? s.beats
         : [{ widget: 'highlight_pill', start_pct: 0, end_pct: 1, badge: s.top_label, value: s.hero_value, sub: s.sub_value }];
 
+    const globalMaxDwell = Number(config.card_max_display_sec || 5.2);
     const resolvedBeats = rawBeats.map((b, bIdx) => {
       const sp = Math.max(0, Math.min(1, typeof b.start_pct === 'number' ? b.start_pct : bIdx / rawBeats.length));
       const ep = Math.max(sp + 0.1, Math.min(1, typeof b.end_pct === 'number' ? b.end_pct : (bIdx + 1) / rawBeats.length));
-      const pctStartSec = sp * durationSec;
+      const pctStartSec = bIdx === 0 && i === 0 ? 0.0 : bIdx === 0 ? Math.max(0.28, sp * durationSec) : sp * durationSec;
       const pctEndSec = bIdx === rawBeats.length - 1 ? durationSec : ep * durationSec;
       const kw = b.anchor_words || inferKeywordsForBeat(b);
       const syncedStartSec =
         bIdx === 0
           ? pctStartSec
-          : findAnchorTime(wordTimings, kw, pctStartSec, Math.max(0.25, pctStartSec - 2.2), Math.min(pctEndSec - 1.2, pctStartSec + 2.5));
+          : findAnchorTime(wordTimings, kw, pctStartSec, Math.max(0.28, pctStartSec - 2.2), Math.min(pctEndSec - 1.4, pctStartSec + 2.5));
+      const maxDwell = Number(b.display_sec || (b.widget === 'follow_cta' ? 8.5 : globalMaxDwell));
+      const timedEndSec = b.hold ? pctEndSec : Math.min(pctEndSec, syncedStartSec + maxDwell);
       return {
         ...b,
         glide_to: b.glide_to || s.glide_to || 'bottom',
         startSec: Number(syncedStartSec.toFixed(3)),
-        endSec: Number(pctEndSec.toFixed(3)),
+        endSec: Number(Math.max(syncedStartSec + 1.4, timedEndSec).toFixed(3)),
         startFrame: Math.floor(syncedStartSec * fps),
-        endFrame: Math.ceil(pctEndSec * fps)
+        endFrame: Math.ceil(Math.max(syncedStartSec + 1.4, timedEndSec) * fps)
       };
     });
 
     for (let bi = 1; bi < resolvedBeats.length; bi++) {
-      if (resolvedBeats[bi].startSec < resolvedBeats[bi - 1].startSec + 1.5) {
-        resolvedBeats[bi].startSec = Number((resolvedBeats[bi - 1].startSec + 1.6).toFixed(3));
+      if (resolvedBeats[bi].startSec < resolvedBeats[bi - 1].startSec + 1.6) {
+        resolvedBeats[bi].startSec = Number((resolvedBeats[bi - 1].startSec + 1.8).toFixed(3));
       }
-      resolvedBeats[bi - 1].endSec = Number(Math.max(resolvedBeats[bi - 1].startSec + 1.0, resolvedBeats[bi].startSec - 0.12).toFixed(3));
+      resolvedBeats[bi - 1].endSec = Number(
+        Math.min(resolvedBeats[bi - 1].endSec, Math.max(resolvedBeats[bi - 1].startSec + 1.2, resolvedBeats[bi].startSec - 0.20)).toFixed(3)
+      );
+      resolvedBeats[bi - 1].endFrame = Math.ceil(resolvedBeats[bi - 1].endSec * fps);
     }
 
     const fillPct = durationSec > 0 ? Math.round((audioDur / durationSec) * 100) : 0;

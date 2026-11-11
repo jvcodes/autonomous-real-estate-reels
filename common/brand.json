@@ -1,21 +1,24 @@
 {
-  "brand_name": "PRIME PLOTS HUB",
-  "page_handle": "@your_page_handle",
+  "brand_name": "TUMKUR SITES",
+  "page_handle": "@tumkursites",
+  "logo_file": "Tumkur Sites Real Estate Badge.png",
+  "logo_hud_position": "top-right",
+  "logo_hud_watermark": true,
   "default_location_badge": "TUMKUR • VERIFIED PLOTS",
   "follow_badge": "FOLLOW FOR DAILY SITE TOURS",
   "follow_headline": "FOLLOW OUR PAGE",
-  "follow_button_text": "+ FOLLOW @your_page_handle",
-  "follow_subtext": "DAILY VERIFIED PLOTS • CALL OR DM SITE FOR DETAILS",
+  "follow_button_text": "+ FOLLOW TUMKUR SITES",
+  "follow_subtext": "DAILY VERIFIED PLOTS • CALL OR DM FOR SITE VISIT",
   "cta_phone": "BOOK FREE SITE VISIT • CALL NOW",
   "language": "kn",
   "voice": "kn-IN-GaganNeural",
   "voice_rate": "+6%",
   "voice_pitch": "+2Hz",
+  "card_max_display_sec": 5.2,
   "ambient_music": true,
   "fps": 30,
   "resolution": {
     "width": 1080,
     "height": 1920
-  },
-  "logo_hud_watermark": true
+  }
 }
